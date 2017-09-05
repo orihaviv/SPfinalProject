@@ -19,18 +19,18 @@
 #define GAMESIZE 8
 #define HISTORYSIZE 6
 #define BLANK '_'
-#define PAWNWHITE m
-#define PAWNBLACK M
-#define BISHOPBLACK B
-#define BISHOPWHITE b
-#define ROOKWHITE r
-#define ROOKBLACK R
-#define KNIGHTWHITE n
-#define KNIGHTBLACK N
-#define QUEENWHITE q
-#define QUEENBLACK Q
-#define KINGWHITE k
-#define KINGBLACK K
+#define PAWNWHITE 'm'
+#define PAWNBLACK 'M'
+#define BISHOPBLACK 'B'
+#define BISHOPWHITE 'b'
+#define ROOKWHITE 'r'
+#define ROOKBLACK 'R'
+#define KNIGHTWHITE 'n'
+#define KNIGHTBLACK 'N'
+#define QUEENWHITE 'q'
+#define QUEENBLACK 'Q'
+#define KINGWHITE 'k'
+#define KINGBLACK 'K'
 
 
 
@@ -72,7 +72,7 @@ typedef enum sp_fiar_game_message_t {
     SP_FIAR_GAME_INVALID_ARGUMENT,
     SP_FIAR_GAME_NO_HISTORY,
     SP_FIAR_GAME_SUCCESS,
-} SP_GAME_MESSAGE;
+} SP_CHESS_GAME_MESSAGE;
 
 /**
  * Creates a new game with a specified history size. The history size is a
@@ -91,26 +91,28 @@ SPChessGame* spFiarGameCreate();
 
 
 
-///**
-// *	Creates a copy of a given game.
-// *	The new copy has the same status as the src game.
-// *
-// *	@param src - the source game which will be copied
-// *	@return
-// *	NULL if either src is NULL or a memory allocation failure occurred.
-// *	Otherwise, an new copy of the source game is returned.
-// *
-// */
-//SPFiarGame* spFiarGameCopy(SPFiarGame* src);
-//
-///**
-// * Frees all memory allocation associated with a given game. If src==NULL
-// * the function does nothing.
-// *
-// * @param src - the source game
-// */
-//void spFiarGameDestroy(SPFiarGame* src);
-//
+/**
+ *	Creates a copy of a given game.
+ *	The new copy has the same status as the src game.
+ *
+ *	@param src - the source game which will be copied
+ *	@return
+ *	NULL if either src is NULL or a memory allocation failure occurred.
+ *	Otherwise, an new copy of the source game is returned.
+ *
+ */
+SPChessGame* spChessGameCopy(SPChessGame* src);
+
+/**
+ * Frees all memory allocation associated with a given game. If src==NULL
+ * the function does nothing.
+ *
+ * @param src - the source game
+ */
+void chessGameDestroy(SPChessGame* src);
+
+
+
 ///**
 // * Sets the next move in a given game by specifying column index. The
 // * columns are 0-based and in the range [0,SP_FIAR_GAME_N_COLUMNS -1].
@@ -123,7 +125,9 @@ SPChessGame* spFiarGameCreate();
 // * SP_FIAR_GAME_SUCCESS - otherwise
 // */
 //SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col);
-//
+
+
+
 ///**
 // * Checks if a disk can be put in the specified column.
 // *
@@ -134,7 +138,10 @@ SPChessGame* spFiarGameCreate();
 // * false - otherwise.
 // */
 //bool spFiarGameIsValidMove(SPFiarGame* src, int col);
-//
+
+
+
+
 ///**
 // * Removes a disc that was put in the previous move and changes the current
 // * player's turn. If the user invoked this command more than historySize times
@@ -149,30 +156,39 @@ SPChessGame* spFiarGameCreate();
 // *                                 board is removed and the current player is changed
 // */
 //SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
-//
-///**
-// * On success, the function prints the board game. If an error occurs, then the
-// * function does nothing. The characters 'X' and 'O' are used to represent
-// * the discs of player 1 and player 2, respectively.
-// *
-// * @param src - the target game
-// * @return
-// * SP_FIAR_GAME_INVALID_ARGUMENT - if src==NULL
-// * SP_FIAR_GAME_SUCCESS - otherwise
-// *
-// */
-//SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src);
-//
-///**
-// * Returns the current player of the specified game.
-// * @param src - the source game
-// * @return
-// * SP_FIAR_GAME_PLAYER_1_SYMBOL - if it's player one's turn
-// * SP_FIAR_GAME_PLAYER_2_SYMBOL - if it's player two's turn
-// * SP_FIAR_GAME_EMPTY_ENTRY     - otherwise
-// */
-//char spFiarGameGetCurrentPlayer(SPFiarGame* src);
-//
+
+
+
+
+
+/**
+ * On success, the function prints the board game. If an error occurs, then the
+ * function does nothing. The characters 'X' and 'O' are used to represent
+ * the discs of player 1 and player 2, respectively.
+ *
+ * @param src - the target game
+ * @return
+ * SP_FIAR_GAME_INVALID_ARGUMENT - if src==NULL
+ * SP_FIAR_GAME_SUCCESS - otherwise
+ *
+ */
+SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src);
+
+
+
+/**
+ * Returns the current player of the specified game.
+ * @param src - the source game
+ * @return
+ * 1 - if it's the turn of the white player
+ * 0 - if it's the turn of the black player
+ */
+int spChessGameGetCurrentPlayer(SPChessGame* src);
+
+
+
+
+
 ///**
 //* Checks if there's a winner in the specified game status. The function returns either
 //* SP_FIAR_GAME_PLAYER_1_SYMBOL or SP_FIAR_GAME_PLAYER_2_SYMBOL in case there's a winner, where
