@@ -3,7 +3,7 @@
 //
 
 
-#include "SPFIARGame.h"
+#include "SPChessGame.h"
 
 
 SPFiarGame* spFiarGameCreate(int historySize) {
