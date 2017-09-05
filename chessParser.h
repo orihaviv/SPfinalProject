@@ -9,6 +9,8 @@
 
 //specify the maximum line length
 #define SP_MAX_LINE_LENGTH 1024
+//converting char to int
+#define toInt(a) (a - 65)
 
 
 //a type used to represent a command
@@ -21,6 +23,7 @@ typedef enum {
 	PRINT_SETTING,
 	MOVE,
 	GET_MOVES,
+	START,
 	SAVE,
 	UNDO,
 	RESET,

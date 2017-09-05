@@ -19,7 +19,7 @@ bool spParserIsInt(const char* str){
     return true;
 }
 
-SPCommand setGameMode (char* mode) {
+SPCommand setGameModeCmd (char* mode) {
     SPCommand command;
     command.cmd = GAME_MODE;
     if (!strcmp(mode, "1")) {
@@ -37,7 +37,7 @@ SPCommand setGameMode (char* mode) {
 
 
 
-SPCommand setDifficulty(char* diff) {
+SPCommand setDifficultyCmd(char* diff) {
     SPCommand command;
     command.cmd = INVALID;
     int level;
@@ -57,9 +57,10 @@ SPCommand setDifficulty(char* diff) {
     return command;
 }
 
-SPCommand setColor(char* color){
-    SPCommand command;
 
+SPCommand setColorCmd(char* color){
+    SPCommand command;
+    command.cmd = USER_COLOR;
     if (!strcmp(color, "0")) {
         command.arg = 0;
     } else if (!strcmp(nextToken, "1")) {
@@ -71,22 +72,60 @@ SPCommand setColor(char* color){
     return command;
 }
 
+SPCommand setMoveCmd(char* source, char* dest){
+    SPCommand command;
+    command.cmd = INVALID;
+    if (source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
+        if (source[1] > '0' && source[1] < '9' && dest[1] > '0' && dest[1] < '9'
+            && source[3] >= 'A' && source[3] <= 'H' && dest[3] >= 'A' && dest[3] <= 'H'){
+            command.source.column = source[3];
+            command.source.row = toInt(source[1]);
+            command.destination.column = dest[3];
+            command.destination.row = toInt(dest[1]);
+            command.cmd = MOVE;
+        }
+    }
+    return command;
+}
+
+SPCommand getMoveCmd(char* source){
+    SPCommand command;
+    command.cmd = INVALID;
+    if (source[0] == '<' && source[2] == ',' && source[4] == '>' && source[1] > '0' && source[1] < '9' && source[3] >= 'A' && source[3] <= 'H'){
+        command.cmd = GET_MOVES;
+        command.source.column = source[3];
+        command.source.row = toInt(source[3]);
+    }
+    return command;
+}
+
 
 SPCommand spParserParseLine(const char* str) {
     char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     SPCommand command;
+    command.cmd = INVALID;
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
         if (!strcmp(firstToken, "game_mode")) {
             char *nextToken = strtok(NULL, " \t\r\n");
-            return setGameMode(nextToken);
+            return setGameModeCmd(nextToken);
         } else if (!strcmp(firstToken, "difficulty")) {
             char *nextToken = strtok(NULL, " \t\r\n");
-            return setDifficulty(nextToken);
+            return setDifficultyCmd(nextToken);
         } else if (!strcmp(firstToken, "user_color")) {
             char *nextToken = strtok(NULL, " \t\r\n");
-            return setColor(nextToken);
+            return setColorCmd(nextToken);
+        } else if (!strcmp(firstToken, "move")){
+            char *secToken = strtok(NULL, " \t\r\n");
+            char *thirdToken = strtok(NULL, " \t\r\n");
+            char *forthToken = strtok(NULL, " \t\r\n");
+            if (!strcmp(thirdToken, "to")){
+                return setMoveCmd (secToken, forthToken);
+            }
+        } else if (!strcmp(firstToken, "get_moves")){
+            char *nextToken = strtok(NULL, " \t\r\n");
+            return getMoveCmd(nextToken);
         } else if (!strcmp(firstToken, "load")) {
             command.path = strtok(NULL, " \t\r\n");
             command.cmd = LOAD;
@@ -96,55 +135,16 @@ SPCommand spParserParseLine(const char* str) {
             command.cmd = PRINT_SETTING;
         } else if (!strcmp(firstToken, "quit")) {
             command.cmd = QUIT;
-        } else if (!strcmp(firstToken, "quit")) {
-            command.cmd = QUIT;
-        } else if ((!strcmp(firstToken, "quit")){
-
+        } else if (!strcmp(firstToken, "start")) {
+            command.cmd = START;
+        } else if (!strcmp(firstToken, "save")){
+            command.cmd = SAVE;
+        } else if (!strcmp(firstToken, "undo")){
+            command.cmd = UNDO;
+        } else if (!strcmp(firstToken, "reset")) {
+            command.cmd = RESET;
         }
         free(strCopy);
         return command;
     }
-}
-
-
-
-
-
-
-            if (!strcmp(firstToken, "add_disc")) {
-            command.cmd = SP_ADD_DISC;
-            char *nextToken = strtok(NULL, " \t\r\n");
-            if (spParserIsInt(nextToken)) {
-                command.validArg = true;
-                command.arg = atoi(nextToken);
-            } else {
-                printf("Error: invalid command\n");
-                command.cmd = SP_INVALID_LINE;
-            }
-        } else {
-            if (!strcmp(firstToken, "quit")) {
-                command.cmd = SP_QUIT;
-            } else if (!strcmp(firstToken, "restart")) {
-                command.cmd = SP_RESTART;
-            } else if (!strcmp(firstToken, "undo_move")) {
-                command.cmd = SP_UNDO_MOVE;
-            } else if (!strcmp(firstToken, "suggest_move")) {
-                command.cmd = SP_SUGGEST_MOVE;
-            } else {
-                flag = 1;
-                printf("Error: invalid command\n");
-                command.cmd = SP_INVALID_LINE;
-            }
-        }
-        if (strtok(NULL, " \t\r\n") != NULL && flag == 0) {
-            printf("Error: invalid command\n");
-            command.cmd = SP_INVALID_LINE;
-        }
-        free(strCopy);
-    }
-    else{
-        printf("Error: malloc has failed");
-        command.cmd = SP_QUIT;
-    }
-    return command;
 }
