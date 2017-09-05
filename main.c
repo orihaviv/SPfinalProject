@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include chessParser.h
+#include "chessParser.h"
 
 int main() {
     SPCommand cmd;
@@ -16,7 +16,7 @@ int main() {
 	if(cmd.cmd != INVALID){ printf("Error 4"); }
 	
 	cmd = spParserParseLine("difficulty 3");
-	if(cmd.cmd != DIFFICULTY || cmd.ard != 3){ printf("Error 5"); }
+	if(cmd.cmd != DIFFICULTY || cmd.arg != 3){ printf("Error 5"); }
 	
 	cmd = spParserParseLine("user_color 3");
 	if(cmd.cmd != INVALID){ printf("Error 6"); }
@@ -28,7 +28,7 @@ int main() {
     if(cmd.cmd != INVALID){ printf("Error 8"); }
 	
 	cmd = spParserParseLine("default");
-    if(cmd.cmd != DEFAULT){ printf("Error 9"); }
+    if(cmd.cmd != DEFAULT_GAME){ printf("Error 9"); }
 	
 	cmd = spParserParseLine("quit 1");
     if(cmd.cmd != INVALID){ printf("Error 10"); }
@@ -64,12 +64,12 @@ int main() {
 	if(cmd.cmd != INVALID){ printf("Error 20"); }
 	
 	cmd = spParserParseLine("move <8,A> to <5,C>");
-	if(cmd.cmd != MOVE || cmd.source.row != 8 || cmd.dest.row != 5
-	|| cmd.source.column != '!' || cmd.dest.column != 'C'){ printf("Error 22"); }
+	if(cmd.cmd != MOVE || cmd.source.row != 8 || cmd.destination.row != 5
+	|| cmd.source.column != '!' || cmd.destination.column != 'C'){ printf("Error 22"); }
 	
 	cmd = spParserParseLine("move <5,H> to <5,A>");
-	if(cmd.cmd != MOVE || cmd.source.row != 5 || cmd.dest.row != 5
-	|| cmd.source.column != 'H' || cmd.dest.column != 'A'){ printf("Error 22"); }
+	if(cmd.cmd != MOVE || cmd.source.row != 5 || cmd.destination.row != 5
+	|| cmd.source.column != 'H' || cmd.destination.column != 'A'){ printf("Error 22"); }
 	
 	cmd = spParserParseLine("reset 1");
     if(cmd.cmd != INVALID){ printf("Error 23"); }
