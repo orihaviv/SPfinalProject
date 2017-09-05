@@ -103,7 +103,6 @@ SPCommand getMoveCmd(char* source){
 SPCommand spParserParseLine(const char* str) {
     char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     SPCommand command;
-    command.cmd = INVALID;
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
@@ -143,6 +142,9 @@ SPCommand spParserParseLine(const char* str) {
             command.cmd = UNDO;
         } else if (!strcmp(firstToken, "reset")) {
             command.cmd = RESET;
+        } else{
+            command.cmd = INVALID;
+            printf("Invalid command");
         }
         free(strCopy);
         return command;
