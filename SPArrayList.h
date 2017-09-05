@@ -77,8 +77,6 @@ typedef enum sp_array_list_message_t {
 
 
 
-
-
 /**
  *  Creates an empty array list with the specified maximum capacity.
  *  @param maxSize - the maximum capacity of the target array list.
