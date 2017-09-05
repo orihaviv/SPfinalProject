@@ -8,6 +8,16 @@
 
 
 /**
+ * The elements in the arraylist will be position for this game
+ */
+typedef struct positions_on_board {
+	int prevRow;
+	int row;
+	char prevColumn;
+	char column;
+} action;
+
+/**
  * SPArrayList summary:
  *
  * A container that represents a fixed size linked list. The capcity of the list
@@ -47,18 +57,11 @@
  * spArrayListIsEmpty      - Returns true if the array list contains no elements.
  */
 typedef struct sp_array_list_t {
-	position* elements;
+	action* elements;
 	int actualSize;
 	int maxSize;
 } SPArrayList;
 
-/**
- * The elements in the arraylist will be position for this game
- */
-typedef struct position_on_board {
-	int row;
-	char column;
-} position;
 
 /**
  * A type used for errors
@@ -128,7 +131,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src);
  * SP_ARRAY_LIST_INVALID_ARGUMENT - if src == NULL or the index is out of bound
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-void gameSpArrayListAdd(SPArrayList* src, position elem);
+void gameSpArrayListAdd(SPArrayList* src, action elem);
 
 /**
  * Inserts element at a specified index. The elements residing at and after the
@@ -144,7 +147,7 @@ void gameSpArrayListAdd(SPArrayList* src, position elem);
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, position elem, int index);
+SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, action elem, int index);
 
 /**
  * Inserts element at a the beginning of the source element. The elements
@@ -158,7 +161,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, position elem, int inde
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
- SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, position elem);
+ SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, action elem);
 
 /**
  * Inserts element at a the end of the source element. If the array list
@@ -171,7 +174,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, position elem, int inde
  * SP_ARRAY_LIST_FULL - if the source array list reached its maximum capacity
  * SP_ARRAY_LIST_SUCCESS - otherwise
  */
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, position elem);
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, action elem);
 
 /**
  * Removes an element from a specified index. The elements residing after the
@@ -226,7 +229,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src);
  * Undefined value if either src == NULL or index out of bound.
  * Otherwise, the element at the specified index is returned.
  */
-position spArrayListGetAt(SPArrayList* src, int index);
+action spArrayListGetAt(SPArrayList* src, int index);
 
 /**
  * Returns the element at the beginning of the list. The function is called
@@ -237,7 +240,8 @@ position spArrayListGetAt(SPArrayList* src, int index);
  * Undefined value if either src == NULL or the list is empty
  * Otherwise, the element at the beginning of the list is returned.
  */
-position spArrayListGetFirst(SPArrayList* src);
+
+action spArrayListGetFirst(SPArrayList* src);
 
 /**
  * Returns the element at the end of the list. The function is called
@@ -248,7 +252,7 @@ position spArrayListGetFirst(SPArrayList* src);
  * Undefined value if either src == NULL or the list is empty
  * Otherwise, the element at the end of the list is returned.
  */
-position spArrayListGetLast(SPArrayList* src);
+action spArrayListGetLast(SPArrayList* src);
 
 /**
  * Returns the maximum capacity of the list. The function is called

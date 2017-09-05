@@ -9,7 +9,7 @@
 
 
 
-void gameSpArrayListAdd(SPArrayList* src, position elem){
+void gameSpArrayListAdd(SPArrayList* src, action elem){
     SP_ARRAY_LIST_MESSAGE message1 = spArrayListAddLast(src, elem);
     if (message1 == SP_ARRAY_LIST_FULL){
         spArrayListRemoveFirst(src);
@@ -26,7 +26,7 @@ SPArrayList* spArrayListCreate(int maxSize){
     }
     SPArrayList *recentMoves = (SPArrayList *) malloc(sizeof(SPArrayList));
     if(recentMoves != NULL) {
-        recentMoves->elements = (position*)calloc(maxSize, sizeof(position));
+        recentMoves->elements = (action*)calloc(maxSize, sizeof(action));
         if (recentMoves->elements != NULL) {
             recentMoves->actualSize = 0;
             recentMoves->maxSize = maxSize;
@@ -47,7 +47,7 @@ SPArrayList* spArrayListCopy(SPArrayList* src){
         if (newCopy!=NULL) {
             newCopy->actualSize = src->actualSize;
             newCopy->maxSize = src->maxSize;
-            newCopy->elements = (position*)calloc((src->maxSize), sizeof(position));
+            newCopy->elements = (action*)calloc((src->maxSize), sizeof(action));
             if (newCopy->elements != NULL) {
                 for (int i = 0; i < src->actualSize; i++) {
                     newCopy->elements[i] = src->elements[i];
@@ -78,7 +78,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src){
     return  SP_ARRAY_LIST_SUCCESS;
 }
 
-SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, position elem, int index){
+SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, action elem, int index){
     if ((src == NULL) || (index > src->actualSize) || (index < 0)){
         return SP_ARRAY_LIST_INVALID_ARGUMENT;
     }
@@ -93,12 +93,12 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, position elem, int inde
     return SP_ARRAY_LIST_SUCCESS;
 }
 
-SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, position elem){
+SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, action elem){
     return spArrayListAddAt(src, elem, 0);
 }
 
 
-SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, position elem){
+SP_ARRAY_LIST_MESSAGE spArrayListAddLast(SPArrayList* src, action elem){
     return spArrayListAddAt(src, elem, src->actualSize);
 }
 
@@ -127,19 +127,24 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
     return  spArrayListRemoveAt(src, src->actualSize-1);
 }
 
-position spArrayListGetAt(SPArrayList* src, int index){
+action spArrayListGetAt(SPArrayList* src, int index){
     if ((src == NULL) || (index >= src->actualSize)){
-        return -1;
+        action emptyRes;
+        emptyRes.column = 'Z';
+        emptyRes.prevColumn = 'Z';
+        emptyRes.row = 9;
+        emptyRes.prevRow = 9;
+        return emptyRes;
     }
     return (src->elements[index]);
 }
 
 
-position spArrayListGetFirst(SPArrayList* src){
+action spArrayListGetFirst(SPArrayList* src){
     return spArrayListGetAt(src, 0);
 }
 
-position spArrayListGetLast(SPArrayList* src){
+action spArrayListGetLast(SPArrayList* src){
     return spArrayListGetAt(src, src->actualSize-1);
 }
 

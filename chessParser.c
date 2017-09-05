@@ -23,10 +23,10 @@ SPCommand setGameModeCmd (char* mode) {
     SPCommand command;
     command.cmd = GAME_MODE;
     if (!strcmp(mode, "1")) {
-        command.args = 1;
+        command.arg = 1;
 //        printf("Game mode is set to 1 players\n"); TODO
-    } else if (!strcmp(nextToken, "2")) {
-        command.args = 2;
+    } else if (!strcmp(mode, "2")) {
+        command.arg = 2;
 //        printf("Game mode is set to 2 players\n"); TODO
     } else {
         command.cmd = INVALID;
@@ -63,7 +63,7 @@ SPCommand setColorCmd(char* color){
     command.cmd = USER_COLOR;
     if (!strcmp(color, "0")) {
         command.arg = 0;
-    } else if (!strcmp(nextToken, "1")) {
+    } else if (!strcmp(color, "1")) {
         command.arg = 1;
     } else {
         command.cmd = INVALID;
@@ -103,31 +103,30 @@ SPCommand getMoveCmd(char* source){
 SPCommand spParserParseLine(const char* str) {
     char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     SPCommand command;
+    command.cmd = INVALID;
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
+        char *nextToken = strtok(NULL, " \t\r\n");
         if (!strcmp(firstToken, "game_mode")) {
-            char *nextToken = strtok(NULL, " \t\r\n");
             return setGameModeCmd(nextToken);
         } else if (!strcmp(firstToken, "difficulty")) {
-            char *nextToken = strtok(NULL, " \t\r\n");
             return setDifficultyCmd(nextToken);
         } else if (!strcmp(firstToken, "user_color")) {
-            char *nextToken = strtok(NULL, " \t\r\n");
             return setColorCmd(nextToken);
         } else if (!strcmp(firstToken, "move")){
-            char *secToken = strtok(NULL, " \t\r\n");
             char *thirdToken = strtok(NULL, " \t\r\n");
             char *forthToken = strtok(NULL, " \t\r\n");
             if (!strcmp(thirdToken, "to")){
-                return setMoveCmd (secToken, forthToken);
+                return setMoveCmd (nextToken, forthToken);
             }
         } else if (!strcmp(firstToken, "get_moves")){
-            char *nextToken = strtok(NULL, " \t\r\n");
             return getMoveCmd(nextToken);
         } else if (!strcmp(firstToken, "load")) {
-            command.path = strtok(NULL, " \t\r\n");
+            strcpy(command.path, nextToken);
             command.cmd = LOAD;
+        } else if (nextToken != NULL) {
+            printf("Invalid command\n");
         } else if (!strcmp(firstToken, "default")) {
             command.cmd = DEFAULT_GAME;
         } else if (!strcmp(firstToken, "print_setting")) {
@@ -142,9 +141,9 @@ SPCommand spParserParseLine(const char* str) {
             command.cmd = UNDO;
         } else if (!strcmp(firstToken, "reset")) {
             command.cmd = RESET;
-        } else{
-            command.cmd = INVALID;
-            printf("Invalid command");
+        }
+        else{
+            printf("Invalid command\n");
         }
         free(strCopy);
         return command;

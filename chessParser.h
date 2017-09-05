@@ -10,7 +10,7 @@
 //specify the maximum line length
 #define SP_MAX_LINE_LENGTH 1024
 //converting char to int
-#define toInt(a) (a - 65)
+#define toInt(a) (a - 48)
 
 
 //a type used to represent a command
