@@ -3,7 +3,7 @@
 //
 
 
-#include "SPFIARGame.h"
+#include "SPChessGame.h"
 
 
 SPFiarGame* spFiarGameCreate(int historySize) {
@@ -127,27 +127,23 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 }
 
 
-SP_FIAR_GAME_MESSAGE spFiarGamePrintBoard(SPFiarGame* src){
-    if (!src){
+SP_CHESS_GAME_MESSAGE spFiarGamePrintBoard(SPChessGame* src){
+    if(!src){
         return SP_FIAR_GAME_INVALID_ARGUMENT;
     }
-    for (int i = SP_FIAR_GAME_N_ROWS-1; i >= 0 ; i--){
-        printf("| ");
-        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++){
-            printf("%c ", src->gameBoard[i][j]);
+    for(int i=GAMESIZE;i>0;i--){
+        printf("%d| ",i);
+        for(int j=0;j<GAMESIZE; j++){
+            printf("%c ",src->gameBoard[i-1][j]);
         }
         printf("|\n");
     }
-    for (int i = 0; i < 3+SP_FIAR_GAME_N_COLUMNS*2; i++){
-        printf("-");
-    }
-    printf("\n");
+    printf("  -----------------\n");
     printf("  ");
-    for (int i = 1; i <= SP_FIAR_GAME_N_COLUMNS; i++){
-        printf("%d ", i);
+    for(int i=0;i<GAMESIZE; i++){
+        printf(" %c",(i+65));
     }
     printf("\n");
-    return SP_FIAR_GAME_SUCCESS;
 }
 
 char spFiarCheckWinner(SPFiarGame* src) {
