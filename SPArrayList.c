@@ -127,7 +127,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
     return  spArrayListRemoveAt(src, src->actualSize-1);
 }
 
-int spArrayListGetAt(SPArrayList* src, int index){
+position spArrayListGetAt(SPArrayList* src, int index){
     if ((src == NULL) || (index >= src->actualSize)){
         return -1;
     }
@@ -135,11 +135,11 @@ int spArrayListGetAt(SPArrayList* src, int index){
 }
 
 
-int spArrayListGetFirst(SPArrayList* src){
+position spArrayListGetFirst(SPArrayList* src){
     return spArrayListGetAt(src, 0);
 }
 
-int spArrayListGetLast(SPArrayList* src){
+position spArrayListGetLast(SPArrayList* src){
     return spArrayListGetAt(src, src->actualSize-1);
 }
 

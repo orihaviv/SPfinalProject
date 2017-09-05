@@ -47,7 +47,7 @@
  * spArrayListIsEmpty      - Returns true if the array list contains no elements.
  */
 typedef struct sp_array_list_t {
-	int* elements;
+	position* elements;
 	int actualSize;
 	int maxSize;
 } SPArrayList;
@@ -226,7 +226,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src);
  * Undefined value if either src == NULL or index out of bound.
  * Otherwise, the element at the specified index is returned.
  */
-int spArrayListGetAt(SPArrayList* src, int index);
+position spArrayListGetAt(SPArrayList* src, int index);
 
 /**
  * Returns the element at the beginning of the list. The function is called
@@ -237,7 +237,7 @@ int spArrayListGetAt(SPArrayList* src, int index);
  * Undefined value if either src == NULL or the list is empty
  * Otherwise, the element at the beginning of the list is returned.
  */
-int spArrayListGetFirst(SPArrayList* src);
+position spArrayListGetFirst(SPArrayList* src);
 
 /**
  * Returns the element at the end of the list. The function is called
@@ -248,7 +248,7 @@ int spArrayListGetFirst(SPArrayList* src);
  * Undefined value if either src == NULL or the list is empty
  * Otherwise, the element at the end of the list is returned.
  */
-int spArrayListGetLast(SPArrayList* src);
+position spArrayListGetLast(SPArrayList* src);
 
 /**
  * Returns the maximum capacity of the list. The function is called
