@@ -66,11 +66,11 @@ void testerForParser() {
     if (cmd.cmd != INVALID) { printf("Error 20\n"); }
 
     cmd = spParserParseLine("move <8,A> to <5,C>");
-    if (cmd.cmd != MOVE || cmd.source.row != 8 || cmd.destination.row != 5
+    if (cmd.cmd != MOVE || cmd.source.row != 7 || cmd.destination.row != 7
         || cmd.source.column != 0 || cmd.destination.column != 2) { printf("Error 21\n"); }
 
     cmd = spParserParseLine("move <5,H> to <5,A>");
-    if (cmd.cmd != MOVE || cmd.source.row != 5 || cmd.destination.row != 5
+    if (cmd.cmd != MOVE || cmd.source.row != 4 || cmd.destination.row != 4
         || cmd.source.column != 7 || cmd.destination.column != 0) { printf("Error 22\n"); }
 
     cmd = spParserParseLine("reset 1");
