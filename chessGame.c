@@ -26,25 +26,26 @@ SPChessGame* chessGameCreate() {
                     else{game->gameBoard[i][j] = BLANK;}
                 }
             }
-            game->gameBoard[0][0] = BISHOPWHITE;
+            game->gameBoard[0][0] = ROOKWHITE;
             game->gameBoard[0][1] = KNIGHTWHITE;
-            game->gameBoard[0][2] = ROOKWHITE;
+            game->gameBoard[0][2] = BISHOPWHITE;
             game->gameBoard[0][3] = QUEENWHITE;
             game->gameBoard[0][4] = KINGWHITE;
-            game->gameBoard[0][4] = ROOKWHITE;
-            game->gameBoard[0][5] = KNIGHTWHITE;
-            game->gameBoard[0][7] = BISHOPWHITE;
-            game->gameBoard[7][0] = BISHOPBLACK;
+            game->gameBoard[0][5] = BISHOPWHITE;
+            game->gameBoard[0][6] = KNIGHTWHITE;
+            game->gameBoard[0][7] = ROOKWHITE;
+            game->gameBoard[7][0] = ROOKBLACK;
             game->gameBoard[7][1] = KNIGHTBLACK;
-            game->gameBoard[7][2] = ROOKBLACK;
+            game->gameBoard[7][2] = BISHOPBLACK;
             game->gameBoard[7][3] = QUEENBLACK;
             game->gameBoard[7][4] = KINGBLACK;
-            game->gameBoard[7][5] = ROOKBLACK;
+            game->gameBoard[7][5] = BISHOPBLACK;
             game->gameBoard[7][6] = KNIGHTBLACK;
-            game->gameBoard[7][7] = BISHOPBLACK;
+            game->gameBoard[7][7] = ROOKBLACK;
+            printf("Specify game setting or type 'start' to begin a game with the current setting:\\n");
             return game;
         }
-            chessGameDestroy(game);
+        chessGameDestroy(game);
     } else {
         printf("Error: game create malloc has failed");
     }
@@ -104,7 +105,6 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
         printf("|\n");
     }
     printf("  -----------------\n");
-    printf("   A B C D E F G H\n");
     printf("  ");
     for(int i=0;i<GAMESIZE; i++){
         printf(" %c",(i+65));
@@ -115,3 +115,10 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
 int spChessGameGetCurrentPlayer(SPChessGame* src){
     return src->currentPlayer;
 }
+
+//void changeToSetting(SPChessGame* src){
+//    src->state = 0;
+//    printf("Specify game setting or type 'start' to begin a game with the current setting:\\n");
+//}
+
+

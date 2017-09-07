@@ -214,5 +214,10 @@ int spChessGameGetCurrentPlayer(SPChessGame* src);
 
 
 
+///**
+//* Switching the game's state to setting the specified game.
+//* @param src - the source game
+//*/
+//void changeToSetting(SPChessGame* src);
 
 #endif //SPFINAL_CHESSGAME_H
