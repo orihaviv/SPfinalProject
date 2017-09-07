@@ -78,10 +78,10 @@ SPCommand setMoveCmd(char* source, char* dest){
     if (source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
         if (source[1] > '0' && source[1] < '9' && dest[1] > '0' && dest[1] < '9'
             && source[3] >= 'A' && source[3] <= 'H' && dest[3] >= 'A' && dest[3] <= 'H'){
-            command.source.column = source[3];
-            command.source.row = toInt(source[1]);
-            command.destination.column = dest[3];
-            command.destination.row = toInt(dest[1]);
+            command.source.column = colToInt(source[3]);
+            command.source.row = rowToInt(source[1]);
+            command.destination.column = colToInt(dest[3]);
+            command.destination.row = rowToInt(dest[1]);
             command.cmd = MOVE;
         }
     }
@@ -93,8 +93,8 @@ SPCommand getMoveCmd(char* source){
     command.cmd = INVALID;
     if (source[0] == '<' && source[2] == ',' && source[4] == '>' && source[1] > '0' && source[1] < '9' && source[3] >= 'A' && source[3] <= 'H'){
         command.cmd = GET_MOVES;
-        command.source.column = source[3];
-        command.source.row = toInt(source[3]);
+        command.source.column = colToInt(source[3]);
+        command.source.row = rowToInt(source[3]);
     }
     return command;
 }
@@ -146,6 +146,6 @@ SPCommand spParserParseLine(const char* str) {
             printf("Invalid command\n");
         }
         free(strCopy);
-        return command;
     }
+    return command;
 }

@@ -130,10 +130,10 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
 action spArrayListGetAt(SPArrayList* src, int index){
     if ((src == NULL) || (index >= src->actualSize)){
         action emptyRes;
-        emptyRes.column = 'Z';
-        emptyRes.prevColumn = 'Z';
-        emptyRes.row = 9;
-        emptyRes.prevRow = 9;
+        emptyRes.current.column = 9;
+        emptyRes.prev.column = 9;
+        emptyRes.prev.row = 9;
+        emptyRes.current.row = 9;
         return emptyRes;
     }
     return (src->elements[index]);

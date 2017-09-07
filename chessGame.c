@@ -55,7 +55,7 @@ SPChessGame* chessGameCreate() {
 
 
 
-SPChessGame* spFiarGameCopy(SPChessGame* src){
+SPChessGame* chessGameCopy(SPChessGame* src){
     if (src != NULL) {
         SPChessGame *game = (SPChessGame *) malloc(sizeof(SPChessGame));
         if (game != NULL) {
@@ -93,7 +93,7 @@ void chessGameDestroy(SPChessGame* src){
 }
 
 
-SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
+SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame* src){
     if(!src){
         return SP_FIAR_GAME_INVALID_ARGUMENT;
     }
@@ -112,7 +112,7 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
     printf("\n");
 }
 
-int spChessGameGetCurrentPlayer(SPChessGame* src){
+int chessGameGetCurrentPlayer(SPChessGame* src){
     return src->currentPlayer;
 }
 

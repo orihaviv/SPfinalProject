@@ -5,16 +5,15 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
+#include "chessParser.h"
 
 
 /**
  * The elements in the arraylist will be position for this game
  */
 typedef struct positions_on_board {
-	int prevRow;
-	int row;
-	char prevColumn;
-	char column;
+    position prev;
+    position current;
 } action;
 
 /**

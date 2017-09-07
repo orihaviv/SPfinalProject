@@ -32,6 +32,10 @@
 #define KINGWHITE 'k'
 #define KINGBLACK 'K'
 
+#define toColChar(a) a+65
+#define toRowNum(a) a-1
+
+
 
 
 /**
@@ -89,8 +93,6 @@ typedef enum sp_fiar_game_message_t {
 SPChessGame* spFiarGameCreate();
 
 
-
-
 /**
  *	Creates a copy of a given game.
  *	The new copy has the same status as the src game.
@@ -111,6 +113,29 @@ SPChessGame* spChessGameCopy(SPChessGame* src);
  */
 void chessGameDestroy(SPChessGame* src);
 
+
+/**
+ * Checks if the king is under threat(Check)
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return true if the king is threatened
+ * false otherwise
+ */
+
+bool isTheKingThreatened(SPChessGame* src, int color){
+    position king;
+    char kingChar = 'K';
+    if (color == 1){kingChar = 'k';}
+    for (int i = 0; i < GAMESIZE; i++){
+        for (int j = 0; j < GAMESIZE; j++){
+            if (src->gameBoard[i][j] == kingChar){
+                king.row = i+1;
+                king.column = (char)j+65;
+            }
+        }
+    }
+}
 
 
 ///**
@@ -184,7 +209,6 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src);
  * 0 - if it's the turn of the black player
  */
 int spChessGameGetCurrentPlayer(SPChessGame* src);
-
 
 
 

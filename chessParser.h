@@ -10,7 +10,8 @@
 //specify the maximum line length
 #define SP_MAX_LINE_LENGTH 1024
 //converting char to int
-#define toInt(a) (a - 48)
+#define rowToInt(a) (a - 48)
+#define colToInt(a) (a - 65)
 
 
 //a type used to represent a command
@@ -33,7 +34,7 @@ typedef enum {
 
 typedef struct position_on_board {
 	int row;
-	char column;
+	int column;
 } position;
 
 
