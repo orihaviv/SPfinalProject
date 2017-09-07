@@ -36,8 +36,6 @@
 #define toRowNum(a) a-1
 
 
-
-
 /**
  * chessGame Summary:
  *
@@ -56,16 +54,15 @@
  */
 
 
-typedef struct sp_chess_game{
+typedef struct sp_chess_game {
     char gameBoard[GAMESIZE][GAMESIZE];
     int gameMode; // 1 = 1 player, 2 = 2 players
     int currentPlayer;
     int difficulty;
-    SPArrayList* lastMoves;
+    SPArrayList *lastMoves;
     int userColor; // 0 = black, 1 = white
     int state; // settings = 0, game = 1
 } SPChessGame;
-
 
 
 /**
@@ -90,7 +87,7 @@ typedef enum sp_fiar_game_message_t {
  * NULL if either a memory allocation failure occurs or historySize <= 0.
  * Otherwise, a new game instant is returned.
  */
-SPChessGame* spFiarGameCreate();
+SPChessGame *chessGameCreate();
 
 
 /**
@@ -103,7 +100,7 @@ SPChessGame* spFiarGameCreate();
  *	Otherwise, an new copy of the source game is returned.
  *
  */
-SPChessGame* spChessGameCopy(SPChessGame* src);
+SPChessGame *chessGameCopy(SPChessGame *src);
 
 /**
  * Frees all memory allocation associated with a given game. If src==NULL
@@ -111,7 +108,92 @@ SPChessGame* spChessGameCopy(SPChessGame* src);
  *
  * @param src - the source game
  */
-void chessGameDestroy(SPChessGame* src);
+void chessGameDestroy(SPChessGame *src);
+
+
+/**
+ * Returns the soldier in the given position on board
+ * @param src - the source game
+ * @paran pos - the position
+ *
+ * @return the char of the soldier on the board
+ * \0 if illegal position
+ */
+
+char whosThere (SPChessGame* src, int row, int col);
+
+/**
+ * returns the relevant king's position
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return king's position
+ */
+
+position getKingPosition(SPChessGame *src, int color);
+
+/**
+ * Checks if the king is under threat(Check) by a rival's pawn
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return true if the king is threatened by a pawn
+ * false otherwise
+ */
+
+bool pawnsThreatKing(SPChessGame *src, int color, position kingPos);
+
+/**
+ * Checks if the king is under threat(Check) by a rival's knight
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return true if the king is threatened by a knight
+ * false otherwise
+ */
+
+bool knightsThreatKing(SPChessGame *src, int color, position kingPos);
+
+/**
+ * Checks if the king is under threat(Check) by a rival's king
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return true if the king is threatened by a king
+ * false otherwise
+ */
+
+bool kingThreatensKing(SPChessGame *src, int color, position kingPos);
+
+
+
+/**
+ * Checks if there is a threat, in the determined lane, by a rival's Queen, Rook or Bishop
+ * @param src - the source game
+ * @param x - steps in x axis
+ * @param y - steps in y axis
+ * @param kingPos - king's position
+ * @param queen - rival's queen
+ * @param other - rival's bishop or rook, depends on the lane
+ *
+ * @return true if the king is threatened by a Queen, Rook or Bishop in the specified lane
+ * false otherwise
+ */
+
+
+bool checkLane(SPChessGame *src, int x, int y, position kingPos, char queen, char other);
+
+
+/**
+ * Checks if the king is under threat(Check) by a rival's Queen, Rook or Bishop
+ * @param src - the source game
+ * @param color - which king do we check
+ *
+ * @return true if the king is threatened by a Queen, Rook or Bishop
+ * false otherwise
+ */
+
+bool QRBThreatensKing(SPChessGame *src, int color, position kingPos);
 
 
 /**
@@ -123,19 +205,9 @@ void chessGameDestroy(SPChessGame* src);
  * false otherwise
  */
 
-bool isTheKingThreatened(SPChessGame* src, int color){
-    position king;
-    char kingChar = 'K';
-    if (color == 1){kingChar = 'k';}
-    for (int i = 0; i < GAMESIZE; i++){
-        for (int j = 0; j < GAMESIZE; j++){
-            if (src->gameBoard[i][j] == kingChar){
-                king.row = i+1;
-                king.column = (char)j+65;
-            }
-        }
-    }
-}
+bool isTheKingThreatened(SPChessGame *src, int color);
+
+
 
 
 ///**
@@ -197,8 +269,7 @@ bool isTheKingThreatened(SPChessGame* src, int color){
  * SP_FIAR_GAME_SUCCESS - otherwise
  *
  */
-SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src);
-
+SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src);
 
 
 /**
@@ -208,7 +279,7 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src);
  * 1 - if it's the turn of the white player
  * 0 - if it's the turn of the black player
  */
-int spChessGameGetCurrentPlayer(SPChessGame* src);
+int chessGameGetCurrentPlayer(SPChessGame *src);
 
 
 
