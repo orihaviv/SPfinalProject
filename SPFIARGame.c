@@ -133,7 +133,7 @@ SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
     }
     for(int i=GAMESIZE;i>0;i--){
         printf("%d| ",i);
-        for(int j=0;j<GAMESIZE; j++){
+        for(int j=0 ; j < GAMESIZE ; j++){
             printf("%c ",src->gameBoard[i-1][j]);
         }
         printf("|\n");
