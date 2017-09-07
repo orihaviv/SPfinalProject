@@ -127,7 +127,7 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 }
 
 
-SP_CHESS_GAME_MESSAGE spFiarGamePrintBoard(SPChessGame* src){
+SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
     if(!src){
         return SP_FIAR_GAME_INVALID_ARGUMENT;
     }
