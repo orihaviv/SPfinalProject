@@ -2,7 +2,10 @@
 // Created by אורי חביב on 05/09/2017.
 //
 
+#include <ctype.h>
 #include "chessGame.h"
+
+
 
 
 SPChessGame *chessGameCreate() {
@@ -51,6 +54,12 @@ SPChessGame *chessGameCreate() {
 }
 
 
+
+
+
+
+
+
 SPChessGame *chessGameCopy(SPChessGame *src) {
     if (src != NULL) {
         SPChessGame *game = (SPChessGame *) malloc(sizeof(SPChessGame));
@@ -78,6 +87,10 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
 }
 
 
+
+
+
+
 void chessGameDestroy(SPChessGame *src) {
     if (src == NULL) {
         return;
@@ -88,12 +101,20 @@ void chessGameDestroy(SPChessGame *src) {
 }
 
 
+
+
+
+
 char whosThere(SPChessGame *src, int row, int col) {
     if (col < 0 || col > 7 || row < 0 || row > 7) {
         return '\0';
     }
     return src->gameBoard[row][col];
 }
+
+
+
+
 
 
 position getKingPosition(SPChessGame *src, int color) {
@@ -116,6 +137,9 @@ position getKingPosition(SPChessGame *src, int color) {
 }
 
 
+
+
+
 bool pawnsThreatKing(SPChessGame *src, int color, position kingPos) {
     char pawn = PAWNBLACK;
     if (color == 0) {  // king is black
@@ -132,6 +156,10 @@ bool pawnsThreatKing(SPChessGame *src, int color, position kingPos) {
     }
     return false;
 }
+
+
+
+
 
 
 bool knightsThreatKing(SPChessGame *src, int color, position kingPos) {
@@ -153,6 +181,10 @@ bool knightsThreatKing(SPChessGame *src, int color, position kingPos) {
 }
 
 
+
+
+
+
 bool kingThreatensKing(SPChessGame *src, int color, position kingPos) {
     char opKing = KINGBLACK;   //our king is white
     if (color == 0) {           // our king is black
@@ -168,6 +200,11 @@ bool kingThreatensKing(SPChessGame *src, int color, position kingPos) {
     return false;
 }
 
+
+
+
+
+
 bool checkLane(SPChessGame *src, int x, int y, position kingPos, char queen, char other){
     int row = kingPos.row;
     int col = kingPos.column;
@@ -181,6 +218,9 @@ bool checkLane(SPChessGame *src, int x, int y, position kingPos, char queen, cha
     }
     return false;
 }
+
+
+
 
 
 bool QRBThreatensKing(SPChessGame *src, int color, position kingPos) {
@@ -204,6 +244,8 @@ bool QRBThreatensKing(SPChessGame *src, int color, position kingPos) {
 }
 
 
+
+
 bool isTheKingThreatened(SPChessGame *src, int color) {
     position king = getKingPosition(src, color);
     if (pawnsThreatKing(src, color, king) || knightsThreatKing(src, color, king)
@@ -214,9 +256,181 @@ bool isTheKingThreatened(SPChessGame *src, int color) {
 }
 
 
+bool isMoveSafeForKing(SPChessGame* src, position origin , position dest){
+    char tmp = src->gameBoard[dest.row][dest.column];
+    src->gameBoard[dest.row][dest.column] = src->gameBoard[origin.row][origin.column];
+    src->gameBoard[origin.row][origin.column] = BLANK;
+    bool result = isTheKingThreatened(src, src->currentPlayer);
+    src->gameBoard[origin.row][origin.column] = src->gameBoard[dest.row][dest.column];
+    src->gameBoard[dest.row][dest.column] = tmp;
+    return result;
+}
+
+
+
+
+bool posOnBoard (position pos){
+    if (pos.column > GAMESIZE-1 || pos.column < 0 || pos.row < 0 ||  pos.row > GAMESIZE-1){return false;}
+    return true;
+}
+
+bool isBlack(char soldier){
+    if (soldier > 64 && soldier < 91){ return true;}
+    return false;
+}
+
+bool isWhite(char soldier){
+    if (soldier > 96 && soldier < 123){ return true;}
+    return false;
+}
+
+bool pawnValidMove(SPChessGame* src, position origin , position dest){
+    int direction;
+    src->currentPlayer == 1 ? direction = 1 : direction = -1;
+    if (origin.column == dest.column && dest.row == (origin.row + direction) && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
+    if (origin.column == dest.column && direction == 1 && origin.row == 1 && dest.row == (origin.row + 2*direction)
+        && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
+    if (origin.column == dest.column && direction == -1 && origin.row == 6 && dest.row == (origin.row + 2*direction)
+        && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
+    if (direction == 1){
+        if ((origin.column == dest.column-1 || origin.column == dest.column+1)
+            && dest.row == (origin.row + direction) && isBlack(src->gameBoard[dest.row][dest.column])){ return true;}
+    }
+    else{
+        if ((origin.column == dest.column-1 || origin.column == dest.column+1)
+            && dest.row == (origin.row + direction) && isWhite(src->gameBoard[dest.row][dest.column])){ return true;}
+    }
+    return false;
+}
+
+
+bool knightValidMove(SPChessGame* src, position origin , position dest){
+    if (!((abs(origin.row - dest.row) == 2 && abs(origin.column - dest.column) == 1)
+        || (abs(origin.row - dest.row) == 1 && abs(origin.column - dest.column) == 2))){
+        return false;
+    }
+    return true;
+}
+
+bool kingValidMove(SPChessGame* src, position origin , position dest){
+    if (abs(dest.column - origin.column) > 1 || abs(dest.row - origin.row) > 1){
+        return false;
+    }
+    return true;
+}
+
+
+bool rookValidMove(SPChessGame* src, position origin , position dest){
+    int low;
+    int high;
+    if (origin.column == dest.column){
+        low = mini(origin.row , dest.row);
+        high = maxi(origin.row , dest.row);
+        for (int i = low+1; i < high; i++){
+            if (src->gameBoard[i][dest.column] != BLANK){return false;}
+        }
+    }
+    else if (origin.row == dest.row){
+        low = mini(origin.column , dest.column);
+        high = maxi(origin.column , dest.column);
+        for (int i = low+1; i < high; i++){
+            if (src->gameBoard[dest.row][i] != BLANK){return false;}
+        }
+    }
+    else{
+        return false;
+    }
+    return true;
+}
+
+bool bishopValidMove(SPChessGame* src, position origin , position dest) {
+    if (abs(dest.column - origin.column) != abs(dest.row - origin.row)) { return false; }
+    int dx, dy;
+    dest.column > origin.column ? dx = 1 : dx = -1;
+    dest.row > origin.row ? dy = 1 : dy = -1;
+    int row = origin.row + dy, col = origin.column + dx;
+    while (row != dest.row){
+        if (src->gameBoard[row][col] != BLANK){ return false;}
+        row += dy;
+        col += dx;
+    }
+    return true;
+}
+
+bool queenValidMove(SPChessGame* src, position origin , position dest){
+    return  (rookValidMove(src, origin, dest) || (bishopValidMove(src, origin, dest)));
+}
+
+
+bool isValidMove(SPChessGame* src, position origin , position dest){
+    if ((!src) || !posOnBoard(origin) || !posOnBoard(dest) || (origin.row == dest.row && origin.column == dest.column)) { return false; }
+    if (src->currentPlayer == 1 && (isWhite(src->gameBoard[dest.row][dest.column]) || isBlack(src->gameBoard[origin.row][origin.column]))) { return false;}
+    if (src->currentPlayer == 0 && (isBlack(src->gameBoard[dest.row][dest.column]) || isWhite(src->gameBoard[origin.row][origin.column]))) { return false;}
+    if (src->gameBoard[origin.row][origin.column] == BLANK) { return false; }
+    char soldier = (src->gameBoard[origin.row][origin.column]);
+    bool flag = true;
+    if (soldier == PAWNWHITE || soldier == PAWNBLACK){ flag = pawnValidMove(src, origin, dest);}
+    else if (soldier == KNIGHTBLACK || soldier == KNIGHTWHITE) { flag = knightValidMove(src, origin, dest);}
+    else if (soldier == KINGBLACK || soldier == KINGWHITE) { flag = kingValidMove(src, origin, dest);}
+    else if (soldier == ROOKBLACK || soldier == ROOKWHITE) { flag = rookValidMove(src, origin, dest);}
+    else if (soldier == BISHOPBLACK || soldier == BISHOPWHITE) { flag = bishopValidMove(src, origin, dest);}
+    else if (soldier == QUEENBLACK || soldier == QUEENWHITE) { flag = queenValidMove(src, origin, dest);}
+    if (flag && isMoveSafeForKing(src, origin, dest)){
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest){
+        if ((!src) || !posOnBoard(origin) || !posOnBoard(dest)){
+            return SP_CHESS_GAME_INVALID_ARGUMENT;
+        }
+        if (!isValidMove(src,origin,dest)) {
+            return SP_CHESS_GAME_INVALID_MOVE;
+        }
+        int currPlayer = src->currentPlayer;
+        src->gameBoard[dest.row][dest.column] = src->gameBoard[origin.row][origin.column];
+        src->gameBoard[origin.row][origin.column] = BLANK;
+        action move;
+        move.current = dest;
+        move.prev = origin;
+        spArrayListAddFirst(src->lastMoves , move);
+        src->currentPlayer = 1 - src->currentPlayer;
+        return SP_CHESS_GAME_SUCCESS;
+    }
+
+//    bool spFiarGameIsValidMove(SPFiarGame* src, int col){
+//        if ((!src) || (col < 0) || (col > 6) || (src->tops[col] == SP_FIAR_GAME_N_ROWS)) {
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    void spFiarGameDeleteMove(SPFiarGame* src){
+//        int col;
+//        col = spArrayListGetLast(src->lastMoves);
+//        if(spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL){
+//            printf("Remove disc: remove computer's disc at column %d\n", col+1);
+//            src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+//        }
+//        else {
+//            printf("Remove disc: remove users's disc at column %d\n", col+1);
+//            src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+//        }
+//        src->gameBoard[src->tops[col]-1][col] = SP_FIAR_GAME_EMPTY_ENTRY;
+//        spArrayListRemoveLast(src->lastMoves);
+//        src->tops[col]--;
+//        return;
+//    }
+
+
 SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
     if (!src) {
-        return SP_FIAR_GAME_INVALID_ARGUMENT;
+        return SP_CHESS_GAME_INVALID_ARGUMENT;
     }
     for (int i = GAMESIZE; i > 0; i--) {
         printf("%d| ", i);
@@ -233,9 +447,17 @@ SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
     printf("\n");
 }
 
+
+
+
+
 int chessGameGetCurrentPlayer(SPChessGame *src) {
     return src->currentPlayer;
 }
+
+
+
+
 
 //void changeToSetting(SPChessGame* src){
 //    src->state = 0;

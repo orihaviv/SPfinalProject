@@ -33,7 +33,9 @@
 #define KINGBLACK 'K'
 
 #define toColChar(a) a+65
-#define toRowNum(a) a-1
+#define toRowNum(a) a+1
+#define maxi(a,b) (a > b ? a : b)
+#define mini(a,b) (a < b ? a : b)
 
 
 /**
@@ -69,10 +71,10 @@ typedef struct sp_chess_game {
  * Type used for returning error codes from game functions
  */
 typedef enum sp_fiar_game_message_t {
-    SP_FIAR_GAME_INVALID_MOVE,
-    SP_FIAR_GAME_INVALID_ARGUMENT,
-    SP_FIAR_GAME_NO_HISTORY,
-    SP_FIAR_GAME_SUCCESS,
+    SP_CHESS_GAME_INVALID_MOVE,
+    SP_CHESS_GAME_INVALID_ARGUMENT,
+    SP_CHESS_GAME_NO_HISTORY,
+    SP_CHESS_GAME_SUCCESS,
 } SP_CHESS_GAME_MESSAGE;
 
 /**
@@ -210,32 +212,79 @@ bool isTheKingThreatened(SPChessGame *src, int color);
 
 
 
-///**
-// * Sets the next move in a given game by specifying column index. The
-// * columns are 0-based and in the range [0,SP_FIAR_GAME_N_COLUMNS -1].
-// *
-// * @param src - The target game
-// * @param col - The target column, the columns are 0-based
-// * @return
-// * SP_FIAR_GAME_INVALID_ARGUMENT - if src is NULL or col is out-of-range
-// * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
-// * SP_FIAR_GAME_SUCCESS - otherwise
-// */
-//SP_FIAR_GAME_MESSAGE spFiarGameSetMove(SPFiarGame* src, int col);
+/**
+ * Simulate the next move and checks if the king is under threat(Check)
+ * @param src - the source game
+ * @param origin - the origin of the soldier
+ * @param dest - the destination of the soldier
+ *
+ * @return true if the king is threatened in case the move is done
+ * false otherwise
+ */
+
+bool isMoveSafeForKing(SPChessGame* src, position origin , position dest);
+
+
+/**
+* Checks if the position is on board
+* @param pos - the position we want to chack
+* @return true if it is on the board
+* false otherwise
+*/
+
+bool posOnBoard (position pos);
 
 
 
-///**
-// * Checks if a disk can be put in the specified column.
-// *
-// * @param src - The source game
-// * @param col - The specified column
-// * @return
-// * true  - if the a disc can be put in the target column
-// * false - otherwise.
-// */
-//bool spFiarGameIsValidMove(SPFiarGame* src, int col);
+/**
+* Checks if the soldier is black
+* @param soldier - the char of the soldier
+* @return true if it is black
+* false otherwise
+*/
+bool isBlack(char soldier);
 
+
+
+
+/**
+* Checks if the soldier is black
+* @param soldier - the char of the soldier
+* @return true if it is black
+* false otherwise
+*/
+
+bool isWhite(char soldier);
+
+
+
+
+
+/**
+* Checks if a soldier can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+bool isValidMove(SPChessGame* src, position origin , position dest);
+
+
+/**
+ * Sets the next move in a given game by specifying origin position and destination position.
+ *
+ * @param src - The target game
+ * @param col - The target column, the columns are 0-based
+ * @return
+ *
+ * SP_FIAR_GAME_INVALID_ARGUMENT - if src is NULL or col is out-of-range
+ * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
+ * SP_FIAR_GAME_SUCCESS - otherwise
+ */
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest);
 
 
 
@@ -300,11 +349,7 @@ int chessGameGetCurrentPlayer(SPChessGame *src);
 //char spFiarCheckWinner(SPFiarGame* src);
 //
 //
-///**
-//* Switching the turns of the players in the specified game.
-//* @param src - the source game
-//*/
-//void switchPlayer(SPFiarGame* src);
+
 
 
 
