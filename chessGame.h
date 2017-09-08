@@ -45,7 +45,7 @@
  *
  * Create           - Creates a new game board
  * GameCopy             - Copies a game board
- * GameDestroy          - Frees all memory resources associated with a game
+ * GameDestroy          - Frees all memory resources associated with a game //// TODO
  * GameSetMove          - Sets a move on a game board
  * GameIsValidMove      - Checks if a move is valid
  * GameUndoPrevMove     - Undoes previous move made by the last player
@@ -64,6 +64,8 @@ typedef struct sp_chess_game {
     SPArrayList *lastMoves;
     int userColor; // 0 = black, 1 = white
     int state; // settings = 0, game = 1
+    position whiteKing;
+    position blackKing;
 } SPChessGame;
 
 
@@ -135,37 +137,37 @@ char whosThere (SPChessGame* src, int row, int col);
 position getKingPosition(SPChessGame *src, int color);
 
 /**
- * Checks if the king is under threat(Check) by a rival's pawn
+ * Checks if the soldier is under threat(Check) by a rival's pawn
  * @param src - the source game
  * @param color - which king do we check
  *
- * @return true if the king is threatened by a pawn
+ * @return true if the soldier is threatened by a pawn
  * false otherwise
  */
 
-bool pawnsThreatKing(SPChessGame *src, int color, position kingPos);
+bool pawnsThreatKing(SPChessGame *src, int color, position soldier);
 
 /**
- * Checks if the king is under threat(Check) by a rival's knight
+ * Checks if the soldier is under threat(Check) by a rival's knight
  * @param src - the source game
  * @param color - which king do we check
  *
- * @return true if the king is threatened by a knight
+ * @return true if the soldier is threatened by a knight
  * false otherwise
  */
 
-bool knightsThreatKing(SPChessGame *src, int color, position kingPos);
+bool knightsThreatSoldier(SPChessGame *src, int color, position soldier);
 
 /**
- * Checks if the king is under threat(Check) by a rival's king
+ * Checks if the soldier is under threat(Check) by a rival's king
  * @param src - the source game
  * @param color - which king do we check
  *
- * @return true if the king is threatened by a king
+ * @return true if the soldier is threatened by a king
  * false otherwise
  */
 
-bool kingThreatensKing(SPChessGame *src, int color, position kingPos);
+bool kingThreatensSoldier(SPChessGame *src, int color, position soldier);
 
 
 
@@ -174,28 +176,28 @@ bool kingThreatensKing(SPChessGame *src, int color, position kingPos);
  * @param src - the source game
  * @param x - steps in x axis
  * @param y - steps in y axis
- * @param kingPos - king's position
+ * @param soldier - soldier's position
  * @param queen - rival's queen
  * @param other - rival's bishop or rook, depends on the lane
  *
- * @return true if the king is threatened by a Queen, Rook or Bishop in the specified lane
+ * @return true if the soldier is threatened by a Queen, Rook or Bishop in the specified lane
  * false otherwise
  */
 
 
-bool checkLane(SPChessGame *src, int x, int y, position kingPos, char queen, char other);
+bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, char other);
 
 
 /**
- * Checks if the king is under threat(Check) by a rival's Queen, Rook or Bishop
+ * Checks if the soldier is under threat(Check) by a rival's Queen, Rook or Bishop
  * @param src - the source game
- * @param color - which king do we check
+ * @param color - which soldier do we check
  *
- * @return true if the king is threatened by a Queen, Rook or Bishop
+ * @return true if the soldier is threatened by a Queen, Rook or Bishop
  * false otherwise
  */
 
-bool QRBThreatensKing(SPChessGame *src, int color, position kingPos);
+bool QRBThreatensSoldier(SPChessGame *src, int color, position soldier);
 
 
 /**
@@ -208,6 +210,18 @@ bool QRBThreatensKing(SPChessGame *src, int color, position kingPos);
  */
 
 bool isTheKingThreatened(SPChessGame *src, int color);
+
+
+/**
+ * Checks if the soldier is under threat(Check)
+ * @param src - the source game
+ * @param color - which soldier do we check
+ *
+ * @return true if the king is threatened
+ * false otherwise
+ */
+
+bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier);
 
 
 
@@ -257,6 +271,93 @@ bool isBlack(char soldier);
 bool isWhite(char soldier);
 
 
+/**
+* Checks if a pawn can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+bool pawnValidMove(SPChessGame* src, position origin , position dest);
+
+
+/**
+* Checks if a knight can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+
+bool knightValidMove(SPChessGame* src, position origin , position dest);
+
+
+
+/**
+* Checks if a king can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+
+
+bool kingValidMove(SPChessGame* src, position origin , position dest);
+
+
+/**
+* Checks if a rook can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+bool rookValidMove(SPChessGame* src, position origin , position dest);
+
+
+/**
+* Checks if a bishop can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+
+bool bishopValidMove(SPChessGame* src, position origin , position dest);
+
+/**
+* Checks if a queen can be moved from origin to destination.
+*
+* @param src - The source game
+* @param origin - The origin position of the soldier
+* @param dest - The destination position of the soldier
+* @return
+* true  - if the move is possible
+* false - otherwise.
+*/
+
+
+bool queenValidMove(SPChessGame* src, position origin , position dest);
 
 
 
