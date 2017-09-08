@@ -399,34 +399,46 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
         src->whiteKing.row = dest.row;
         src->whiteKing.column = dest.column;
     }
+    char captured = src->gameBoard[dest.row][dest.column];
     src->gameBoard[dest.row][dest.column] = soldier;
     src->gameBoard[origin.row][origin.column] = BLANK;
     action move;
     move.current = dest;
     move.prev = origin;
+    move.captured = captured;
     spArrayListAddFirst(src->lastMoves, move);
     src->currentPlayer = 1 - src->currentPlayer;
     return SP_CHESS_GAME_SUCCESS;
 }
 
 
-//
-//    void spFiarGameDeleteMove(SPFiarGame* src){
-//        int col;
-//        col = spArrayListGetLast(src->lastMoves);
-//        if(spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL){
-//            printf("Remove disc: remove computer's disc at column %d\n", col+1);
-//            src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
-//        }
-//        else {
-//            printf("Remove disc: remove users's disc at column %d\n", col+1);
-//            src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
-//        }
-//        src->gameBoard[src->tops[col]-1][col] = SP_FIAR_GAME_EMPTY_ENTRY;
-//        spArrayListRemoveLast(src->lastMoves);
-//        src->tops[col]--;
-//        return;
-//    }
+
+SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src){   // undo One move
+    if (!src){
+        return SP_CHESS_GAME_INVALID_ARGUMENT;
+    }
+    if ((spArrayListIsEmpty(src->lastMoves))){
+        return SP_CHESS_GAME_NO_HISTORY;
+    }
+    action lastMove = spArrayListGetFirst(src->lastMoves);
+    spArrayListRemoveFirst(src->lastMoves);
+    if ((src->gameBoard[lastMove.current.row][lastMove.current.column]) == KINGBLACK){
+        src->blackKing.row = lastMove.prev.row;
+        src->blackKing.column = lastMove.prev.column;
+    }
+    else if ((src->gameBoard[lastMove.current.row][lastMove.current.column]) == KINGWHITE){
+        src->whiteKing.row = lastMove.prev.row;
+        src->whiteKing.column = lastMove.prev.column;
+    }
+    src->gameBoard[lastMove.prev.row][lastMove.prev.column] = src->gameBoard[lastMove.current.row][lastMove.current.column];
+    src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
+    char* player = src->currentPlayer == 1 ? "black" : "white";
+    printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
+           lastMove.current.row, toColChar(lastMove.current.column), lastMove.prev.row, toColChar(lastMove.prev.column));
+    return SP_CHESS_GAME_SUCCESS;
+}
+
+
 
 
 SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
@@ -456,13 +468,13 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
     if (!src || !posOnBoard(soldierPos) || src->gameBoard[row][col] == BLANK){ return NULL;}
     SPArrayList *possibleMoves = spArrayListCreate(GAMESIZE*GAMESIZE);
     if (possibleMoves == NULL){ return NULL;}
-    position tmp;
+    position tmpDest;
     for (int i = 0; i < GAMESIZE; i++){
         for (int j = 0; j < GAMESIZE; j++){
-            tmp.row = i;
-            tmp.column = j;
-            if (isValidMove(src, soldierPos, tmp)){
-                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmp));
+            tmpDest.row = i;
+            tmpDest.column = j;
+            if (isValidMove(src, soldierPos, tmpDest)){
+                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmpDest, whosThere(src, i, j)));
             }
         }
     }

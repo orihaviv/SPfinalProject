@@ -389,20 +389,17 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
 
 
 
-///**
-// * Removes a disc that was put in the previous move and changes the current
-// * player's turn. If the user invoked this command more than historySize times
-// * in a row then an error occurs.
-// *
-// * @param src - The source game
-// * @return
-// * SP_FIAR_GAME_INVALID_ARGUMENT - if src == NULL
-// * SP_FIAR_GAME_NO_HISTORY       - if the user invoked this function more then
-// *                                 historySize in a row.
-// * SP_FIAR_GAME_SUCCESS          - on success. The last disc that was put on the
-// *                                 board is removed and the current player is changed
-// */
-//SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src);
+/**
+ * Undo the last move happened in the game
+ *
+ * @param src - The source game
+ * @return
+ * SP_FIAR_GAME_INVALID_ARGUMENT - if src == NULL
+ * SP_FIAR_GAME_NO_HISTORY       - if the user invoked this function more then
+ *                                 historySize in a row.
+ * SP_FIAR_GAME_SUCCESS          - on success.
+ */
+SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src);
 
 
 

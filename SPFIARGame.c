@@ -3,7 +3,7 @@
 //
 
 
-#include "SPChessGame.h"
+//#include "SPChessGame.h"
 
 
 //SPFiarGame* spFiarGameCreate(int historySize) {
@@ -92,40 +92,38 @@
 //    }
 //    return true;
 //}
-
-void spFiarGameDeleteMove(SPFiarGame* src){
-    int col;
-    col = spArrayListGetLast(src->lastMoves);
-    if(spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL){
-        printf("Remove disc: remove computer's disc at column %d\n", col+1);
-        src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
-    }
-    else {
-        printf("Remove disc: remove users's disc at column %d\n", col+1);
-        src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
-    }
-    src->gameBoard[src->tops[col]-1][col] = SP_FIAR_GAME_EMPTY_ENTRY;
-    spArrayListRemoveLast(src->lastMoves);
-    src->tops[col]--;
-    return;
-}
-
-SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
-    if (!src){
-        return SP_FIAR_GAME_INVALID_ARGUMENT;
-    }
-    if ((spArrayListIsEmpty(src->lastMoves))){
-        return SP_FIAR_GAME_NO_HISTORY;
-    }
-    spFiarGameDeleteMove(src);
-    return SP_FIAR_GAME_SUCCESS;
-
-}
-
-char spFiarGameGetCurrentPlayer(SPFiarGame* src){
-    return src->currentPlayer;
-}
-
+//
+//void spFiarGameDeleteMove(SPFiarGame* src){
+//    int col;
+//    col = spArrayListGetLast(src->lastMoves);
+//    if(spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL){
+//        printf("Remove disc: remove computer's disc at column %d\n", col+1);
+//        src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+//    }
+//    else {
+//        printf("Remove disc: remove users's disc at column %d\n", col+1);
+//        src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+//    }
+//    src->gameBoard[src->tops[col]-1][col] = SP_FIAR_GAME_EMPTY_ENTRY;
+//    spArrayListRemoveLast(src->lastMoves);
+//    src->tops[col]--;
+//    return;
+//}
+//
+//SP_FIAR_GAME_MESSAGE spFiarGameUndoPrevMove(SPFiarGame* src){
+//    if (!src){
+//        return SP_FIAR_GAME_INVALID_ARGUMENT;
+//    }
+//    if ((spArrayListIsEmpty(src->lastMoves))){
+//        return SP_FIAR_GAME_NO_HISTORY;
+//    }
+//    spFiarGameDeleteMove(src);
+//    return SP_FIAR_GAME_SUCCESS;
+//}
+//
+//char spFiarGameGetCurrentPlayer(SPFiarGame* src){
+//    return src->currentPlayer;
+//}
 //
 //SP_CHESS_GAME_MESSAGE spChessGamePrintBoard(SPChessGame* src){
 //    if(!src){
@@ -145,62 +143,62 @@ char spFiarGameGetCurrentPlayer(SPFiarGame* src){
 //    }
 //    printf("\n");
 //}
-
-char spFiarCheckWinner(SPFiarGame* src) {
-    if (src == NULL){
-        return '\0';
-    }
-    for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
-        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS - 3; j++) {
-            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
-            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
-                if (src->gameBoard[i][j + k] != src->gameBoard[i][j]) { break; }
-                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
-            }
-        }
-    }
-    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
-        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
-            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
-            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
-                if (src->gameBoard[i + k][j] != src->gameBoard[i][j]) { break; }
-                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
-            }
-        }
-    }
-    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
-        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS - 3; j++) {
-            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
-            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
-                if (src->gameBoard[i + k][j + k] != src->gameBoard[i][j]) { break; }
-                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
-            }
-        }
-    }
-    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
-        for (int j = 3; j < SP_FIAR_GAME_N_COLUMNS; j++) {
-            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
-            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
-                if (src->gameBoard[i + k][j - k] != src->gameBoard[i][j]) { break; }
-                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
-            }
-        }
-    }
-    for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
-        if (src->tops[i] < SP_FIAR_GAME_N_ROWS){
-            return '\0';
-        }
-    }
-    return SP_FIAR_GAME_TIE_SYMBOL;
-}
-
-
-void switchPlayer(SPFiarGame* src){
-    if (src != NULL) {
-        if (spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
-            src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
-        } else {
-            src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
-        }
-    }
-}
+//
+//char spFiarCheckWinner(SPFiarGame* src) {
+//    if (src == NULL){
+//        return '\0';
+//    }
+//    for (int i = 0; i < SP_FIAR_GAME_N_ROWS; i++) {
+//        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS - 3; j++) {
+//            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
+//            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
+//                if (src->gameBoard[i][j + k] != src->gameBoard[i][j]) { break; }
+//                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
+//            }
+//        }
+//    }
+//    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
+//        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS; j++) {
+//            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
+//            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
+//                if (src->gameBoard[i + k][j] != src->gameBoard[i][j]) { break; }
+//                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
+//            }
+//        }
+//    }
+//    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
+//        for (int j = 0; j < SP_FIAR_GAME_N_COLUMNS - 3; j++) {
+//            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
+//            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
+//                if (src->gameBoard[i + k][j + k] != src->gameBoard[i][j]) { break; }
+//                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
+//            }
+//        }
+//    }
+//    for (int i = 0; i < SP_FIAR_GAME_N_ROWS - 3; i++) {
+//        for (int j = 3; j < SP_FIAR_GAME_N_COLUMNS; j++) {
+//            if (src->gameBoard[i][j] == SP_FIAR_GAME_EMPTY_ENTRY){ continue;}
+//            for (int k = 1; k < SP_FIAR_GAME_SPAN; k++) {
+//                if (src->gameBoard[i + k][j - k] != src->gameBoard[i][j]) { break; }
+//                else if (k == SP_FIAR_GAME_SPAN - 1) { return src->gameBoard[i][j]; }
+//            }
+//        }
+//    }
+//    for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
+//        if (src->tops[i] < SP_FIAR_GAME_N_ROWS){
+//            return '\0';
+//        }
+//    }
+//    return SP_FIAR_GAME_TIE_SYMBOL;
+//}
+//
+//
+//void switchPlayer(SPFiarGame* src){
+//    if (src != NULL) {
+//        if (spFiarGameGetCurrentPlayer(src) == SP_FIAR_GAME_PLAYER_1_SYMBOL) {
+//            src->currentPlayer = SP_FIAR_GAME_PLAYER_2_SYMBOL;
+//        } else {
+//            src->currentPlayer = SP_FIAR_GAME_PLAYER_1_SYMBOL;
+//        }
+//    }
+//}

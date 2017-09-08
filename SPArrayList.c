@@ -6,12 +6,13 @@
 #include "SPArrayList.h"
 
 
-action generateAction(position a, position b){
+action generateAction(position a, position b, char c){
     action res;
     res.prev.row = a.row;
     res.prev.column = a.column;
     res.current.row = b.row;
     res.current.column = b.column;
+    res.captured = c;
     return res;
 }
 
@@ -101,7 +102,10 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, action elem, int index)
 }
 
 SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, action elem){
-    return spArrayListAddAt(src, elem, 0);
+    if (spArrayListAddAt(src, elem, 0) == SP_ARRAY_LIST_FULL){
+        spArrayListRemoveLast(src);
+        return spArrayListAddAt(src, elem, 0);
+    }
 }
 
 
@@ -136,12 +140,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
 
 action spArrayListGetAt(SPArrayList* src, int index){
     if ((src == NULL) || (index >= src->actualSize)){
-        action emptyRes;
-        emptyRes.current.column = 9;
-        emptyRes.prev.column = 9;
-        emptyRes.prev.row = 9;
-        emptyRes.current.row = 9;
-        return emptyRes;
+        return NULL;
     }
     return (src->elements[index]);
 }

@@ -14,6 +14,7 @@
 typedef struct positions_on_board {
     position prev;
     position current;
+    char captured;
 } action;
 
 /**
@@ -77,11 +78,12 @@ typedef enum sp_array_list_message_t {
  *  Creates a new action.
  *  @param a - the origin position != NULL.
  *  @param b - the destination position != NULL.
+ *  @param c - the destination captured soldier != NULL.
  *  @return
  *  ACTION FROM A TO B
  */
 
-action generateAction(position a, position b);
+action generateAction(position a, position b, char c);
 
 /**
  *  Creates an empty array list with the specified maximum capacity.
