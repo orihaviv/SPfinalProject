@@ -47,7 +47,7 @@ SPChessGame *chessGameCreate() {
             game->gameBoard[7][5] = BISHOPBLACK;
             game->gameBoard[7][6] = KNIGHTBLACK;
             game->gameBoard[7][7] = ROOKBLACK;
-            printf("Specify game setting or type 'start' to begin a game with the current setting:\\n");
+            printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
             return game;
         }
         chessGameDestroy(game);
@@ -127,7 +127,7 @@ position getKingPosition(SPChessGame *src, int color) {
     if (color == 1){ // white king requested
         return src->whiteKing;
     }
-    else if (color == 0){
+    else {
         return src->blackKing;
     }
 }
@@ -283,8 +283,7 @@ bool isWhite(char soldier){
 }
 
 bool pawnValidMove(SPChessGame* src, position origin , position dest){
-    int direction;
-    src->currentPlayer == 1 ? direction = 1 : direction = -1;
+    int direction = src->currentPlayer == 1 ? 1 : -1;
     if (origin.column == dest.column && dest.row == (origin.row + direction) && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
     if (origin.column == dest.column && direction == 1 && origin.row == 1 && dest.row == (origin.row + 2*direction)
         && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
@@ -344,8 +343,8 @@ bool rookValidMove(SPChessGame* src, position origin , position dest){
 bool bishopValidMove(SPChessGame* src, position origin , position dest) {
     if (abs(dest.column - origin.column) != abs(dest.row - origin.row)) { return false; }
     int dx, dy;
-    dest.column > origin.column ? dx = 1 : dx = -1;
-    dest.row > origin.row ? dy = 1 : dy = -1;
+    dx = dest.column > origin.column ? 1 : -1;
+    dy = dest.row > origin.row ? 1 : -1;
     int row = origin.row + dy, col = origin.column + dx;
     while (row != dest.row){
         if (src->gameBoard[row][col] != BLANK){ return false;}
@@ -372,7 +371,7 @@ bool isValidMove(SPChessGame* src, position origin , position dest){
     else if (soldier == ROOKBLACK || soldier == ROOKWHITE) { flag = rookValidMove(src, origin, dest);}
     else if (soldier == BISHOPBLACK || soldier == BISHOPWHITE) { flag = bishopValidMove(src, origin, dest);}
     else if (soldier == QUEENBLACK || soldier == QUEENWHITE) { flag = queenValidMove(src, origin, dest);}
-    if (flag && isMoveSafeForKing(src, origin, dest)){
+    if (flag && !isMoveSafeForKing(src, origin, dest)){
         return true;
     }
     return false;
@@ -413,7 +412,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
 
 
 
-SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src){
+SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     if (!src){
         return SP_CHESS_GAME_INVALID_ARGUMENT;
     }
@@ -457,7 +456,7 @@ SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
     for (int i = 0; i < GAMESIZE; i++) {
         printf(" %c", (i + 65));
     }
-    printf("\n");
+    printf("\n\n");
 }
 
 

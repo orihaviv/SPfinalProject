@@ -102,10 +102,12 @@ SP_ARRAY_LIST_MESSAGE spArrayListAddAt(SPArrayList* src, action elem, int index)
 }
 
 SP_ARRAY_LIST_MESSAGE spArrayListAddFirst(SPArrayList* src, action elem){
-    if (spArrayListAddAt(src, elem, 0) == SP_ARRAY_LIST_FULL){
+    SP_ARRAY_LIST_MESSAGE res = spArrayListAddAt(src, elem, 0);
+    if (res == SP_ARRAY_LIST_FULL){
         spArrayListRemoveLast(src);
-        return spArrayListAddAt(src, elem, 0);
+        res = spArrayListAddAt(src, elem, 0);
     }
+    return res;
 }
 
 
@@ -140,7 +142,8 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src){
 
 action spArrayListGetAt(SPArrayList* src, int index){
     if ((src == NULL) || (index >= src->actualSize)){
-        return NULL;
+        action action1;
+        return action1;
     }
     return (src->elements[index]);
 }

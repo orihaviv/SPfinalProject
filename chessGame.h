@@ -11,7 +11,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include "SPArrayList.h"
-#include "chessParser.h"
 
 
 
@@ -399,7 +398,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
  *                                 historySize in a row.
  * SP_FIAR_GAME_SUCCESS          - on success.
  */
-SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src);
+SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src);
 
 
 
@@ -419,14 +418,6 @@ SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src);
 SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src);
 
 
-/**
- * Returns the current player of the specified game.
- * @param src - the source game
- * @return
- * 1 - if it's the turn of the white player
- * 0 - if it's the turn of the black player
- */
-int chessGameGetCurrentPlayer(SPChessGame *src);
 
 
 
