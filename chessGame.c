@@ -413,7 +413,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
 
 
 
-SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src){   // undo One move
+SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src){
     if (!src){
         return SP_CHESS_GAME_INVALID_ARGUMENT;
     }
@@ -434,7 +434,7 @@ SP_CHESS_GAME_MESSAGE spFiarGameUndoPrevMove(SPChessGame* src){   // undo One mo
     src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
     char* player = src->currentPlayer == 1 ? "black" : "white";
     printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
-           lastMove.current.row, toColChar(lastMove.current.column), lastMove.prev.row, toColChar(lastMove.prev.column));
+           toRowNum(lastMove.current.row), toColChar(lastMove.current.column),toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
     return SP_CHESS_GAME_SUCCESS;
 }
 
