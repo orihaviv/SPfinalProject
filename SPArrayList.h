@@ -73,8 +73,15 @@ typedef enum sp_array_list_message_t {
 } SP_ARRAY_LIST_MESSAGE;
 
 
+/**
+ *  Creates a new action.
+ *  @param a - the origin position != NULL.
+ *  @param b - the destination position != NULL.
+ *  @return
+ *  ACTION FROM A TO B
+ */
 
-
+action generateAction(position a, position b);
 
 /**
  *  Creates an empty array list with the specified maximum capacity.

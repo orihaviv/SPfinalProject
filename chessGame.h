@@ -434,31 +434,27 @@ int chessGameGetCurrentPlayer(SPChessGame *src);
 
 
 
-///**
-//* Checks if there's a winner in the specified game status. The function returns either
-//* SP_FIAR_GAME_PLAYER_1_SYMBOL or SP_FIAR_GAME_PLAYER_2_SYMBOL in case there's a winner, where
-//* the value returned is the symbol of the winner. If the game is over and there's a tie
-//* then the value SP_FIAR_GAME_TIE_SYMBOL is returned. in any other case the null characters
-//* is returned.
-//* @param src - the source game
-//* @return
-//* SP_FIAR_GAME_PLAYER_1_SYMBOL - if player 1 won
-//* SP_FIAR_GAME_PLAYER_2_SYMBOL - if player 2 won
-//* SP_FIAR_GAME_TIE_SYMBOL - If the game is over and there's a tie
-//* null character - otherwise
-//*/
-//char spFiarCheckWinner(SPFiarGame* src);
-//
-//
+//TODO documantion
+SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col);
 
 
 
 
+/**
+* Checks if there's a winner in the specified game status. The function returns either
+* 1 or 0 in case there's a winner, where
+* the value returned is the symbol of the winner's color. If the game is over and there's a tie
+* then the value 2 is returned. in any other case the -1 is returned.
+* @param src - the source game
+* @return
+* 1 - if the white won
+* 0 - if the black won
+* 2 - If the game is over and there's a tie
+* -1 - otherwise
+*/
+int chessCheckWinner(SPChessGame* src);
 
-///**
-//* Switching the game's state to setting the specified game.
-//* @param src - the source game
-//*/
-//void changeToSetting(SPChessGame* src);
+
+
 
 #endif //SPFINAL_CHESSGAME_H

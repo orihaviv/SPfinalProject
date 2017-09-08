@@ -6,7 +6,14 @@
 #include "SPArrayList.h"
 
 
-
+action generateAction(position a, position b){
+    action res;
+    res.prev.row = a.row;
+    res.prev.column = a.column;
+    res.current.row = b.row;
+    res.current.column = b.column;
+    return res;
+}
 
 
 void gameSpArrayListAdd(SPArrayList* src, action elem){

@@ -237,15 +237,6 @@ bool QRBThreatensSoldier(SPChessGame *src, int color, position soldier) {
 }
 
 
-
-
-bool isTheKingThreatened(SPChessGame *src, int color) {
-    position king = getKingPosition(src, color);
-    return isTheSoldierThreatened(src, color, king);
-}
-
-
-
 bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier){
     if (!posOnBoard(soldier)) { return false;}
     if (pawnsThreatSoldier(src, color, soldier) || knightsThreatSoldier(src, color, soldier)
@@ -254,6 +245,13 @@ bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier){
     }
     return false;
 }
+
+bool isTheKingThreatened(SPChessGame *src, int color) {
+    position kingPos = getKingPosition(src, color);
+    return isTheSoldierThreatened(src, color, kingPos);
+}
+
+
 
 
 bool isMoveSafeForKing(SPChessGame* src, position origin , position dest){
@@ -364,9 +362,8 @@ bool queenValidMove(SPChessGame* src, position origin , position dest){
 
 bool isValidMove(SPChessGame* src, position origin , position dest){
     if ((!src) || !posOnBoard(origin) || !posOnBoard(dest) || (origin.row == dest.row && origin.column == dest.column)) { return false; }
-    if (src->currentPlayer == 1 && (isWhite(src->gameBoard[dest.row][dest.column]) || isBlack(src->gameBoard[origin.row][origin.column]))) { return false;}
-    if (src->currentPlayer == 0 && (isBlack(src->gameBoard[dest.row][dest.column]) || isWhite(src->gameBoard[origin.row][origin.column]))) { return false;}
-    if (src->gameBoard[origin.row][origin.column] == BLANK) { return false; }
+    if (src->currentPlayer == 1 && (isWhite(src->gameBoard[dest.row][dest.column]) || !isWhite(src->gameBoard[origin.row][origin.column]))) { return false;}
+    if (src->currentPlayer == 0 && (isBlack(src->gameBoard[dest.row][dest.column]) || !isBlack(src->gameBoard[origin.row][origin.column]))) { return false;}
     char soldier = (src->gameBoard[origin.row][origin.column]);
     bool flag = true;
     if (soldier == PAWNWHITE || soldier == PAWNBLACK){ flag = pawnValidMove(src, origin, dest);}
@@ -452,13 +449,64 @@ SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
 }
 
 
-
-
-
-int chessGameGetCurrentPlayer(SPChessGame *src) {
-    return src->currentPlayer;
+SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
+    position soldierPos;
+    soldierPos.column = col;
+    soldierPos.row = row;
+    if (!src || !posOnBoard(soldierPos) || src->gameBoard[row][col] == BLANK){ return NULL;}
+    SPArrayList *possibleMoves = spArrayListCreate(GAMESIZE*GAMESIZE);
+    if (possibleMoves == NULL){ return NULL;}
+    position tmp;
+    for (int i = 0; i < GAMESIZE; i++){
+        for (int j = 0; j < GAMESIZE; j++){
+            tmp.row = i;
+            tmp.column = j;
+            if (isValidMove(src, soldierPos, tmp)){
+                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmp));
+            }
+        }
+    }
+    return possibleMoves;
 }
 
+
+
+
+
+int chessCheckWinner(SPChessGame* src){
+    if (!src){ return NULL;}
+    char tmp;
+    SPArrayList *possibleMoves;
+    int cur = src->currentPlayer;
+    if (src->currentPlayer == 1) {
+        for (int i = 0; i < GAMESIZE; i++){
+            for (int j = 0; j < GAMESIZE; j++){
+                tmp = whosThere(src, i, j);
+                if (isWhite(tmp)){
+                    possibleMoves = getMovesForSoldier(src, i, j);
+                    if (possibleMoves->actualSize > 0){ return -1; }
+                }
+            }
+        }
+        // no possible moves at all for the white
+        if (isTheKingThreatened(src, src->currentPlayer)){ return 0;}  // is the white king threatened?
+        else return 2;
+    }
+    else {
+        for (int i = 0; i < GAMESIZE; i++){
+            for (int j = 0; j < GAMESIZE; j++){
+                tmp = whosThere(src, i, j);
+                if (isBlack(tmp)){
+                    possibleMoves = getMovesForSoldier(src, i, j);
+                    if (possibleMoves->actualSize > 0){ return -1; }
+                }
+            }
+        }
+        // no possible moves at all for the black
+        if (isTheKingThreatened(src, src->currentPlayer)){ return 1;}  // is the black king threatened?
+        else return 2;
+    }
+}
 
 
 
