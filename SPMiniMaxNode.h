@@ -3,6 +3,16 @@
 #define SPMINIMAXNODE_H_
 #include "SPFIARGame.h"
 
+
+/**
+ * Given a representative char of a soldier,
+ * returns the score of the specific soldier.
+ *
+ * @param soldier - a representative char of a soldier
+ * @return - the relevant score of the specific soldier
+ */
+int soldierScore(char soldier);
+
 /**
  * Given a game state,depth, and the current player this function evaluates the score
  * of the game stats according to the current player.
