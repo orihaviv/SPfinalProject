@@ -1,5 +1,5 @@
 //
-// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 10/06/2017.
+// Created by ׳³ן¿½׳³ג€¢׳³ֲ¨׳³ג„¢ ׳³ג€”׳³ג€˜׳³ג„¢׳³ג€˜ on 10/06/2017.
 //
 #include "SPMiniMaxNode.h"
 #include "chessGame.h"
@@ -23,7 +23,14 @@ int soldierScore(char soldier){
 }
 
 int scoreOfLeafNode(SPChessGame* currentGame){
-	int score = 0;
+	int score = chessCheckWinner(currentGame);
+	if (score == 1){
+		return INT_MAX;
+	}
+	else if (score == 0){
+		return INT_MIN;
+	}
+	score = 0;
 	for(int i=0 ; i < GAMESIZE ; i++){
 		for(int j=0 ; j < GAMESIZE ; j++){
 			score += soldierScore(currentGame.gameBoard[i][j]);
@@ -32,22 +39,16 @@ int scoreOfLeafNode(SPChessGame* currentGame){
 	return score;
 }
 
-//
-//int nodeScore(SPFiarGame* src, int depth, int player){
-//    if ((src == NULL) || (depth < 0) || (player < 0) || (player >1)){
-//        return -1;
-//    }
-//    SPFiarGame* gameCopy = (spFiarGameCopy(src));
-//    int score;
-//    int bestScore;
-//    if(player == 1){ // computer's turn
-//        bestScore = INT_MAX;
-//    }
-//    else{ // user's turn
-//        bestScore = INT_MIN;
-//    }
-//    int first;
-//    int scoreOfCurrent = scoreOfLeafNode(gameCopy);
+
+int nodeScore(SPFiarGame* src, int depth, int player){
+    if ((src == NULL) || (depth < 0) || (depth > 4) || (player < 0) || (player >1)){  //TODO change >4 to >5 if needed
+        return -1;
+    }
+    SPChessGame* gameCopy = (chessGameCopy(src));
+    int score;
+    int bestScore = player == 1 ? INT_MIN : INT_MAX;
+    int first;
+    int scoreOfCurrent = scoreOfLeafNode(gameCopy);
 //    if ((depth != 0) && (scoreOfCurrent < INT_MAX) && (scoreOfCurrent > INT_MIN)){
 //        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
 //            if (spFiarGameIsValidMove(gameCopy, i)) {
@@ -80,4 +81,4 @@ int scoreOfLeafNode(SPChessGame* currentGame){
 //        spFiarGameDestroy(gameCopy);
 //        return scoreOfCurrent;
 //    }
-//}
+}
