@@ -52,14 +52,17 @@ int scoreOfLeafNode(SPChessGame* currentGame);
  * @param currentGame - The current game state
  * @param depth - The depth of the miniMax algorithm
  * @param player - The current player the miniMax algorithm is calculated for
- *                 0 - user, 1 - computer
+ *          0 - black, 1 - white
+ * @param alpha - The "alpha" parameter for the minimax
+ * @param beta - The "beta" parameter for the minimax
  * @return
- * -1 if either currentGame is NULL or depth < 0 or invalid number represents the player.
+ * -999 if either currentGame is NULL or depth < 0 or invalid number represents the player.
  * On success the function returns a number represents the board's score if there's no winner.
  * INT_MAX if the user is the winner in this game state.
  * INT_MIN if the cSPFiarGameomputer is the winner in this game state.
+ * 0 if the game is a tie.
  */
-int nodeScore(SPChessGame* src, int depth, int player);
+int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta)
 
 
 #endif
