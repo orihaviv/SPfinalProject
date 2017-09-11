@@ -33,7 +33,7 @@ int scoreOfLeafNode(SPChessGame* currentGame){
 	score = 0;
 	for(int i=0 ; i < GAMESIZE ; i++){
 		for(int j=0 ; j < GAMESIZE ; j++){
-			score += soldierScore(currentGame.gameBoard[i][j]);
+			score += soldierScore(currentGame->gameBoard[i][j]);
 		}
 	}
 	return score;
@@ -49,6 +49,9 @@ int nodeScore(SPFiarGame* src, int depth, int player){
     int bestScore = player == 1 ? INT_MIN : INT_MAX;
     int first;
     int scoreOfCurrent = scoreOfLeafNode(gameCopy);
+
+
+
 //    if ((depth != 0) && (scoreOfCurrent < INT_MAX) && (scoreOfCurrent > INT_MIN)){
 //        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
 //            if (spFiarGameIsValidMove(gameCopy, i)) {
