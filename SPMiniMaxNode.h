@@ -1,8 +1,22 @@
 #ifndef SPMINIMAXNODE_H_
 
 #define SPMINIMAXNODE_H_
-#include "SPFIARGame.h"
+#include "chessGame.h"
 
+//Definitions
+#define BLANKSCORE 0
+#define PAWNWHITESCORE 1
+#define PAWNBLACKSCORE -1
+#define BISHOPWHITESCORE 3
+#define BISHOPBLACKSCORE -3
+#define KNIGHTWHITESCORE 3
+#define KNIGHTBLACKSCORE -3
+#define ROOKWHITESCORE 5
+#define ROOKBLACKSCORE -5
+#define QUEENWHITESCORE 9
+#define QUEENBLACKSCORE -9
+#define KINGWHITESCORE 100
+#define KINGBLACKSCORE -100
 
 /**
  * Given a representative char of a soldier,
@@ -12,6 +26,22 @@
  * @return - the relevant score of the specific soldier
  */
 int soldierScore(char soldier);
+
+/**
+ * Given a game state, this function evaluates the score of the board according
+ * to the scoring function.
+ *The current game state doesn't change
+ * by this function, including the history of previous moves.
+ *
+ * @param currentGame - The current game state
+ * @return
+ * -1 if the currentGame is NULL. //TODO!!!
+ * On success the function returns a number represents the board's score if there's no winner.
+ * INT_MAX if the white player is the winner in this game state.
+ * INT_MIN if the black player is the winner in this game state.
+ */
+int scoreOfLeafNode(SPChessGame* currentGame);
+
 
 /**
  * Given a game state,depth, and the current player this function evaluates the score
@@ -27,25 +57,9 @@ int soldierScore(char soldier);
  * -1 if either currentGame is NULL or depth < 0 or invalid number represents the player.
  * On success the function returns a number represents the board's score if there's no winner.
  * INT_MAX if the user is the winner in this game state.
- * INT_MIN if the computer is the winner in this game state.
+ * INT_MIN if the cSPFiarGameomputer is the winner in this game state.
  */
-int nodeScore(SPFiarGame* src, int depth, int player);
+int nodeScore(SPChessGame* src, int depth, int player);
 
-
-
-/**
- * Given a game state, this function evaluates the score of the board according
- * to the scoring function.
- *The current game state doesn't change
- * by this function including the history of previous moves.
- *
- * @param currentGame - The current game state
- * @return
- * -1 if the currentGame is NULL.
- * On success the function returns a number represents the board's score if there's no winner.
- * INT_MAX if the user is the winner in this game state.
- * INT_MIN if the computer is the winner in this game state.
- */
-int scoreOfLeafNode(SPFiarGame* currentGame);
 
 #endif
