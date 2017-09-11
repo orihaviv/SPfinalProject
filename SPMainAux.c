@@ -16,8 +16,12 @@ void loadGame (SPChessGame* src, char* path){
 }
 
 void printSettings(SPChessGame* game){
-//TODO
-};
+    printf("SETTINGS:\nGAME MODE: %d\n", game->gameMode);
+    if (game->gameMode == 2) {
+        char* color = game->userColor == 1 ? "WHITE :""BLACK";
+        printf("DIFFICULTY_LVL: %d\nUSER_CLR: %s\n", game->difficulty, color);
+    }
+}
 
 
 
@@ -125,7 +129,7 @@ char* translateToSoldiersName(char soldier){
 //        flag = false;
 //        command = spParserParseLine(buffer);
 //        switch (command.cmd) {
-//}s
+}
 
 
 
@@ -145,17 +149,12 @@ void executeComputerMove(SPChessGame* src){
 
 
 int executePlayerMove (SPChessGame* src){
-    int status;
-    chessGamePrintBoard(src);
-    char* color = src->currentPlayer == 1 ? "white" : "black";
-    printf("%s player - enter your move\n", color);
-    status = gameState(src);
+//    int status;
+//    chessGamePrintBoard(src);
+//    char* color = src->currentPlayer == 1 ? "white" : "black";
+//    printf("%s player - enter your move\n", color);
+//    status = gameState(src);
 }
-
-
-
-
-
 
 
 
