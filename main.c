@@ -110,7 +110,7 @@ int main() {
 
     printf("\n\n\n new game \n\n\n");
 
-    game1 = chessGameCreate();
+    game = chessGameCreate();
 
     a.row = 1; a.column = 7;
     b.row = 3; b.column = 7;
@@ -118,17 +118,17 @@ int main() {
     d.row = 4; d.column = 6;
 
 
-    if (chessGameSetMove(game1,a,b) != SP_CHESS_GAME_SUCCESS){printf("Error 20\n");} // 1,7 -> 3,7 whitePawn
-    if (chessGameSetMove(game1,c,d) != SP_CHESS_GAME_SUCCESS){printf("Error 21\n");} // 6,6 -> 4,6 blackPawn
+    if (chessGameSetMove(game,a,b) != SP_CHESS_GAME_SUCCESS){printf("Error 20\n");} // 1,7 -> 3,7 whitePawn
+    if (chessGameSetMove(game,c,d) != SP_CHESS_GAME_SUCCESS){printf("Error 21\n");} // 6,6 -> 4,6 blackPawn
 
     a.row = 3; a.column = 7;
     b.row = 4; b.column = 6;
 //    c.row = ; c.column = ;
 //    d.row = ; d.column = ;
 
-    if (chessGameSetMove(game1,a,b) != SP_CHESS_GAME_SUCCESS){printf("Error 22\n");} // 3,7 -> 4,6 whitepawn
-    if (chessGameUndoPrevMove(game1) != SP_CHESS_GAME_SUCCESS){printf("Error 23\n");}
-//    if (chessGameSetMove(game1,c,d) != SP_CHESS_GAME_SUCCESS){printf("Error 23\n");} // 6,6 -> 5,6 blackPawn
+    if (chessGameSetMove(game,a,b) != SP_CHESS_GAME_SUCCESS){printf("Error 22\n");} // 3,7 -> 4,6 whitepawn
+//    if (chessGameUndoPrevMove(game) != SP_CHESS_GAME_SUCCESS){printf("Error 23\n");}
+//    if (chessGameSetMove(game,c,d) != SP_CHESS_GAME_SUCCESS){printf("Error 23\n");} // 6,6 -> 5,6 blackPawn
 
     chessGamePrintBoard(game1);
 
