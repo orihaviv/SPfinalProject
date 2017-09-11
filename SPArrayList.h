@@ -232,10 +232,10 @@ SP_ARRAY_LIST_MESSAGE spArrayListRemoveLast(SPArrayList* src);
  * @param src - the source array list
  * @param index - the specified index, the index is 0-based.
  * @return
- * Undefined value if either src == NULL or index out of bound.
+ * NULL value if either src == NULL or index out of bound.
  * Otherwise, the element at the specified index is returned.
  */
-action spArrayListGetAt(SPArrayList* src, int index);
+action* spArrayListGetAt(SPArrayList* src, int index);
 
 /**
  * Returns the element at the beginning of the list. The function is called
@@ -243,11 +243,11 @@ action spArrayListGetAt(SPArrayList* src, int index);
  * invalid then an undefined value is returned.
  * @param src - the source array list
  * @return
- * Undefined value if either src == NULL or the list is empty
+ * NULL value if either src == NULL or the list is empty
  * Otherwise, the element at the beginning of the list is returned.
  */
 
-action spArrayListGetFirst(SPArrayList* src);
+action* spArrayListGetFirst(SPArrayList* src);
 
 /**
  * Returns the element at the end of the list. The function is called
@@ -255,10 +255,10 @@ action spArrayListGetFirst(SPArrayList* src);
  * invalid then an undefined value is returned.
  * @param src - the source array list
  * @return
- * Undefined value if either src == NULL or the list is empty
+ * NULL value if either src == NULL or the list is empty
  * Otherwise, the element at the end of the list is returned.
  */
-action spArrayListGetLast(SPArrayList* src);
+action* spArrayListGetLast(SPArrayList* src);
 
 /**
  * Returns the maximum capacity of the list. The function is called

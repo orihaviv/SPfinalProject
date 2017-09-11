@@ -3,56 +3,116 @@
 //
 #include "SPMiniMax.h"
 
-int spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int maxDepth){
-    if (currentGame == NULL || maxDepth <= 0){
-        return -1;
+
+action* spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int depth){
+    if (currentGame == NULL || depth <= 0 || depth > 4){ //TODO change >4 to >5 if needed
+        return NULL;
     }
     SPChessGame* gameCopy = (spChessGameCopy(currentGame));
-    position bestPos;
-    int score, bestScore, first;
-    if (gameCopy == NULL){return -1;}
-    if (currentGame->currentPlayer == 1){ // white's turn
-        bestScore = INT_MIN;
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
-            if (isValidMove(gameCopy, i)) {
-                first = spArrayListGetFirst(gameCopy->lastMoves);
-                chessGameSetMove(gameCopy, i);
-                score = (nodeScore(gameCopy, maxDepth - 1, 1));
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestCol = i;
+    action bestAction;
+    int bestScore, score;
+    SPArrayList* possibleActions;
+    char currentSoldier;
+
+
+
+    if (gameCopy->currentPlayer == 1) {         // white's turn
+        bestScore == INT_MIN;
+        for (int i = 0; i < GAMESIZE; i++) {
+            for (int j = 0; j < GAMESIZE; j++) {
+                currentSoldier = gameCopy->gameBoard[i][j];
+                if (isWhite(currentSoldier)) {
+                    possibleActions = getMovesForSoldier(gameCopy, i, j);
+                    for (action move : possibleActions) {
+                        chessGameSetMove(gameCopy, move.prev, move.current);
+                        score = nodeScore(gameCopy, depth - 1, 1 - gameCopy->currentPlayer, INT_MIN, INT_MAX);
+                        if (bestScore < score) {
+                            bestAction = move;
+                            bestScore = score;
+                        }
+                        chessGameUndoPrevMove(gameCopy);
+                    }
                 }
-                gameCopy->gameBoard[gameCopy->tops[i]-1][i] = SP_FIAR_GAME_EMPTY_ENTRY;
-                gameCopy->currentPlayer = 1 - gameCopy->currentPlayer;
-                spArrayListRemoveLast(gameCopy->lastMoves);
-                if(gameCopy->lastMoves->actualSize == gameCopy->lastMoves->maxSize-1){
-                    spArrayListAddFirst(gameCopy->lastMoves, first);
-                }
-                gameCopy->tops[i]--;
             }
         }
     }
-    else{ // computer's turn
-        bestScore = INT_MAX;
-        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
-            if (isValidMove(gameCopy, i)) {
-                first = spArrayListGetFirst(gameCopy->lastMoves);
-                chessGameSetMove(gameCopy, i);
-                score = (nodeScore(gameCopy, maxDepth - 1, 0));
-                if (score < bestScore) {
-                    bestScore = score;
-                    bestCol = i;
+    else {                  //  black's turn
+        bestScore == INT_MAX;
+        for (int i = 0; i < GAMESIZE; i++) {
+            for (int j = 0; j < GAMESIZE; j++) {
+                currentSoldier = gameCopy->gameBoard[i][j];
+                if (isBlack(currentSoldier)) {
+                    possibleActions = getMovesForSoldier(gameCopy, i, j);
+                    for (action move : possibleActions) {
+                        chessGameSetMove(gameCopy, move.prev, move.current);
+                        score = nodeScore(gameCopy, depth - 1, 1 - gameCopy->currentPlayer, INT_MIN, INT_MAX);
+                        if (bestScore > score) {
+                            bestAction = move;
+                            bestScore = score;
+                        }
+                        chessGameUndoPrevMove(gameCopy);
+                    }
                 }
-                gameCopy->gameBoard[gameCopy->tops[i]-1][i] = SP_FIAR_GAME_EMPTY_ENTRY;
-                gameCopy->currentPlayer = 1 - gameCopy->currentPlayer;
-                spArrayListRemoveLast(gameCopy->lastMoves);
-                if(gameCopy->lastMoves->actualSize == gameCopy->lastMoves->maxSize-1){
-                    spArrayListAddFirst(gameCopy->lastMoves, first);
-                }
-                gameCopy->tops[i]--;
             }
         }
     }
-    spFiarGameDestroy(gameCopy);
-    return bestCol;
+    spArrayListDestroy(possibleActions);
+    chessGameDestroy(gameCopy);
+    return &(bestAction);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
+
+
+    if (player == 1) {         // white's turn
+        bestScore == INT_MIN;
+        for (int i = 0; i < GAMESIZE; i++) {
+            for (int j = 0; j < GAMESIZE; j++) {
+                currentSoldier = gameCopy->gameBoard[i][j];
+                if (isWhite(currentSoldier)) {
+                    possibleActions = getMovesForSoldier(gameCopy, i, j);
+                    for (action move : possibleActions) {
+                        chessGameSetMove(gameCopy, move.prev, move.current);
+                        bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
+                        chessGameUndoPrevMove(gameCopy);
+                        alpha = maxi(bestScore, alpha);
+                        if (beta <= alpha) { break; }
+                    }
+                }
+            }
+        }
+    }
+    else {                  //  black's turn
+        bestScore == INT_MAX;
+        for (int i = 0; i < GAMESIZE; i++) {
+            for (int j = 0; j < GAMESIZE; j++) {
+                currentSoldier = gameCopy->gameBoard[i][j];
+                if (isBlack(currentSoldier)) {
+                    possibleActions = getMovesForSoldier(gameCopy, i, j);
+                    for (action move : possibleActions) {
+                        chessGameSetMove(gameCopy, move.prev, move.current);
+                        bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
+                        chessGameUndoPrevMove(gameCopy);
+                        beta = mini(bestScore, beta);
+                        if (beta <= alpha) { break; }
+                    }
+                }
+            }
+        }
+    }
+    spArrayListDestroy(possibleActions);
+    chessGameDestroy(gameCopy);
+    return bestScore;
 }

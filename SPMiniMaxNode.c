@@ -111,38 +111,3 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
     chessGameDestroy(gameCopy);
     return bestScore;
 }
-
-
-
-//        for (int i = 0; i < SP_FIAR_GAME_N_COLUMNS; i++){
-//            if (spFiarGameIsValidMove(gameCopy, i)) {
-//                first = spArrayListGetFirst(gameCopy->lastMoves);
-//                spFiarGameSetMove(gameCopy, i);
-//                score = (nodeScore(gameCopy, depth - 1, 1 - player));
-//                if (player == 1) {
-//                    if (bestScore > score) {
-//                        bestScore = score;
-//                    }
-//                }
-//                else{
-//                    if (score > bestScore) {
-//                        bestScore = score;
-//                    }
-//                }
-//                gameCopy->gameBoard[gameCopy->tops[i]-1][i] = SP_FIAR_GAME_EMPTY_ENTRY;
-//                switchPlayer(gameCopy);
-//                spArrayListRemoveLast(gameCopy->lastMoves);
-//                if(gameCopy->lastMoves->actualSize == gameCopy->lastMoves->maxSize-1){
-//                    spArrayListAddFirst(gameCopy->lastMoves, first);
-//                }
-//                gameCopy->tops[i]--;
-//            }
-//        }
-//        spFiarGameDestroy(gameCopy);
-//        return bestScore;
-//    }
-//    else {
-//        spFiarGameDestroy(gameCopy);
-//        return scoreOfCurrent;
-//    }
-}

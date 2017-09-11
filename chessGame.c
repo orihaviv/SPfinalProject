@@ -416,7 +416,7 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     if ((spArrayListIsEmpty(src->lastMoves))){
         return SP_CHESS_GAME_NO_HISTORY;
     }
-    action lastMove = spArrayListGetFirst(src->lastMoves);
+    action lastMove = *(spArrayListGetFirst(src->lastMoves));
     spArrayListRemoveFirst(src->lastMoves);
     if ((src->gameBoard[lastMove.current.row][lastMove.current.column]) == KINGBLACK){
         src->blackKing.row = lastMove.prev.row;
@@ -428,6 +428,7 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     }
     src->gameBoard[lastMove.prev.row][lastMove.prev.column] = src->gameBoard[lastMove.current.row][lastMove.current.column];
     src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
+    src->currentPlayer = 1 - src->currentPlayer;
     char* player = src->currentPlayer == 1 ? "black" : "white";
     printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
            toRowNum(lastMove.current.row), toColChar(lastMove.current.column),toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
