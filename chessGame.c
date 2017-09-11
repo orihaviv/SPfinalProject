@@ -61,9 +61,6 @@ SPChessGame *chessGameCreate() {
 
 
 
-
-
-
 SPChessGame *chessGameCopy(SPChessGame *src) {
     if (src != NULL) {
         SPChessGame *game = (SPChessGame *) malloc(sizeof(SPChessGame));
@@ -100,7 +97,7 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
 
 
 void chessGameDestroy(SPChessGame *src) {
-    if (src == NULL) {
+    if (!src) {
         return;
     }
     spArrayListDestroy(src->lastMoves);
@@ -202,7 +199,7 @@ bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, cha
     int row = soldier.row;
     int col = soldier.column;
     char tmp;
-    while (row < GAMESIZE && row > 0 && col < GAMESIZE && col > 0) {
+    while (row < GAMESIZE && row > -1 && col < GAMESIZE && col > -1) {
         row += y;
         col += x;
         tmp = whosThere(src, row, col);
