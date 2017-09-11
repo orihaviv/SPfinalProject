@@ -24,10 +24,10 @@ SPCommand setGameModeCmd (char* mode) {
     command.cmd = GAME_MODE;
     if (!strcmp(mode, "1")) {
         command.arg = 1;
-//        printf("Game mode is set to 1 players\n"); TODO
     } else if (!strcmp(mode, "2")) {
         command.arg = 2;
-//        printf("Game mode is set to 2 players\n"); TODO
+    } else if (mode == NULL){
+        command.arg = 1;
     } else {
         command.cmd = INVALID;
         printf("Wrong game mode\n");
@@ -40,6 +40,10 @@ SPCommand setGameModeCmd (char* mode) {
 SPCommand setDifficultyCmd(char* diff) {
     SPCommand command;
     command.cmd = INVALID;
+    if(diff == NULL){
+        command.cmd = DIFFICULTY;
+        command.arg = 2;
+    }
     int level;
     if (spParserIsInt(diff)){
         level = atoi(diff);
@@ -61,7 +65,9 @@ SPCommand setDifficultyCmd(char* diff) {
 SPCommand setColorCmd(char* color){
     SPCommand command;
     command.cmd = USER_COLOR;
-    if (!strcmp(color, "0")) {
+    if (color == NULL){
+        command.arg = 1;
+    } else if (!strcmp(color, "0")) {
         command.arg = 0;
     } else if (!strcmp(color, "1")) {
         command.arg = 1;
@@ -75,7 +81,7 @@ SPCommand setColorCmd(char* color){
 SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
     command.cmd = INVALID;
-    if (source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
+    if (source && dest &&  source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
         if (source[1] > '0' && source[1] < '9' && dest[1] > '0' && dest[1] < '9'
             && source[3] >= 'A' && source[3] <= 'H' && dest[3] >= 'A' && dest[3] <= 'H'){
             command.source.column = colToInt(source[3]);
@@ -91,6 +97,7 @@ SPCommand setMoveCmd(char* source, char* dest){
 SPCommand getMoveCmd(char* source){
     SPCommand command;
     command.cmd = INVALID;
+    if (!source){ return command;}
     if (source[0] == '<' && source[2] == ',' && source[4] == '>' && source[1] > '0' && source[1] < '9' && source[3] >= 'A' && source[3] <= 'H'){
         command.cmd = GET_MOVES;
         command.source.column = colToInt(source[3]);

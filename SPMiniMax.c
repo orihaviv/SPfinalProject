@@ -4,7 +4,7 @@
 #include "SPMiniMax.h"
 
 
-action* spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int depth){
+action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
     if (currentGame == NULL || depth <= 0 || depth > 4){ //TODO change >4 to >5 if needed
         return NULL;
     }
@@ -36,7 +36,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int depth){
             }
         }
     }
-    else {                  //  black's turn
+    else {                                        //  black's turn
         bestScore == INT_MAX;
         for (int i = 0; i < GAMESIZE; i++) {
             for (int j = 0; j < GAMESIZE; j++) {
@@ -61,14 +61,6 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int depth){
     return &(bestAction);
 
 }
-
-
-
-
-
-
-
-
 
 
 

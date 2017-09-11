@@ -2,7 +2,7 @@
 // Created by אורי חביב on 05/09/2017.
 //
 
-#include <ctype.h>
+//#include <ctype.h>
 #include "chessGame.h"
 
 
@@ -47,7 +47,7 @@ SPChessGame *chessGameCreate() {
             game->gameBoard[7][5] = BISHOPBLACK;
             game->gameBoard[7][6] = KNIGHTBLACK;
             game->gameBoard[7][7] = ROOKBLACK;
-            printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
+
             return game;
         }
         chessGameDestroy(game);
@@ -429,9 +429,9 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     src->gameBoard[lastMove.prev.row][lastMove.prev.column] = src->gameBoard[lastMove.current.row][lastMove.current.column];
     src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
     src->currentPlayer = 1 - src->currentPlayer;
-    char* player = src->currentPlayer == 1 ? "black" : "white";
-    printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
-           toRowNum(lastMove.current.row), toColChar(lastMove.current.column),toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
+//    char* player = src->currentPlayer == 1 ? "black" : "white";               //TODO in main
+//    printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
+//           toRowNum(lastMove.current.row), toColChar(lastMove.current.column),toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
     return SP_CHESS_GAME_SUCCESS;
 }
 

@@ -10,14 +10,47 @@
  * Initializing the specified FIAR game level settings of the user.
  *
  *
- * @param src - The target game
+ * @param src - The target game to load into
+ * @param src - The path to the required game
  * @return
- * 0 - if the user quits the game at this point.
- * 2 - if the game's level is set legally.
+
  */
-int initialize(SPFiarGame *fiarGame);
+void loadGame (SPChessGame* src, char* path);
 
 
+
+/**
+ * Printing the game's settings
+ *
+ * @param game - the current game
+ */
+
+void printSettings(SPChessGame* game);
+
+
+
+/**
+ * Managing the game mode.
+ *
+ * Does'nt affect the game if the command is illegal for the settings mode or undefined.
+ *
+ * @param src - The current game
+ *
+ * @return
+ * 0 - if the command is to quit the game at this point.
+ * 1 - if the command is to start the game.
+ */
+
+
+int settings(SPChessGame *game);
+
+
+
+
+//TODO doc to eCM
+
+
+void executeComputerMove(SPChessGame* src);
 
 /**
  * Executing the command given on the specified SPFiarGame.
@@ -33,7 +66,7 @@ int initialize(SPFiarGame *fiarGame);
  * 3 - if the command is to suggest move.
  * 2 - otherwize.
  */
-int execution (SPFiarGame* src, SPCommand command);
+//int execution (SPFiarGame* src, SPCommand command);
 
 
 /**
@@ -50,7 +83,7 @@ int execution (SPFiarGame* src, SPCommand command);
  * 1 - if the command is to restart the game at this point or undoing tyhe last move.
  * 2 - otherwize - invalid or illegal command.
  */
-int executionEnd (SPFiarGame* src, SPCommand command);
+//int executionEnd (SPFiarGame* src, SPCommand command);
 
 
 
@@ -61,6 +94,6 @@ int executionEnd (SPFiarGame* src, SPCommand command);
  * @param winner - the char represents the winner.
  * @return
  */
-void printWinner(char winner);
+//void printWinner(char winner);
 
 #endif

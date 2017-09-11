@@ -18,6 +18,6 @@
  * On success the function returns an optimized action.
  * which is the best move for the current player.
  */
-action* spMinimaxSuggestMove(SPChessGame* currentGame, unsigned int depth);
+action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth);
 
 #endif
