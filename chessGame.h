@@ -68,11 +68,16 @@ typedef struct sp_chess_game {
 } SPChessGame;
 
 
+
+
+
 /**
  * Type used for returning error codes from game functions
  */
 typedef enum sp_fiar_game_message_t {
-    SP_CHESS_GAME_INVALID_MOVE,
+    SP_CHESS_GAME_ILLEGAL_MOVE,
+    SP_CHESS_GAME_SOLDIER_MISMATCH,
+    SP_CHESS_GAME_INVALID_POSITION_ON_BOARD,
     SP_CHESS_GAME_INVALID_ARGUMENT,
     SP_CHESS_GAME_NO_HISTORY,
     SP_CHESS_GAME_SUCCESS,
@@ -235,7 +240,7 @@ bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier);
  * false otherwise
  */
 
-bool isMoveSafeForKing(SPChessGame* src, position origin , position dest);
+bool isMoveRiskTheKing(SPChessGame* src, position origin , position dest);
 
 
 /**
@@ -367,10 +372,14 @@ bool queenValidMove(SPChessGame* src, position origin , position dest);
 * @param origin - The origin position of the soldier
 * @param dest - The destination position of the soldier
 * @return
-* true  - if the move is possible
-* false - otherwise.
+*   SP_CHESS_GAME_ILLEGAL_MOVE - illegal move with the wanted soldier
+*   SP_CHESS_GAME_SOLDIER_MISMATCH - the origin is not position of a current player's soldier
+*   SP_CHESS_GAME_INVALID_POSITION_ON_BOARD - one of the positions is not on the board
+*   SP_CHESS_GAME_INVALID_ARGUMENT - if src is NULL
+*   SP_CHESS_GAME_SUCCESS - The move is valid
+*
 */
-bool isValidMove(SPChessGame* src, position origin , position dest);
+SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position dest);
 
 
 /**
@@ -445,4 +454,4 @@ int chessCheckWinner(SPChessGame* src);
 
 
 
-#endif //SPFINAL_CHESSGAME_H
+#endif SPFINAL_CHESSGAME_H

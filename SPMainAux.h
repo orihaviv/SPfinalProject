@@ -3,6 +3,7 @@
 
 
 #include "SPMiniMax.h"
+#include "fileHandler.h"
 
 
 
@@ -45,21 +46,21 @@ void printSettings(SPChessGame* game);
 int settings(SPChessGame *game);
 
 
+
+
 /**
- * Managing the game mode.
+ * Translating the char representing the soldier to its name.
  *
- * Does'nt affect the game if the command is illegal for the game mode or undefined.
+ * @param soldier - the soldier's representing char
  *
- * @param src - The current game
+ * @return the name of the soldier's piece
  *
- * @return
- * 0 - if the command is to quit the game at this point.
- * 1 - if the game continues.
  */
 
-int gameState (SPChessGame *game);
 
 
+
+char* translateToSoldiersName(char soldier);
 
 /**
  * Executing the next computer move.
@@ -74,13 +75,66 @@ void executeComputerMove(SPChessGame* src);
  * Executing the next user move.
  *
  * @param src - The target game
+ * @param command - The command to execute
+ *
  *
  * @return
  * 1 - if src is continued.
  * 0 - if the user quit the game in this turn.
  */
 
-int executePlayerMove (SPChessGame* src);
+int executePlayerMove (SPChessGame* src, SPCommand command);
+
+
+
+/**
+ * Printing suggested valid moves for the user.
+ *
+ * @param game - The target game
+ * @param command - The "get moves" command to execute
+ *
+ *
+ */
+
+void executeGetMoves(SPChessGame *game, SPCommand command);
+
+
+
+
+/**
+ * Executing an "Undo" command if legal.
+ *
+ * @param game - The target game
+ *
+ */
+
+void executeUndo(SPChessGame *game);
+
+
+/**
+ * Saving the game.
+ *
+ * @param game - The target game
+ * @param command - The "save" command to execute
+ *
+ */
+
+void executeSave(SPChessGame* game, SPCommand command);
+
+
+/**
+ * Managing the game mode.
+ *
+ * Does'nt affect the game if the command is illegal for the game mode or undefined.
+ *
+ * @param src - The current game
+ *
+ * @return
+ * 0 - if the command is to quit the game at this point.
+ * 1 - if the game continues.
+ */
+
+int gameState (SPChessGame *game);
 
 
 ///**

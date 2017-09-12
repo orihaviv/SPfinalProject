@@ -5,35 +5,36 @@
 #include "chessParser.h"
 
 
-
-void loadGame (SPChessGame* src, char* path){
+void loadGame(SPChessGame *src, char *path) {
     chessGameDestroy(&src);
-    //TODO
-    if (src->state == 0){ // if the loaded game is on settings mode
+    src = loadGame(path);
+    if (!src){
+        printf("Error: File doesn’t exist or cannot be opened\n");
+    } else if (src->state == 0) { // if the loaded game is on settings mode
         settings(src);
     }
     return;
 }
 
-void printSettings(SPChessGame* game){
+void printSettings(SPChessGame *game) {
     printf("SETTINGS:\nGAME MODE: %d\n", game->gameMode);
-    if (game->gameMode == 2) {
-        char* color = game->userColor == 1 ? "WHITE :""BLACK";
+    if (game->gameMode == 1) {
+        char *color = game->userColor == 1 ? "WHITE" : "BLACK";
         printf("DIFFICULTY_LVL: %d\nUSER_CLR: %s\n", game->difficulty, color);
     }
+
 }
 
 
-
-
 int settings(SPChessGame *game) {
+    if (!game) { return 0; }
     game->state = 0;
     char buffer[SP_MAX_LINE_LENGTH];
     SPCommand command;
     printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
     while (true) {
         fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
-        if(!buffer){ continue;}
+        if (!buffer) { continue; }
         command = spParserParseLine(buffer);
         switch (command.cmd) {
             case GAME_MODE:
@@ -42,21 +43,19 @@ int settings(SPChessGame *game) {
                 else if (command.arg == 2) { printf("Game mode is set to 2 players\n"); }
                 break;
             case DIFFICULTY:
-                if (game->gameMode == 2){
+                if (game->gameMode == 2) {
                     printf("Invalid command\n");
                     break;
-                }
-                else {
+                } else {
                     game->difficulty = command.arg;
                     printf("Game difficulty is set to %d\n", command.arg); // TODO print something?
                     break;
                 }
             case USER_COLOR:
-                if (game->gameMode == 2){
+                if (game->gameMode == 2) {
                     printf("Invalid command\n");
                     break;
-                }
-                else {
+                } else {
                     game->userColor = command.arg;
                     char *player = command.arg == 1 ? "black" : "white";
                     printf("User color is set to %s\n", player);   // TODO print something?
@@ -85,10 +84,9 @@ int settings(SPChessGame *game) {
 }
 
 
-
-char* translateToSoldiersName(char soldier){
-    char* name = (char*) malloc(10);
-    switch (soldier){
+char* translateToSoldiersName(char soldier) {
+    char *name = (char *) malloc(10);
+    switch (soldier) {
         case 'm':
         case 'M':
             name = "pawn";
@@ -118,42 +116,121 @@ char* translateToSoldiersName(char soldier){
 }
 
 
-//int gameState (SPChessGame *game){
-//    char buffer[SP_MAX_LINE_LENGTH];
-//    SPCommand command;
-//    command.cmd = INVALID;
-//    SP_CHESS_GAME_MESSAGE message;
-//    while (command.cmd == INVALID) {
-//        fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
-//        if (!buffer) { continue; }
-//        flag = false;
-//        command = spParserParseLine(buffer);
-//        switch (command.cmd) {
-}
-
-
-
-
-
-
-
-void executeComputerMove(SPChessGame* src){
+void executeComputerMove(SPChessGame *src) {
     action nextMove = *(spMinimaxSuggestMove(game, game->difficulty));
-    char soldier  = src->gameBoard[nextMove.prev.row][nextMove.prev.column];
-    while(chessGameSetMove(game, nextMove.prev, nextMove.current) != SP_CHESS_GAME_SUCCESS){ continue;}
-    char* name = translateToSoldiersName(soldier);
+    char soldier = src->gameBoard[nextMove.prev.row][nextMove.prev.column];
+    while (chessGameSetMove(game, nextMove.prev, nextMove.current) != SP_CHESS_GAME_SUCCESS) { continue; }
+    char *name = translateToSoldiersName(soldier);
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
            toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
     free(name);
 }
 
 
-int executePlayerMove (SPChessGame* src){
-//    int status;
-//    chessGamePrintBoard(src);
-//    char* color = src->currentPlayer == 1 ? "white" : "black";
-//    printf("%s player - enter your move\n", color);
-//    status = gameState(src);
+int executePlayerMove(SPChessGame *src, SPCommand command) {
+    msg = chessGameSetMove(game, command.source, command.destination);
+    if (msg == SP_CHESS_GAME_INVALID_POSITION_ON_BOARD) {
+        printf("Invalid position on the board\n");
+    } else if (msg == SP_CHESS_GAME_SOLDIER_MISMATCH) {
+        printf("The specified position does not contain your piece\n");
+    } else if (msg == SP_CHESS_GAME_ILLEGAL_MOVE) {
+        printf("Illegal move\n");
+    }
+}
+
+void executeGetMoves(SPChessGame *game, SPCommand command) {
+    SPArrayList *possibleActions;
+    if (game->gameMode == 2 || game->difficulty > 2) {
+        printf("Get move command is not supported\n");
+    } else if (!posOnBoard(command.source)) {
+        printf("Invalid position on the board\n");
+    } else if (game->currentPlayer == 1 && !isWhite(game->gameBoard[command.source.row][command.source.column])) {
+        printf("The specified position does not contain white player piece\n");
+    } else if (game->currentPlayer == 0 && !isBlack(game->gameBoard[command.source.row][command.source.column])) {
+        printf("The specified position does not contain black player piece\n");
+    } else {
+        possibleActions = getMovesForSoldier(game);
+        for (action move : possibleActions) {
+            printf("<%d,%c>", toRowNum(move.current.row), toColChar(move.current.column));
+            if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) { printf("*"); }
+            if (move.captured != BLANK) { printf("^"); }
+            printf("\n");
+        }
+    }
+    return;
+}
+
+void executeUndo(SPChessGame *game) {
+    if (game->gameMode == 2) {
+        printf("Undo command not available in two players mode\n");
+        return;
+    }
+    SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
+    if (msg == SP_CHESS_GAME_NO_HISTORY) {
+        printf("Empty history, move cannot be undone\n");
+        return;
+    }
+    char *player;
+    if (msg == SP_CHESS_GAME_SUCCESS) {
+        player = src->currentPlayer == 1 ? "black" : "white";
+        printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
+               toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
+        SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
+        if (msg == SP_CHESS_GAME_SUCCESS) {
+            player = src->currentPlayer == 1 ? "black" : "white";
+            printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
+                   toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
+        }
+    }
+}
+
+
+void executeSave(SPChessGame* game, SPCommand command){
+    int saved = saveGame(command.path, game);
+    if (saved == 0){
+        printf("File cannot be created or modified\n");
+    }
+}
+
+
+int gameState(SPChessGame *game) {
+    char buffer[SP_MAX_LINE_LENGTH];
+    SP_CHESS_GAME_MESSAGE msg;
+    SPCommand command;
+    command.cmd = INVALID;
+    int status;
+    SP_CHESS_GAME_MESSAGE message;
+    while (command.cmd == INVALID) {
+        fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
+        if (!buffer) { continue; }
+        flag = false;
+        command = spParserParseLine(buffer);
+        switch (command.cmd) {
+            case MOVE:
+                executePlayerMove(game, command);
+                break;
+            case GET_MOVES:
+                executeGetMoves(game, command);
+                break;
+            case SAVE:
+                executeSave(game, command);
+                break;
+            case UNDO:
+                executeUndo(game);
+                break;
+            case RESET:
+                printf("Restarting...\n");
+                chessGameDestroy(&game);
+                game = chessGameCreate();
+                status = settings(game);
+                if (status == 1) { break; }
+                return 0;
+            case QUIT:
+                printf("Exiting...\n");
+                chessGameDestroy(&game);
+                return 0;
+        }
+    }
 }
 
 

@@ -132,6 +132,9 @@ SPCommand spParserParseLine(const char* str) {
         } else if (!strcmp(firstToken, "load")) {
             strcpy(command.path, nextToken);
             command.cmd = LOAD;
+        } else if (!strcmp(firstToken, "save")){
+            strcpy(command.path, nextToken);
+            command.cmd = SAVE;
         } else if (nextToken != NULL) {
             printf("Invalid command\n");
         } else if (!strcmp(firstToken, "default")) {
@@ -142,8 +145,6 @@ SPCommand spParserParseLine(const char* str) {
             command.cmd = QUIT;
         } else if (!strcmp(firstToken, "start")) {
             command.cmd = START;
-        } else if (!strcmp(firstToken, "save")){
-            command.cmd = SAVE;
         } else if (!strcmp(firstToken, "undo")){
             command.cmd = UNDO;
         } else if (!strcmp(firstToken, "reset")) {

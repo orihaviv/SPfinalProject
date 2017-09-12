@@ -251,7 +251,7 @@ bool isTheKingThreatened(SPChessGame *src, int color) {
 
 
 
-bool isMoveSafeForKing(SPChessGame* src, position origin , position dest){
+bool isMoveRiskTheKing(SPChessGame* src, position origin , position dest){
     char tmp = src->gameBoard[dest.row][dest.column];
     src->gameBoard[dest.row][dest.column] = src->gameBoard[origin.row][origin.column];
     src->gameBoard[origin.row][origin.column] = BLANK;
@@ -356,10 +356,25 @@ bool queenValidMove(SPChessGame* src, position origin , position dest){
 }
 
 
-bool isValidMove(SPChessGame* src, position origin , position dest){
-    if ((!src) || !posOnBoard(origin) || !posOnBoard(dest) || (origin.row == dest.row && origin.column == dest.column)) { return false; }
-    if (src->currentPlayer == 1 && (isWhite(src->gameBoard[dest.row][dest.column]) || !isWhite(src->gameBoard[origin.row][origin.column]))) { return false;}
-    if (src->currentPlayer == 0 && (isBlack(src->gameBoard[dest.row][dest.column]) || !isBlack(src->gameBoard[origin.row][origin.column]))) { return false;}
+SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position dest){
+    if (!src) {
+        return SP_CHESS_GAME_INVALID_ARGUMENT;
+    }
+    if (!posOnBoard(origin) || !posOnBoard(dest)) {
+        return SP_CHESS_GAME_INVALID_POSITION_ON_BOARD;
+    }
+    if ((origin.row == dest.row && origin.column == dest.column)) { return SP_CHESS_GAME_ILLEGAL_MOVE; }
+
+    if (src->currentPlayer == 1 && !isWhite(src->gameBoard[origin.row][origin.column])) {
+        return SP_CHESS_GAME_SOLDIER_MISMATCH;
+    }
+    if (src->currentPlayer == 0 && !isBlack(src->gameBoard[origin.row][origin.column])) {
+        return SP_CHESS_GAME_SOLDIER_MISMATCH;
+    }
+    if ((src->currentPlayer == 1 && isWhite(src->gameBoard[dest.row][dest.column])) ||
+            src->currentPlayer == 0 && isBlack(src->gameBoard[dest.row][dest.column])){
+        return SP_CHESS_GAME_ILLEGAL_MOVE;
+    }
     char soldier = (src->gameBoard[origin.row][origin.column]);
     bool flag = true;
     if (soldier == PAWNWHITE || soldier == PAWNBLACK){ flag = pawnValidMove(src, origin, dest);}
@@ -368,10 +383,10 @@ bool isValidMove(SPChessGame* src, position origin , position dest){
     else if (soldier == ROOKBLACK || soldier == ROOKWHITE) { flag = rookValidMove(src, origin, dest);}
     else if (soldier == BISHOPBLACK || soldier == BISHOPWHITE) { flag = bishopValidMove(src, origin, dest);}
     else if (soldier == QUEENBLACK || soldier == QUEENWHITE) { flag = queenValidMove(src, origin, dest);}
-    if (flag && !isMoveSafeForKing(src, origin, dest)){
-        return true;
+    if (!flag || isMoveRiskTheKing(src, origin, dest)){
+        return SP_CHESS_GAME_ILLEGAL_MOVE;
     }
-    return false;
+    return SP_CHESS_GAME_SUCCESS;
 }
 
 
@@ -379,14 +394,11 @@ bool isValidMove(SPChessGame* src, position origin , position dest){
 
 
 SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest) {
-    if ((!src) || !posOnBoard(origin) || !posOnBoard(dest)) {
-        return SP_CHESS_GAME_INVALID_ARGUMENT;
-    }
-    if (!isValidMove(src, origin, dest)) {
-        return SP_CHESS_GAME_INVALID_MOVE;
+    SP_CHESS_GAME_MESSAGE msg = isValidMove(src, origin, dest);
+    if (msg != SP_CHESS_GAME_SUCCESS){
+        return msg;
     }
     char soldier = (src->gameBoard[origin.row][origin.column]);
-    int currPlayer = src->currentPlayer;
     if (soldier == KINGBLACK){
         src->blackKing.row = dest.row;
         src->blackKing.column = dest.column;
@@ -429,9 +441,6 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     src->gameBoard[lastMove.prev.row][lastMove.prev.column] = src->gameBoard[lastMove.current.row][lastMove.current.column];
     src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
     src->currentPlayer = 1 - src->currentPlayer;
-//    char* player = src->currentPlayer == 1 ? "black" : "white";               //TODO in main
-//    printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player,
-//           toRowNum(lastMove.current.row), toColChar(lastMove.current.column),toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
     return SP_CHESS_GAME_SUCCESS;
 }
 
