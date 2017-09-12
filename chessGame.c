@@ -414,7 +414,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     move.current = dest;
     move.prev = origin;
     move.captured = captured;
-    spArrayListAddFirst(src->lastMoves, move);
+    gameSpArrayListAdd(src->lastMoves, move);
     src->currentPlayer = 1 - src->currentPlayer;
     return SP_CHESS_GAME_SUCCESS;
 }

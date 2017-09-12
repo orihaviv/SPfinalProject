@@ -8,7 +8,7 @@
 
 
 /**
- * Initializing the specified FIAR game level settings of the user.
+ * Loading into src thje game described in the file the path leads to
  *
  *
  * @param src - The target game to load into

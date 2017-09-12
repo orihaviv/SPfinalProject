@@ -34,7 +34,7 @@ typedef struct positions_on_board {
  *                           list.
  * spArrayListClear        - Clears all elements from a specified array list.
  *
- * gameSpArrayListAdd      -Special insertion for a FIAR game usage of arraylist,
+ * gameSpArrayListAdd      -Special insertion for a Chess game usage of arraylist,
  * 							Inserts an element at the end of the array list.
  * 							if full: delete the first to make place for the new element.
  *
@@ -128,7 +128,7 @@ SP_ARRAY_LIST_MESSAGE spArrayListClear(SPArrayList* src);
 
 
 /**
- * Special insertion for a FIAR game usage of arraylist.
+ * Special insertion for a Chess game usage of arraylist.
  * Inserts element at a the end of the source element. If the array list
  * reached its maximum capacity it deletes the first and so make place for the new element.
  * @param src   - the source array list

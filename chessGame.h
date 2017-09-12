@@ -33,8 +33,8 @@
 
 #define toColChar(a) a+65
 #define toRowNum(a) a+1
-#define maxi(a,b) (a > b ? a : b)
-#define mini(a,b) (a < b ? a : b)
+#define maxi(a, b) (a > b ? a : b)
+#define mini(a, b) (a < b ? a : b)
 
 
 /**
@@ -68,13 +68,10 @@ typedef struct sp_chess_game {
 } SPChessGame;
 
 
-
-
-
 /**
  * Type used for returning error codes from game functions
  */
-typedef enum sp_fiar_game_message_t {
+typedef enum sp_chess_game_message_t {
     SP_CHESS_GAME_ILLEGAL_MOVE,
     SP_CHESS_GAME_SOLDIER_MISMATCH,
     SP_CHESS_GAME_INVALID_POSITION_ON_BOARD,
@@ -128,7 +125,7 @@ void chessGameDestroy(SPChessGame **src);
  * \0 if illegal position
  */
 
-char whosThere (SPChessGame* src, int row, int col);
+char whosThere(SPChessGame *src, int row, int col);
 
 /**
  * returns the relevant king's position
@@ -225,7 +222,7 @@ bool isTheKingThreatened(SPChessGame *src, int color);
  * false otherwise
  */
 
-bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier);
+bool isTheSoldierThreatened(SPChessGame *src, int color, position soldier);
 
 
 
@@ -240,17 +237,17 @@ bool isTheSoldierThreatened(SPChessGame *src, int color , position soldier);
  * false otherwise
  */
 
-bool isMoveRiskTheKing(SPChessGame* src, position origin , position dest);
+bool isMoveRiskTheKing(SPChessGame *src, position origin, position dest);
 
 
 /**
 * Checks if the position is on board
-* @param pos - the position we want to chack
+* @param pos - the position we want to check
 * @return true if it is on the board
 * false otherwise
 */
 
-bool posOnBoard (position pos);
+bool posOnBoard(position pos);
 
 
 
@@ -286,7 +283,7 @@ bool isWhite(char soldier);
 * false - otherwise.
 */
 
-bool pawnValidMove(SPChessGame* src, position origin , position dest);
+bool pawnValidMove(SPChessGame *src, position origin, position dest);
 
 
 /**
@@ -301,7 +298,7 @@ bool pawnValidMove(SPChessGame* src, position origin , position dest);
 */
 
 
-bool knightValidMove(SPChessGame* src, position origin , position dest);
+bool knightValidMove(SPChessGame *src, position origin, position dest);
 
 
 
@@ -318,7 +315,7 @@ bool knightValidMove(SPChessGame* src, position origin , position dest);
 
 
 
-bool kingValidMove(SPChessGame* src, position origin , position dest);
+bool kingValidMove(SPChessGame *src, position origin, position dest);
 
 
 /**
@@ -332,7 +329,7 @@ bool kingValidMove(SPChessGame* src, position origin , position dest);
 * false - otherwise.
 */
 
-bool rookValidMove(SPChessGame* src, position origin , position dest);
+bool rookValidMove(SPChessGame *src, position origin, position dest);
 
 
 /**
@@ -347,7 +344,7 @@ bool rookValidMove(SPChessGame* src, position origin , position dest);
 */
 
 
-bool bishopValidMove(SPChessGame* src, position origin , position dest);
+bool bishopValidMove(SPChessGame *src, position origin, position dest);
 
 /**
 * Checks if a queen can be moved from origin to destination.
@@ -361,8 +358,7 @@ bool bishopValidMove(SPChessGame* src, position origin , position dest);
 */
 
 
-bool queenValidMove(SPChessGame* src, position origin , position dest);
-
+bool queenValidMove(SPChessGame *src, position origin, position dest);
 
 
 /**
@@ -379,22 +375,24 @@ bool queenValidMove(SPChessGame* src, position origin , position dest);
 *   SP_CHESS_GAME_SUCCESS - The move is valid
 *
 */
-SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position dest);
+SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame *src, position origin, position dest);
 
 
 /**
  * Sets the next move in a given game by specifying origin position and destination position.
  *
- * @param src - The target game
- * @param col - The target column, the columns are 0-based
+ * @param src - The current game
+ * @param origin - the origin position of the soldier
+ * @param origin - the destination position of the soldier
  * @return
- *
- * SP_FIAR_GAME_INVALID_ARGUMENT - if src is NULL or col is out-of-range
- * SP_FIAR_GAME_INVALID_MOVE - if the given column is full.
- * SP_FIAR_GAME_SUCCESS - otherwise
+ *   SP_CHESS_GAME_ILLEGAL_MOVE - illegal move with the wanted soldier
+ *   SP_CHESS_GAME_SOLDIER_MISMATCH - the origin is not position of a current player's soldier
+ *   SP_CHESS_GAME_INVALID_POSITION_ON_BOARD - one of the positions is not on the board
+ *   SP_CHESS_GAME_INVALID_ARGUMENT - if src is NULL
+ *   SP_CHESS_GAME_SUCCESS - on success
  */
-SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest);
 
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame *src, position origin, position dest);
 
 
 /**
@@ -402,39 +400,40 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
  *
  * @param src - The source game
  * @return
- * SP_FIAR_GAME_INVALID_ARGUMENT - if src == NULL
- * SP_FIAR_GAME_NO_HISTORY       - if the user invoked this function more then
+ * SP_CHESS_GAME_INVALID_ARGUMENT - if src == NULL
+ * SP_CHESS_GAME_NO_HISTORY       - if the user invoked this function more then
  *                                 historySize in a row.
- * SP_FIAR_GAME_SUCCESS          - on success.
+ * SP_CHESS_GAME_SUCCESS          - on success.
  */
-SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src);
-
-
-
+SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame *src);
 
 
 /**
  * On success, the function prints the board game. If an error occurs, then the
- * function does nothing. The characters 'X' and 'O' are used to represent
- * the discs of player 1 and player 2, respectively.
+ * function does nothing.
  *
  * @param src - the target game
  * @return
- * SP_FIAR_GAME_INVALID_ARGUMENT - if src==NULL
- * SP_FIAR_GAME_SUCCESS - otherwise
+ * SP_CHESS_GAME_INVALID_ARGUMENT - if src is NULL
+ * SP_CHESS_GAME_SUCCESS - otherwise
  *
  */
 SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src);
 
 
-
-
-
-
-//TODO documantion
-SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col);
-
-
+/**
+ * On success, the function returns an arrayList of actions.
+ * each action is a valid action for the soldier in the given coordinates on board
+ *
+ * @param src - the game
+ * @param row - the soldier's row
+ * @param col - the soldier's column
+ * @return
+ * NULL - if src==NULL
+ * actions arrayList - otherwise
+ *
+ */
+SPArrayList *getMovesForSoldier(SPChessGame *src, int row, int col);
 
 
 /**
@@ -449,9 +448,7 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col);
 * 2 - If the game is over and there's a tie
 * -1 - otherwise
 */
-int chessCheckWinner(SPChessGame* src);
-
-
+int chessCheckWinner(SPChessGame *src);
 
 
 #endif SPFINAL_CHESSGAME_H

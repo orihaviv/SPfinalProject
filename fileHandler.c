@@ -102,7 +102,7 @@ void getLabelInfo(char *info, char *label) {
 }
 
 
-SPChessGame *loadGame(char *filePath) {
+SPChessGame *loadChessGame(char *filePath) {
     SPChessGame *outputGame = chessGameCreate();
     char labelInfo[9];
     char line[SP_MAX_LINE_LENGTH];

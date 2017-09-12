@@ -112,7 +112,7 @@ void getLabelInfo(char* info, char* label);
 
  */
 
-SPChessGame *loadGame(char *filePath)
+SPChessGame *loadChessGame(char *filePath)
 
 
 
