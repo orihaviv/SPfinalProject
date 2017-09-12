@@ -56,55 +56,8 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
             }
         }
     }
-    spArrayListDestroy(possibleActions);
-    chessGameDestroy(gameCopy);
+    spArrayListDestroy(&possibleActions);
+    chessGameDestroy(&gameCopy);
     return &(bestAction);
 
-}
-
-
-
-
-int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
-
-
-    if (player == 1) {         // white's turn
-        bestScore == INT_MIN;
-        for (int i = 0; i < GAMESIZE; i++) {
-            for (int j = 0; j < GAMESIZE; j++) {
-                currentSoldier = gameCopy->gameBoard[i][j];
-                if (isWhite(currentSoldier)) {
-                    possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
-                        bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
-                        chessGameUndoPrevMove(gameCopy);
-                        alpha = maxi(bestScore, alpha);
-                        if (beta <= alpha) { break; }
-                    }
-                }
-            }
-        }
-    }
-    else {                  //  black's turn
-        bestScore == INT_MAX;
-        for (int i = 0; i < GAMESIZE; i++) {
-            for (int j = 0; j < GAMESIZE; j++) {
-                currentSoldier = gameCopy->gameBoard[i][j];
-                if (isBlack(currentSoldier)) {
-                    possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
-                        bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
-                        chessGameUndoPrevMove(gameCopy);
-                        beta = mini(bestScore, beta);
-                        if (beta <= alpha) { break; }
-                    }
-                }
-            }
-        }
-    }
-    spArrayListDestroy(possibleActions);
-    chessGameDestroy(gameCopy);
-    return bestScore;
 }

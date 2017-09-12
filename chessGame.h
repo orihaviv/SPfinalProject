@@ -111,7 +111,7 @@ SPChessGame *chessGameCopy(SPChessGame *src);
  *
  * @param src - the source game
  */
-void chessGameDestroy(SPChessGame *src);
+void chessGameDestroy(SPChessGame **src);
 
 
 /**

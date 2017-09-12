@@ -112,7 +112,7 @@ SPArrayList* spArrayListCopy(SPArrayList* src);
  * source array is NULL, then the function does nothing.
  * @param src - the source array list
  */
-void spArrayListDestroy(SPArrayList* src);
+void spArrayListDestroy(SPArrayList** src);
 
 /**
  * Clears all elements from the source array list. After invoking this function,

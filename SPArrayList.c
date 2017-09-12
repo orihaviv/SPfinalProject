@@ -40,7 +40,7 @@ SPArrayList* spArrayListCreate(int maxSize){
             recentMoves->maxSize = maxSize;
             return recentMoves;
         }
-        spArrayListDestroy(recentMoves);
+        spArrayListDestroy(&recentMoves);
         printf("Error: calloc has failed");
         return NULL;
     }
@@ -62,19 +62,20 @@ SPArrayList* spArrayListCopy(SPArrayList* src){
                 }
                 return newCopy;
             }
-            spArrayListDestroy(newCopy);
+            spArrayListDestroy(&newCopy);
         }
     }
     printf("Error: calloc has failed");
     return NULL;
 }
 
-void spArrayListDestroy(SPArrayList* src){
-    if (src == NULL){
+void spArrayListDestroy(SPArrayList** src){
+    if (*src == NULL){
         return;
     }
-    free(src->elements);
-    free(src);
+    free((*src)->elements);
+    free(*src);
+    *src = NULL;
     return;
 }
 

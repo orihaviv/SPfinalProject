@@ -64,10 +64,10 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
     int scoreOfCurrent = scoreOfLeafNode(gameCopy);
 
     if ((depth == 0) || (scoreOfCurrent == INT_MAX) || (scoreOfCurrent ==  INT_MIN)) {
-        chessGameDestroy(gameCopy);
+        chessGameDestroy(&gameCopy);
         return scoreOfCurrent;
     } else if (scoreOfCurrent == 999){
-        chessGameDestroy(gameCopy);
+        chessGameDestroy(&gameCopy);
         return 0;
     }
 
@@ -107,7 +107,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
             }
         }
     }
-    spArrayListDestroy(possibleActions);
-    chessGameDestroy(gameCopy);
+    spArrayListDestroy(&possibleActions);
+    chessGameDestroy(&gameCopy);
     return bestScore;
 }

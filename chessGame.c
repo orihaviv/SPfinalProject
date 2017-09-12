@@ -50,7 +50,7 @@ SPChessGame *chessGameCreate() {
 
             return game;
         }
-        chessGameDestroy(game);
+        chessGameDestroy(&game);
     } else {
         printf("Error: game create malloc has failed");
     }
@@ -83,7 +83,7 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
                 }
                 return game;
             }
-            chessGameDestroy(game);
+            chessGameDestroy(&game);
         } else {
             printf("Error: copy malloc has failed");
         }
@@ -96,12 +96,12 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
 
 
 
-void chessGameDestroy(SPChessGame *src) {
-    if (!src) {
-        return;
+void chessGameDestroy(SPChessGame** src) {
+    if (*src != NULL) {
+        spArrayListDestroy(&((*src)->lastMoves));
+        free(*src);
+        *src = NULL;
     }
-    spArrayListDestroy(src->lastMoves);
-    free(src);
     return;
 }
 

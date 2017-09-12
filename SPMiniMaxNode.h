@@ -62,7 +62,7 @@ int scoreOfLeafNode(SPChessGame* currentGame);
  * INT_MIN if the cSPFiarGameomputer is the winner in this game state.
  * 0 if the game is a tie.
  */
-int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta)
+int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta);
 
 
 #endif
