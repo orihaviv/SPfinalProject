@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 31/05/2017.
+// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 31/05/2017.
 //
 
 #include "chessParser.h"
@@ -104,6 +104,33 @@ SPCommand getMoveCmd(char* source){
         command.source.row = rowToInt(source[3]);
     }
     return command;
+}
+
+char getPiece(char* source){
+	char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
+	strcpy(strCopy, str);
+    char *firstToken = strtok(strCopy, " \t\r\n");
+    char *nextToken = strtok(NULL, " \t\r\n");
+    if (nextToken != null){
+    	printf("Invalid Type\n");
+    	return '_';
+    }
+    if(!strcmp(firstToken, "queen")){
+    	return 'q';
+    }
+    if(!strcmp(firstToken, "rook")){
+    	return 'r';
+    }
+    if(!strcmp(firstToken, "knight")){
+    	return 'n';
+    }
+    if(!strcmp(firstToken, "bishop")){
+    	return 'b';
+    }
+    if(!strcmp(firstToken, "pawn")){
+        return 'p';
+    }
+    return '_';
 }
 
 
