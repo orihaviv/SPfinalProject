@@ -23,6 +23,7 @@ typedef enum {
 	DEFAULT_GAME,
 	PRINT_SETTING,
 	MOVE,
+	CASTLE,
 	GET_MOVES,
 	START,
 	SAVE,
