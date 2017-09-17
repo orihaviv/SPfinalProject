@@ -7,6 +7,7 @@
 
 
 
+
 /**
  * Loading into src thje game described in the file the path leads to
  *
@@ -134,7 +135,7 @@ void executeSave(SPChessGame* game, SPCommand command);
  * 1 - if the game continues.
  */
 
-int gameState (SPChessGame *game);
+SPCommand gameState (SPChessGame *game);
 
 
 ///**
