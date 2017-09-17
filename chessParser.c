@@ -110,7 +110,7 @@ SPCommand getMoveCmd(char* source){
     SPCommand command;
     command.cmd = INVALID;
     if (!source){ return command;}
-    if (source[0] == '<' && source[2] == ',' && source[4] == '>' && source[1] > '0' && source[1] < '9' && source[3] >= 'A' && source[3] <= 'H'){
+    if (source[0] == '<' && source[2] == ',' && source[4] == '>' ){
         command.cmd = GET_MOVES;
         command.source.column = colToInt(source[3]);
         command.source.row = rowToInt(source[1]);
