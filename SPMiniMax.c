@@ -8,14 +8,14 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
     if (currentGame == NULL || depth <= 0 || depth > 4){ //TODO change >4 to >5 if needed
         return NULL;
     }
-    SPChessGame* gameCopy = (spChessGameCopy(currentGame));
+    SPChessGame* gameCopy = (chessGameCopy(currentGame));
     action bestAction;
     int bestScore, score;
     SPArrayList* possibleActions;
     char currentSoldier;
 
 
-
+    action move;
     if (gameCopy->currentPlayer == 1) {         // white's turn
         bestScore == INT_MIN;
         for (int i = 0; i < GAMESIZE; i++) {
@@ -23,8 +23,9 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                 currentSoldier = gameCopy->gameBoard[i][j];
                 if (isWhite(currentSoldier)) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
+                    for (int index = 0; index < possibleActions->actualSize; index++) {
+                        move = *(spArrayListGetAt(possibleActions, index));
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
                         score = nodeScore(gameCopy, depth - 1, 1 - gameCopy->currentPlayer, INT_MIN, INT_MAX);
                         if (bestScore < score) {
                             bestAction = move;
@@ -43,8 +44,9 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                 currentSoldier = gameCopy->gameBoard[i][j];
                 if (isBlack(currentSoldier)) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
+                    for (int index = 0; index < possibleActions->actualSize; index++) {
+                        move = *(spArrayListGetAt(possibleActions, index));
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
                         score = nodeScore(gameCopy, depth - 1, 1 - gameCopy->currentPlayer, INT_MIN, INT_MAX);
                         if (bestScore > score) {
                             bestAction = move;

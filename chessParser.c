@@ -105,11 +105,12 @@ SPCommand getMoveCmd(char* source){
 }
 
 char getPiece(char* source){
+    if (!source){ return '_'; }
 	char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
-	strcpy(strCopy, str);
+	strcpy(strCopy, source);
     char *firstToken = strtok(strCopy, " \t\r\n");
     char *nextToken = strtok(NULL, " \t\r\n");
-    if (nextToken != null){
+    if (nextToken != NULL){
     	printf("Invalid Type\n");
     	return '_';
     }
@@ -128,6 +129,7 @@ char getPiece(char* source){
     if(!strcmp(firstToken, "pawn")){
         return 'p';
     }
+    printf("Invalid Type\n");
     return '_';
 }
 

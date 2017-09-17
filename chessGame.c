@@ -3,6 +3,7 @@
 //
 
 //#include <ctype.h>
+#include <ctype.h>
 #include "chessGame.h"
 
 
@@ -389,11 +390,31 @@ SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position d
     return SP_CHESS_GAME_SUCCESS;
 }
 
+void pawnPromotion (SPChessGame* src, action move, int isMini) {
+    if (!src) { return; }
+    char piece = BLANK;
+    if ((src->gameMode == 1 && src->currentPlayer != src->userColor) || isMini == 1){
+        piece = QUEENWHITE;
+    }
+    else {
+        char buffer[SP_MAX_LINE_LENGTH];
+        printf("Pawn promotion - please replace the pawn by queen, rook, knight, bishop or pawn:\n");
+        while (piece == BLANK) {
+            fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
+            piece = getPiece(buffer);
+        }
+    }
+    if (move.piece == PAWNBLACK) {
+        src->gameBoard[move.current.row][move.current.column] = (char)(toupper(piece));
+    }
+    if (move.piece == PAWNWHITE) {
+        src->gameBoard[move.current.row][move.current.column] = piece;
+    }
+}
 
 
 
-
-SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest) {
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest, int isMini) {
     SP_CHESS_GAME_MESSAGE msg = isValidMove(src, origin, dest);
     if (msg != SP_CHESS_GAME_SUCCESS){
         return msg;
@@ -414,7 +435,11 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     move.current = dest;
     move.prev = origin;
     move.captured = captured;
+    move.piece = soldier;
     gameSpArrayListAdd(src->lastMoves, move);
+    if ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7)) {
+        pawnPromotion(src, move, isMini);
+    }
     src->currentPlayer = 1 - src->currentPlayer;
     return SP_CHESS_GAME_SUCCESS;
 }
@@ -430,15 +455,15 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     }
     action lastMove = *(spArrayListGetFirst(src->lastMoves));
     spArrayListRemoveFirst(src->lastMoves);
-    if ((src->gameBoard[lastMove.current.row][lastMove.current.column]) == KINGBLACK){
+    if (lastMove.piece == KINGBLACK){
         src->blackKing.row = lastMove.prev.row;
         src->blackKing.column = lastMove.prev.column;
     }
-    else if ((src->gameBoard[lastMove.current.row][lastMove.current.column]) == KINGWHITE){
+    else if (lastMove.piece == KINGWHITE){
         src->whiteKing.row = lastMove.prev.row;
         src->whiteKing.column = lastMove.prev.column;
     }
-    src->gameBoard[lastMove.prev.row][lastMove.prev.column] = src->gameBoard[lastMove.current.row][lastMove.current.column];
+    src->gameBoard[lastMove.prev.row][lastMove.prev.column] = lastMove.piece;
     src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
     src->currentPlayer = 1 - src->currentPlayer;
     return SP_CHESS_GAME_SUCCESS;
@@ -464,6 +489,7 @@ SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
         printf(" %c", (i + 65));
     }
     printf("\n\n");
+    return SP_CHESS_GAME_SUCCESS;
 }
 
 
@@ -480,7 +506,7 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
             tmpDest.row = i;
             tmpDest.column = j;
             if (isValidMove(src, soldierPos, tmpDest)){
-                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmpDest, whosThere(src, i, j)));
+                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmpDest, whosThere(src, i, j), src->gameBoard[row][col]));
             }
         }
     }
@@ -508,7 +534,7 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
         }
         // no possible moves at all for the white
         if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_BLACK_WINNER;}  // is the white king threatened?
-        else return SP_CHESS_GAME_TIE,;
+        else return SP_CHESS_GAME_TIE;
     }
     else {
         for (int i = 0; i < GAMESIZE; i++){
@@ -522,6 +548,6 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
         }
         // no possible moves at all for the black
         if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_WHITE_WINNER;}  // is the black king threatened?
-        else return SP_CHESS_GAME_TIE,;
+        else return SP_CHESS_GAME_TIE;
     }
 }

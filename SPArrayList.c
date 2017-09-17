@@ -6,13 +6,14 @@
 #include "SPArrayList.h"
 
 
-action generateAction(position a, position b, char c){
+action generateAction(position a, position b, char c, char d){
     action res;
     res.prev.row = a.row;
     res.prev.column = a.column;
     res.current.row = b.row;
     res.current.column = b.column;
     res.captured = c;
+    res.piece = d;
     return res;
 }
 

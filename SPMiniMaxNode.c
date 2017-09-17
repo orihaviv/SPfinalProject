@@ -11,11 +11,11 @@ int soldierScore(char soldier) {
         case PAWNWHITE:
             return PAWNWHITESCORE;
         case PAWNBLACK:
-            return PAWNWBLACKSCORE;
+            return PAWNBLACKSCORE;
         case BISHOPWHITE:
             return BISHOPWHITESCORE;
         case BISHOPBLACK:
-            return BISOPBLACKSCORE;
+            return BISHOPBLACKSCORE;
         case ROOKWHITE:
             return ROOKWHITESCORE;
         case ROOKBLACK:
@@ -71,6 +71,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
         return 0;
     }
 
+    action move;
     if (player == 1) {         // white's turn
         bestScore == INT_MIN;
         for (int i = 0; i < GAMESIZE; i++) {
@@ -78,8 +79,9 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                 currentSoldier = gameCopy->gameBoard[i][j];
                 if (isWhite(currentSoldier)) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
+                    for (int index = 0; index < possibleActions->actualSize; index++) {
+                        move = *(spArrayListGetAt(possibleActions, index));
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
                         bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(gameCopy);
                         alpha = maxi(bestScore, alpha);
@@ -96,8 +98,9 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                 currentSoldier = gameCopy->gameBoard[i][j];
                 if (isBlack(currentSoldier)) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
-                    for (action move : possibleActions) {
-                        chessGameSetMove(gameCopy, move.prev, move.current);
+                    for (int index = 0; index < possibleActions->actualSize; index++) {
+                        move = *(spArrayListGetAt(possibleActions, index));
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
                         bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(gameCopy);
                         beta = mini(bestScore, beta);

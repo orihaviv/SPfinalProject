@@ -389,12 +389,26 @@ bool queenValidMove(SPChessGame *src, position origin, position dest);
 SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame *src, position origin, position dest);
 
 
+
+/**
+ * Promoting a pawn.
+ *
+ * @param src - The current game
+ * @param move - the action leaded to the promotion
+ * @param isMini - indicates if the move is part of the miniMax prediction
+ */
+
+
+void pawnPromotion (SPChessGame* src, action move, int isMini);
+
+
 /**
  * Sets the next move in a given game by specifying origin position and destination position.
  *
  * @param src - The current game
  * @param origin - the origin position of the soldier
- * @param origin - the destination position of the soldier
+ * @param dest - the destination position of the soldier
+ * @param isMini - indicates if the move is part of the miniMax prediction
  * @return
  *   SP_CHESS_GAME_ILLEGAL_MOVE - illegal move with the wanted soldier
  *   SP_CHESS_GAME_SOLDIER_MISMATCH - the origin is not position of a current player's soldier
@@ -403,7 +417,7 @@ SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame *src, position origin, position de
  *   SP_CHESS_GAME_SUCCESS - on success
  */
 
-SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame *src, position origin, position dest);
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame *src, position origin, position dest, int isMini);
 
 
 /**
