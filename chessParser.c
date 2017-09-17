@@ -4,8 +4,6 @@
 
 #include "chessParser.h"
 
-
-
 bool spParserIsInt(const char* str){
     if ((!str) || ((str[0] != '-') && ((str[0] > '9') || (str[0] < '0')))){
         return false;
