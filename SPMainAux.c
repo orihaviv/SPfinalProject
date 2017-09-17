@@ -53,7 +53,7 @@ int settings(SPChessGame *game) {
                     printf("Invalid command\n");
                 } else {
                     game->userColor = command.arg;
-                    char *player = command.arg == 1 ? "black" : "white";
+                    char *player = command.arg == 0 ? "black" : "white";
                     printf("User color is set to %s\n", player);   // TODO print something?
                 }
                 break;
@@ -75,6 +75,8 @@ int settings(SPChessGame *game) {
             case START:
                 game->state = 1;
                 return 1;
+            case IGNORE:
+                break;
             default:
                 printf("Invalid command\n");
                 break;

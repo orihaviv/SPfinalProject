@@ -30,6 +30,7 @@ typedef enum {
 	UNDO,
 	RESET,
 	INVALID,
+	IGNORE,
 	QUIT,
 } SP_COMMAND;
 

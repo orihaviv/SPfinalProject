@@ -20,14 +20,12 @@ bool spParserIsInt(const char* str){
 SPCommand setGameModeCmd (char* mode) {
     SPCommand command;
     command.cmd = GAME_MODE;
-    if (!strcmp(mode, "1")) {
+    if (mode == NULL || !strcmp(mode, "1")){
         command.arg = 1;
     } else if (!strcmp(mode, "2")) {
         command.arg = 2;
-    } else if (mode == NULL){
-        command.arg = 1;
     } else {
-        command.cmd = INVALID;
+        command.cmd = IGNORE;
         printf("Wrong game mode\n");
     }
     return command;
@@ -37,7 +35,7 @@ SPCommand setGameModeCmd (char* mode) {
 
 SPCommand setDifficultyCmd(char* diff) {
     SPCommand command;
-    command.cmd = INVALID;
+    command.cmd = IGNORE;
     if(diff == NULL){
         command.cmd = DIFFICULTY;
         command.arg = 2;
@@ -46,7 +44,6 @@ SPCommand setDifficultyCmd(char* diff) {
     if (spParserIsInt(diff)){
         level = atoi(diff);
         if (level > 0 && level < 5){
-            command.cmd = DIFFICULTY;
             command.arg = level;
         }
         else if (level == 5){
@@ -70,16 +67,16 @@ SPCommand setColorCmd(char* color){
     } else if (!strcmp(color, "1")) {
         command.arg = 1;
     } else {
-        command.cmd = INVALID;
+        command.cmd = IGNORE;
         printf("Invalid color\n");
     }
     return command;
 }
 
-SPCommand setCastleCmd(char* origin){
+SPCommand setCastleCmd(char* origin) {
     SPCommand command;
     command.cmd = CASTLE;
-    if (origin == NULL){
+    if (origin == NULL) {
         command.cmd = INVALID;
 //     } else if (!strcmp(color, "0")) {
 //         command.arg = 0;
@@ -90,6 +87,7 @@ SPCommand setCastleCmd(char* origin){
 //         printf("Invalid color\n");
 //     }
 //     return command;
+    }
 }
 
 SPCommand setMoveCmd(char* source, char* dest){
@@ -115,7 +113,7 @@ SPCommand getMoveCmd(char* source){
     if (source[0] == '<' && source[2] == ',' && source[4] == '>' && source[1] > '0' && source[1] < '9' && source[3] >= 'A' && source[3] <= 'H'){
         command.cmd = GET_MOVES;
         command.source.column = colToInt(source[3]);
-        command.source.row = rowToInt(source[3]);
+        command.source.row = rowToInt(source[1]);
     }
     return command;
 }
