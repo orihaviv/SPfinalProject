@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 05/09/2017.
+// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 05/09/2017.
 //
 
 //#include <ctype.h>
@@ -491,7 +491,7 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
 
 
 
-int chessCheckWinner(SPChessGame* src){
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
     if (!src){ return NULL;}
     char tmp;
     SPArrayList *possibleMoves;
@@ -502,13 +502,13 @@ int chessCheckWinner(SPChessGame* src){
                 tmp = whosThere(src, i, j);
                 if (isWhite(tmp)){
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0){ return -1; }
+                    if (possibleMoves->actualSize > 0){ return SP_CHESS_GAME_NO_WINNER; }
                 }
             }
         }
         // no possible moves at all for the white
-        if (isTheKingThreatened(src, src->currentPlayer)){ return 0;}  // is the white king threatened?
-        else return 2;
+        if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_BLACK_WINNER;}  // is the white king threatened?
+        else return SP_CHESS_GAME_TIE,;
     }
     else {
         for (int i = 0; i < GAMESIZE; i++){
@@ -516,18 +516,12 @@ int chessCheckWinner(SPChessGame* src){
                 tmp = whosThere(src, i, j);
                 if (isBlack(tmp)){
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0){ return -1; }
+                    if (possibleMoves->actualSize > 0){ return SP_CHESS_GAME_NO_WINNER; }
                 }
             }
         }
         // no possible moves at all for the black
-        if (isTheKingThreatened(src, src->currentPlayer)){ return 1;}  // is the black king threatened?
-        else return 2;
+        if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_WHITE_WINNER;}  // is the black king threatened?
+        else return SP_CHESS_GAME_TIE,;
     }
 }
-
-
-
-
-
-
