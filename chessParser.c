@@ -137,13 +137,14 @@ char getPiece(char* source){
 SPCommand spParserParseLine(const char* str) {
     SPCommand command;
     command.cmd = INVALID;
-    if (!str || strtok(str, " \t\r\n") == NULL){
+    if (!str){
         return command;
     }
     char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
+        if (firstToken == NULL){ return command; }
         char *nextToken = strtok(NULL, " \t\r\n");
         if (!strcmp(firstToken, "game_mode")) {
             return setGameModeCmd(nextToken);

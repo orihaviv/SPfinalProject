@@ -8,13 +8,12 @@
 void loadGame(SPChessGame *src, char *path) {
     chessGameDestroy(&src);
     src = loadChessGame(path);
-    if (!src){
-        printf("Error: File doesn’t exist or cannot be opened\n");
-    } else if (src->state == 0) { // if the loaded game is on settings mode
-        settings(src);
+    if (!src) {
+        printf("Error: File does not exist or cannot be opened\n");
+        return;
     }
-    return;
 }
+
 
 void printSettings(SPChessGame *game) {
     printf("SETTINGS:\nGAME MODE: %d\n", game->gameMode);

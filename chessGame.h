@@ -480,4 +480,4 @@ SPArrayList *getMovesForSoldier(SPChessGame *src, int row, int col);
 SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src);
 
 
-#endif SPFINAL_CHESSGAME_H
+#endif//SPFINAL_CHESSGAME_H
