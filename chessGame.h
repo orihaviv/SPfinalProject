@@ -89,8 +89,6 @@ typedef enum sp_chess_game_state_t {
     SP_CHESS_GAME_WHITE_WINNER,
     SP_CHESS_GAME_BLACK_WINNER,
     SP_CHESS_GAME_NO_WINNER,
-    SP_CHESS_GAME_TIE,
-    SP_CHESS_GAME_SUCCESS,
 } SP_CHESS_GAME_STATE;
 
 /**
@@ -461,7 +459,7 @@ SPArrayList *getMovesForSoldier(SPChessGame *src, int row, int col);
 * 2 - If the game is over and there's a tie
 * -1 - otherwise
 */
-int chessCheckWinner(SPChessGame *src);
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src);
 
 
 #endif SPFINAL_CHESSGAME_H
