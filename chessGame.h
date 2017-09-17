@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 05/09/2017.
+// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 05/09/2017.
 //
 
 #ifndef SPFINAL_CHESSGAME_H
@@ -79,6 +79,19 @@ typedef enum sp_chess_game_message_t {
     SP_CHESS_GAME_NO_HISTORY,
     SP_CHESS_GAME_SUCCESS,
 } SP_CHESS_GAME_MESSAGE;
+
+
+/**
+ * Type used for returning game's state
+ */
+typedef enum sp_chess_game_state_t {
+    SP_CHESS_GAME_TIE,
+    SP_CHESS_GAME_WHITE_WINNER,
+    SP_CHESS_GAME_BLACK_WINNER,
+    SP_CHESS_GAME_NO_WINNER,
+    SP_CHESS_GAME_TIE,
+    SP_CHESS_GAME_SUCCESS,
+} SP_CHESS_GAME_STATE;
 
 /**
  * Creates a new game with a specified history size. The history size is a
