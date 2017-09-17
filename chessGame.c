@@ -23,6 +23,11 @@ SPChessGame *chessGameCreate() {
             game->whiteKing.row = 0;
             game->blackKing.column = 4;
             game->blackKing.row = 7;
+            game->whiteLeftCasteling = 1;
+            game->whiteRightCasteling = 1;
+            game->blackLeftCasteling = 1;
+            game->blackRightCasteling = 1;
+
             for (int i = 1; i < GAMESIZE - 1; i++) {
                 for (int j = 0; j < GAMESIZE; j++) {
                     if (i == 1) {
@@ -77,6 +82,11 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
                 game->whiteKing.row = src->whiteKing.row;
                 game->blackKing.column = src->blackKing.column;
                 game->blackKing.row = src->blackKing.row;
+                game->whiteLeftCasteling = src->whiteLeftCasteling;
+                game->whiteRightCasteling = src->whiteRightCasteling;
+                game->blackLeftCasteling = src->blackLeftCasteling;
+                game->blackRightCasteling = src->blackRightCasteling;
+
                 for (int i = 0; i < GAMESIZE; i++) {
                     for (int j = 0; j < GAMESIZE; j++) {
                         game->gameBoard[i][j] = src->gameBoard[i][j];
@@ -373,7 +383,7 @@ SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position d
         return SP_CHESS_GAME_SOLDIER_MISMATCH;
     }
     if ((src->currentPlayer == 1 && isWhite(src->gameBoard[dest.row][dest.column])) ||
-            src->currentPlayer == 0 && isBlack(src->gameBoard[dest.row][dest.column])){
+            (src->currentPlayer == 0 && isBlack(src->gameBoard[dest.row][dest.column]))){
         return SP_CHESS_GAME_ILLEGAL_MOVE;
     }
     char soldier = (src->gameBoard[origin.row][origin.column]);
@@ -423,10 +433,12 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     if (soldier == KINGBLACK){
         src->blackKing.row = dest.row;
         src->blackKing.column = dest.column;
+        src->blackLeftCasteling = src->blackRightCasteling = 0;
     }
     else if (soldier == KINGWHITE){
         src->whiteKing.row = dest.row;
         src->whiteKing.column = dest.column;
+        src->whiteLeftCasteling = src->whiteRightCasteling = 0;
     }
     char captured = src->gameBoard[dest.row][dest.column];
     src->gameBoard[dest.row][dest.column] = soldier;

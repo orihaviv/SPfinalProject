@@ -44,22 +44,20 @@ int settings(SPChessGame *game) {
             case DIFFICULTY:
                 if (game->gameMode == 2) {
                     printf("Invalid command\n");
-                    break;
                 } else {
                     game->difficulty = command.arg;
                     printf("Game difficulty is set to %d\n", command.arg); // TODO print something?
-                    break;
                 }
+                break;
             case USER_COLOR:
                 if (game->gameMode == 2) {
                     printf("Invalid command\n");
-                    break;
                 } else {
                     game->userColor = command.arg;
                     char *player = command.arg == 1 ? "black" : "white";
                     printf("User color is set to %s\n", player);   // TODO print something?
-                    break;
                 }
+                break;
             case LOAD:
                 loadGame(game, command.path);
                 break;
@@ -78,6 +76,9 @@ int settings(SPChessGame *game) {
             case START:
                 game->state = 1;
                 return 1;
+            default:
+                printf("Invalid command\n");
+                break;
         }
     }
 }

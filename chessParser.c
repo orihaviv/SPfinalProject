@@ -177,10 +177,10 @@ SPCommand spParserParseLine(const char* str) {
         } else if (!strcmp(firstToken, "reset")) {
             command.cmd = RESET;
         }
-        else{
-            printf("Invalid command\n");
-        }
         free(strCopy);
+    }
+    if (command.cmd == INVALID){
+            printf("Invalid command\n");
     }
     return command;
 }
