@@ -122,6 +122,9 @@ void executeComputerMove(SPChessGame *src) {
     char *name = translateToSoldiersName(soldier);
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
            toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+    if (isTheKingThreatened(src, src->currentPlayer)){
+        printf("Check!\n");
+    }
     free(name);
 }
 
@@ -135,6 +138,14 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
     } else if (msg == SP_CHESS_GAME_ILLEGAL_MOVE) {
         printf("Illegal move\n");
     }
+    else{
+        if (isTheKingThreatened(src, src->currentPlayer)){
+            player = src->currentPlayer == 0 ? "black" : "white";
+            printf("Check: %s King is threatened!\n", player);
+        }
+        return 1;
+    }
+    return 0;
 }
 
 void executeGetMoves(SPChessGame *game, SPCommand command) {
@@ -205,7 +216,9 @@ SPCommand gameState(SPChessGame *game) {
         command = spParserParseLine(buffer);
         switch (command.cmd) {
             case MOVE:
-                executePlayerMove(game, command);
+                if (executePlayerMove(game, command) == 0){
+                    command.cmd = INVALID;
+                }
                 break;
             case GET_MOVES:
                 executeGetMoves(game, command);
@@ -219,7 +232,6 @@ SPCommand gameState(SPChessGame *game) {
             case RESET:
                 printf("Restarting...\n");
                 chessGameDestroy(&game);
-                game = chessGameCreate();
                 break;
             case QUIT:
                 printf("Exiting...\n");
@@ -227,4 +239,24 @@ SPCommand gameState(SPChessGame *game) {
         }
         return command;
     }
+}
+
+
+void printWinnerMessage(SP_CHESS_GAME_STATE msg, SPChessGame *game){
+    switch(msg){
+        case SP_CHESS_GAME_TIE:
+            if (game->gameMode == 2 || game->currentPlayer != game->userColor) {
+                printf("The game is tied\n\n");
+            }
+            else {
+                printf("The game ends in a tie\n");
+            }
+            break;
+        case SP_CHESS_GAME_WHITE_WINNER:
+            printf("Checkmate! white player wins the game\n");
+            break;
+        case SP_CHESS_GAME_BLACK_WINNER:
+            printf("Checkmate! black player wins the game\n");
+    }
+    return;
 }
