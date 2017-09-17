@@ -127,7 +127,6 @@ void executeComputerMove(SPChessGame *src) {
     if (isTheKingThreatened(src, src->currentPlayer)){
         printf("Check!\n");
     }
-    free(name);
 }
 
 
@@ -180,13 +179,15 @@ void executeUndo(SPChessGame *game) {
         printf("Undo command not available in two players mode\n");
         return;
     }
+    action* lastMovePointer;
     action lastMove;
-    lastMove = *(spArrayListGetFirst(game->lastMoves));
+    lastMovePointer = (spArrayListGetFirst(game->lastMoves));
     SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
     if (msg == SP_CHESS_GAME_NO_HISTORY) {
         printf("Empty history, move cannot be undone\n");
         return;
     }
+    lastMove = *lastMovePointer;
     char *player;
     if (msg == SP_CHESS_GAME_SUCCESS) {
         player = game->currentPlayer == 1 ? "black" : "white";

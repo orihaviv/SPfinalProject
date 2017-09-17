@@ -73,7 +73,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
 
     action move;
     if (player == 1) {         // white's turn
-        bestScore == INT_MIN;
+        bestScore = INT_MIN;
         for (int i = 0; i < GAMESIZE; i++) {
             for (int j = 0; j < GAMESIZE; j++) {
                 currentSoldier = gameCopy->gameBoard[i][j];
@@ -92,7 +92,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
         }
     }
     else {                  //  black's turn
-        bestScore == INT_MAX;
+        bestScore = INT_MAX;
         for (int i = 0; i < GAMESIZE; i++) {
             for (int j = 0; j < GAMESIZE; j++) {
                 currentSoldier = gameCopy->gameBoard[i][j];
