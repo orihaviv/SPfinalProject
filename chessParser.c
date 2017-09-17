@@ -135,9 +135,12 @@ char getPiece(char* source){
 
 
 SPCommand spParserParseLine(const char* str) {
-    char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     SPCommand command;
     command.cmd = INVALID;
+    if (!str || strtok(str, " \t\r\n") == NULL){
+        return command;
+    }
+    char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
@@ -162,9 +165,8 @@ SPCommand spParserParseLine(const char* str) {
         } else if (!strcmp(firstToken, "save")){
             strcpy(command.path, nextToken);
             command.cmd = SAVE;
-        } else if (nextToken != NULL) {
-            printf("Invalid command\n");
-        } else if (!strcmp(firstToken, "default")) {
+        } else if (nextToken != NULL) {}
+        else if (!strcmp(firstToken, "default")) {
             command.cmd = DEFAULT_GAME;
         } else if (!strcmp(firstToken, "print_setting")) {
             command.cmd = PRINT_SETTING;
@@ -178,9 +180,6 @@ SPCommand spParserParseLine(const char* str) {
             command.cmd = RESET;
         }
         free(strCopy);
-    }
-    if (command.cmd == INVALID){
-            printf("Invalid command\n");
     }
     return command;
 }

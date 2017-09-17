@@ -242,6 +242,9 @@ SPCommand gameState(SPChessGame *game) {
             case QUIT:
                 printf("Exiting...\n");
                 chessGameDestroy(&game);
+            default:
+                printf("Invalid command\n");
+                break;
         }
         return command;
     }
