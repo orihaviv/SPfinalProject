@@ -116,17 +116,12 @@ void chessGameDestroy(SPChessGame** src) {
 
 
 
-
-
-
 char whosThere(SPChessGame *src, int row, int col) {
     if (col < 0 || col > 7 || row < 0 || row > 7) {
         return '\0';
     }
     return src->gameBoard[row][col];
 }
-
-
 
 
 position getKingPosition(SPChessGame *src, int color) {
@@ -137,7 +132,6 @@ position getKingPosition(SPChessGame *src, int color) {
         return src->blackKing;
     }
 }
-
 
 
 
@@ -157,8 +151,6 @@ bool pawnsThreatSoldier(SPChessGame *src, int color, position soldier) {
     }
     return false;
 }
-
-
 
 
 bool knightsThreatSoldier(SPChessGame *src, int color, position soldier) {
