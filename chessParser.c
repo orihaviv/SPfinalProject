@@ -77,10 +77,10 @@ SPCommand setCastleCmd(char* origin){
     SPCommand command;
     command.cmd = CASTLE;
     if (origin == NULL){
-        command.cmd = INVALID;
+        command.cmd = IGNORE;
         printf("Invalid command\n");
     } else if (*origin != '<' || *(origin+2) != ',' || *(origin+4) != '>') {
-        command.cmd = INVALID;
+        command.cmd = IGNORE;
         printf("Invalid command\n");
     } else {
         command.source.column = colToInt(source[3]);
