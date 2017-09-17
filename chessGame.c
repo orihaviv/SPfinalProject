@@ -7,8 +7,6 @@
 #include "chessGame.h"
 
 
-
-
 SPChessGame *chessGameCreate() {
     SPChessGame *game = (SPChessGame *) malloc(sizeof(SPChessGame));
     if (game != NULL) {
@@ -118,17 +116,12 @@ void chessGameDestroy(SPChessGame** src) {
 
 
 
-
-
-
 char whosThere(SPChessGame *src, int row, int col) {
     if (col < 0 || col > 7 || row < 0 || row > 7) {
         return '\0';
     }
     return src->gameBoard[row][col];
 }
-
-
 
 
 position getKingPosition(SPChessGame *src, int color) {
@@ -139,7 +132,6 @@ position getKingPosition(SPChessGame *src, int color) {
         return src->blackKing;
     }
 }
-
 
 
 
@@ -159,8 +151,6 @@ bool pawnsThreatSoldier(SPChessGame *src, int color, position soldier) {
     }
     return false;
 }
-
-
 
 
 bool knightsThreatSoldier(SPChessGame *src, int color, position soldier) {
@@ -440,6 +430,22 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
         src->whiteKing.column = dest.column;
         src->whiteLeftCasteling = src->whiteRightCasteling = 0;
     }
+    if (origin.row == 0){
+    	if (origin.column == 0){
+    		src->whiteLeftCasteling = 0;
+    	}
+    	else if (origin.column == 7){
+    		src->whiteRightCasteling = 0;
+    	}
+    }
+    else if (origin.row == 7){
+    	if (origin.column == 0){
+    		src->blackLeftCasteling = 0;
+    	}
+    	else if (origin.column == 7){
+    		src->blackRightCasteling = 0;
+    	}
+    } 
     char captured = src->gameBoard[dest.row][dest.column];
     src->gameBoard[dest.row][dest.column] = soldier;
     src->gameBoard[origin.row][origin.column] = BLANK;
