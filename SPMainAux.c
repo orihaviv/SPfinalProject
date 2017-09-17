@@ -150,6 +150,22 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
     return 0;
 }
 
+int executeCastling(SPChessGame *src, SPCommand command){
+    if (!src) { return 0; }
+    if (command.source.row == 0 && command.source.column == 0 && whiteLeftCasteling == 1){
+        executeWhiteLeftCasteling(src);
+    }
+    else if (command.source.row == 0 && command.source.column == 7 && whiteRightCasteling == 1){
+        executeWhiteLeftCasteling(src);
+    }
+    else if (command.source.row == 0 && command.source.column == 0 && blackLeftCasteling == 1){
+        executeWhiteLeftCasteling(src);
+    }
+    else if (command.source.row == 0 && command.source.column == 0 && blackRightCasteling == 1){
+        executeWhiteLeftCasteling(src);
+    }
+}
+
 void executeGetMoves(SPChessGame *game, SPCommand command) {
     SPArrayList *possibleActions;
     action move;
@@ -244,6 +260,8 @@ SPCommand gameState(SPChessGame *game) {
             case QUIT:
                 printf("Exiting...\n");
                 chessGameDestroy(&game);
+            case CASTLE:
+                executeCastlng(game, command);
             default:
                 printf("Invalid command\n");
                 break;
