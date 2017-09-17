@@ -57,6 +57,15 @@ typedef struct command_t {
  */
 bool spParserIsInt(const char* str);
 
+
+/**
+ * returns the relevant piece's char of the input string
+ * @param src - the source string
+ *
+ * @return relevant char
+ */
+char getPiece(char* source);
+
 /**
  * Parses a specified line. If the line is a command which has an integer
  * argument then the argument is parsed and is saved in the field arg and the
