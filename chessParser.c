@@ -76,6 +76,22 @@ SPCommand setColorCmd(char* color){
     return command;
 }
 
+SPCommand setCastleCmd(char* origin){
+    SPCommand command;
+    command.cmd = CASTLE;
+    if (origin == NULL){
+        command.cmd = INVALID;
+//     } else if (!strcmp(color, "0")) {
+//         command.arg = 0;
+//     } else if (!strcmp(color, "1")) {
+//         command.arg = 1;
+//     } else {
+//         command.cmd = INVALID;
+//         printf("Invalid color\n");
+//     }
+//     return command;
+}
+
 SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
     command.cmd = INVALID;
@@ -157,6 +173,8 @@ SPCommand spParserParseLine(const char* str) {
             if (!strcmp(thirdToken, "to")){
                 return setMoveCmd (nextToken, forthToken);
             }
+        } else if (!strcmp(firstToken, "castle")){
+            return setCastleCmd(nextToken);
         } else if (!strcmp(firstToken, "get_moves")){
             return getMoveCmd(nextToken);
         } else if (!strcmp(firstToken, "load")) {
