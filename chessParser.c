@@ -73,35 +73,31 @@ SPCommand setColorCmd(char* color){
     return command;
 }
 
-SPCommand setCastleCmd(char* origin) {
+SPCommand setCastleCmd(char* origin){
     SPCommand command;
     command.cmd = CASTLE;
-    if (origin == NULL) {
+    if (origin == NULL){
         command.cmd = INVALID;
-//     } else if (!strcmp(color, "0")) {
-//         command.arg = 0;
-//     } else if (!strcmp(color, "1")) {
-//         command.arg = 1;
-//     } else {
-//         command.cmd = INVALID;
-//         printf("Invalid color\n");
-//     }
-//     return command;
+        printf("Invalid command\n");
+    } else if (*origin != '<' || *(origin+2) != ',' || *(origin+4) != '>') {
+        command.cmd = INVALID;
+        printf("Invalid command\n");
+    } else {
+        command.source.column = colToInt(source[3]);
+        command.source.row = rowToInt(source[1]);
     }
+    return command;
 }
 
 SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
     command.cmd = INVALID;
     if (source && dest &&  source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
-        if (source[1] > '0' && source[1] < '9' && dest[1] > '0' && dest[1] < '9'
-            && source[3] >= 'A' && source[3] <= 'H' && dest[3] >= 'A' && dest[3] <= 'H'){
             command.source.column = colToInt(source[3]);
             command.source.row = rowToInt(source[1]);
             command.destination.column = colToInt(dest[3]);
             command.destination.row = rowToInt(dest[1]);
             command.cmd = MOVE;
-        }
     }
     return command;
 }
