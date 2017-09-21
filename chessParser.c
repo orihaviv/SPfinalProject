@@ -92,12 +92,18 @@ SPCommand setCastleCmd(char* origin){
 SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
     command.cmd = INVALID;
-    if (source && dest &&  source[0] == '<' && source[2] == ',' && source[4] == '>' && dest[0] == '<' && dest[2] == ',' && dest[4] == '>'){
-            command.source.column = colToInt(source[3]);
-            command.source.row = rowToInt(source[1]);
-            command.destination.column = colToInt(dest[3]);
-            command.destination.row = rowToInt(dest[1]);
-            command.cmd = MOVE;
+    char row[SP_MAX_LINE_LENGTH];
+    if (source && dest){
+    	while(source[i] != ',') { i++; }
+    	strncpy(row, source+1, i-2);
+        command.source.column = colToInt(source[i+1]);
+        command.source.row = rowToInt(atoi(row));
+        
+    	while(dest[j] != ',') { j++; }
+    	strncpy(row, dest+1, j-2);
+        command.destination.column = colToInt(dest[j+1]);
+        command.destination.row = rowToInt(atoi(row));
+        command.cmd = MOVE;
     }
     return command;
 }
@@ -143,6 +149,27 @@ char getPiece(char* source){
     return '_';
 }
 
+bool isValidFormat(char* token){
+	if(token == NULL || token[0] != '<' || !token[1].isdigit()){
+		return false;
+	}
+	int i = 2;
+	while (token[i] >= '0' && token[i] <= '9'){
+		i++;
+	}
+	if(token[i++] != ','){
+		return false;
+	}
+	if(token[i] >= 'A' && token[i] <= 'Z'){
+		return false;
+	}
+	i++;
+	if(token[i] != '>' || token[i+1] != '\0'){
+		return false;
+	}
+	return true;
+}
+
 
 SPCommand spParserParseLine(const char* str) {
     SPCommand command;
@@ -166,7 +193,9 @@ SPCommand spParserParseLine(const char* str) {
             char *thirdToken = strtok(NULL, " \t\r\n");
             char *forthToken = strtok(NULL, " \t\r\n");
             if (!strcmp(thirdToken, "to")){
-                return setMoveCmd (nextToken, forthToken);
+                if (isValidFormat(nextToken) && isValidFormat(forthFormat)){
+            		return setMoveCmd (nextToken, forthToken);
+            	}
             }
         } else if (!strcmp(firstToken, "castle")){
             return setCastleCmd(nextToken);
