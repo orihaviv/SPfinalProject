@@ -83,8 +83,8 @@ SPCommand setCastleCmd(char* origin){
         command.cmd = IGNORE;
         printf("Invalid command\n");
     } else {
-        command.source.column = colToInt(source[3]);
-        command.source.row = rowToInt(source[1]);
+        command.source.column = colToInt(origin[3]);
+        command.source.row = rowToInt(origin[1]);
     }
     return command;
 }
