@@ -21,10 +21,10 @@ SPChessGame *chessGameCreate() {
             game->whiteKing.row = 0;
             game->blackKing.column = 4;
             game->blackKing.row = 7;
-            game->whiteLeftCasteling = 1;
-            game->whiteRightCasteling = 1;
-            game->blackLeftCasteling = 1;
-            game->blackRightCasteling = 1;
+            game->whiteLeftCastling = 1;
+            game->whiteRightCastling = 1;
+            game->blackLeftCastling = 1;
+            game->blackRightCastling = 1;
 
             for (int i = 1; i < GAMESIZE - 1; i++) {
                 for (int j = 0; j < GAMESIZE; j++) {
@@ -80,10 +80,10 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
                 game->whiteKing.row = src->whiteKing.row;
                 game->blackKing.column = src->blackKing.column;
                 game->blackKing.row = src->blackKing.row;
-                game->whiteLeftCasteling = src->whiteLeftCasteling;
-                game->whiteRightCasteling = src->whiteRightCasteling;
-                game->blackLeftCasteling = src->blackLeftCasteling;
-                game->blackRightCasteling = src->blackRightCasteling;
+                game->whiteLeftCastling = src->whiteLeftCastling;
+                game->whiteRightCastling = src->whiteRightCastling;
+                game->blackLeftCastling = src->blackLeftCastling;
+                game->blackRightCastling = src->blackRightCastling;
 
                 for (int i = 0; i < GAMESIZE; i++) {
                     for (int j = 0; j < GAMESIZE; j++) {
@@ -423,27 +423,27 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     if (soldier == KINGBLACK){
         src->blackKing.row = dest.row;
         src->blackKing.column = dest.column;
-        src->blackLeftCasteling = src->blackRightCasteling = 0;
+        src->blackLeftCastling = src->blackRightCastling = 0;
     }
     else if (soldier == KINGWHITE){
         src->whiteKing.row = dest.row;
         src->whiteKing.column = dest.column;
-        src->whiteLeftCasteling = src->whiteRightCasteling = 0;
+        src->whiteLeftCastling = src->whiteRightCastling = 0;
     }
     if (origin.row == 0){
     	if (origin.column == 0){
-    		src->whiteLeftCasteling = 0;
+    		src->whiteLeftCastling = 0;
     	}
     	else if (origin.column == 7){
-    		src->whiteRightCasteling = 0;
+    		src->whiteRightCastling = 0;
     	}
     }
     else if (origin.row == 7){
     	if (origin.column == 0){
-    		src->blackLeftCasteling = 0;
+    		src->blackLeftCastling = 0;
     	}
     	else if (origin.column == 7){
-    		src->blackRightCasteling = 0;
+    		src->blackRightCastling = 0;
     	}
     } 
     char captured = src->gameBoard[dest.row][dest.column];

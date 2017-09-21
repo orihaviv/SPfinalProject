@@ -61,12 +61,87 @@ bool spParserIsInt(const char* str);
 
 
 /**
+ * Sets a game mode command
+ *
+ * @param mode - wanted game mode
+ *
+ * @return the entire command
+ */
+SPCommand setGameModeCmd (char* mode);
+
+
+/**
+ * Sets a difficulty command
+ *
+ * @param diff - wanted difficulty
+ *
+ * @return the entire command
+ */
+SPCommand setDifficultyCmd(char* diff);
+
+
+/**
+ * Sets a color command
+ *
+ * @param color - wanted color for the user
+ *
+ * @return the entire command
+ */
+SPCommand setColorCmd(char* color);
+
+
+/**
+ * Sets a castle command
+ *
+ * @param origin - the position of te wanted rook
+ *
+ * @return the entire command
+ */
+SPCommand setCastleCmd(char* origin);
+
+
+/**
+ * Sets a move command
+ *
+ * @param source - the origin position of the wanted piece
+ * @param dest - the destination position of the wanted piece
+ *
+ * @return the entire command
+ */
+SPCommand setMoveCmd(char* source, char* dest);
+
+
+/**
+ * Sets a get move command
+ *
+ * @param source - the position of the wanted piece
+ *
+ * @return the entire command
+ */
+SPCommand getMoveCmd(char* source);
+
+
+/**
  * returns the relevant piece's char of the input string
+ *
  * @param src - the source string
  *
  * @return relevant char
  */
 char getPiece(char* source);
+
+
+/**
+ * Checks whether the command has a valid format
+ *
+ * @param token - the relevant token of the command
+ *
+ * @return
+ * true - if the format is valid
+ * false - otherwise
+ */
+bool isValidFormat(char* token);
+
 
 /**
  * Parses a specified line. If the line is a command which has an integer

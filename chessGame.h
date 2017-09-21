@@ -65,10 +65,10 @@ typedef struct sp_chess_game {
     int state; // settings = 0, game = 1
     position whiteKing;
     position blackKing;
-    int whiteLeftCasteling;
-    int whiteRightCasteling;
-    int blackLeftCasteling;
-    int blackRightCasteling;
+    int whiteLeftCastling;
+    int whiteRightCastling;
+    int blackLeftCastling;
+    int blackRightCastling;
 } SPChessGame;
 
 
