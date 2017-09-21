@@ -6,8 +6,6 @@
 #include "fileHandler.h"
 
 
-
-
 /**
  * Loading into src thje game described in the file the path leads to
  *
@@ -58,10 +56,8 @@ int settings(SPChessGame **gamePointer);
  *
  */
 
-
-
-
 char* translateToSoldiersName(char soldier);
+
 
 /**
  * Executing the next computer move.
@@ -72,12 +68,12 @@ char* translateToSoldiersName(char soldier);
 
 void executeComputerMove(SPChessGame* src);
 
+
 /**
  * Executing the next user move.
  *
  * @param src - The target game
  * @param command - The command to execute
- *
  *
  * @return
  * 1 - if src is continued.
@@ -86,6 +82,97 @@ void executeComputerMove(SPChessGame* src);
 
 int executePlayerMove (SPChessGame* src, SPCommand command);
 
+
+/**
+ * Indicates whether white left castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isWhiteLeftCastlingValid(SPChessGame *src);
+
+
+/**
+ * Indicates whether white right castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isWhiteRightCastlingValid(SPChessGame *src);
+
+/**
+ * Indicates whether black left castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isBlackLeftCastlingValid(SPChessGame *src);
+
+
+/**
+ * Indicates whether black right castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isBlackRightCastlingValid(SPChessGame *src);
+
+/**
+ * Executing white left castling move.
+ *
+ * @param src - The target game
+ */
+void executeWhiteLeftCastling(SPChessGame *src);
+
+
+/**
+ * Executing white right castling move.
+ *
+ * @param src - The target game
+ */
+void executeWhiteRightCastling(SPChessGame *src);
+
+
+/**
+ * Executing black left castling move.
+ *
+ * @param src - The target game
+ */
+void executeBlackLeftCastling(SPChessGame *src);
+
+
+/**
+ * Executing black right castling move.
+ *
+ * @param src - The target game
+ */
+void executeBlackRightCastling(SPChessGame *src);
+
+
+/**
+ * Executing castling move.
+ *
+ * @param src - The target game
+ * @param command - The command to execute
+ *
+ * @return
+ * 1 - if castling succeeded
+ * 0 - if castling didn't succeed
+ */
+
+int executeCastling(SPChessGame *src, SPCommand command);
 
 
 /**

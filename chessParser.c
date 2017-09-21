@@ -44,7 +44,6 @@ SPCommand setDifficultyCmd(char* diff) {
     if (spParserIsInt(diff)){
         level = atoi(diff);
         if (level > 0 && level < 5){
-            command.cmd = DIFFICULTY;
             command.arg = level;
         }
         else if (level == 5){
@@ -84,8 +83,8 @@ SPCommand setCastleCmd(char* origin){
         command.cmd = IGNORE;
         printf("Invalid command\n");
     } else {
-        command.source.column = colToInt(origin[3]);
-        command.source.row = rowToInt(origin[1]);
+        command.source.column = colToInt(source[3]);
+        command.source.row = rowToInt(source[1]);
     }
     return command;
 }
@@ -174,10 +173,10 @@ SPCommand spParserParseLine(const char* str) {
         } else if (!strcmp(firstToken, "get_moves")){
             return getMoveCmd(nextToken);
         } else if (!strcmp(firstToken, "load")) {
-            command.path = nextToken;
+            strcpy(command.path, nextToken);
             command.cmd = LOAD;
         } else if (!strcmp(firstToken, "save")){
-            command.path = nextToken;
+            strcpy(command.path, nextToken);
             command.cmd = SAVE;
         } else if (nextToken != NULL) {}
         else if (!strcmp(firstToken, "default")) {

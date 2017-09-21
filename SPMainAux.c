@@ -151,6 +151,144 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
     return 0;
 }
 
+int isWhiteLeftCastlingValid(SPChessGame *src){
+    if(!src) { return 0; }
+    if(whiteLeftCasteling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
+        return 0;
+    }
+    return 1;
+}
+
+
+int isWhiteRightCastlingValid(SPChessGame *src){
+    if(!src) { return 0; }
+    if(whiteRightCasteling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
+        return 0;
+    }
+    return 1;
+}
+
+
+int isBlackLeftCastlingValid(SPChessGame *src){
+    if(!src) { return 0; }
+    if(blackLeftCasteling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
+        return 0;
+    }
+    return 1;
+}
+
+
+int isBlackRightCastlingValid(SPChessGame *src){
+    if(!src) { return 0; }
+    if(blackRightCasteling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
+        return 0;
+    }
+    return 1;
+}
+
+
+void executeWhiteLeftCastling(SPChessGame *src){
+    if(!src) { return; }
+    src->gameBoard[0][0] = src->gameBoard[0][4] = BLANK;
+    src->gameBoard[0][2] = KINGWHITE;
+    src->gameBoard[0][3] = ROOKWHITE;
+    whiteLeftCasteling = whiteRightCasteling = 0;
+    return;
+}
+
+
+void executeWhiteRightCastling(SPChessGame *src){
+    if(!src) { return; }
+    src->gameBoard[0][7] = src->gameBoard[0][4] = BLANK;
+    src->gameBoard[0][6] = KINGWHITE;
+    src->gameBoard[0][5] = ROOKWHITE;
+    whiteLeftCasteling = whiteRightCasteling = 0;
+    return;
+}
+
+
+void executeBlackLeftCastling(SPChessGame *src){
+    if(!src) { return; }
+    src->gameBoard[7][0] = src->gameBoard[7][4] = BLANK;
+    src->gameBoard[7][2] = KINGBLACK;
+    src->gameBoard[7][3] = ROOKBLACK;
+    blackLeftCasteling = blackRightCasteling = 0;
+    return;
+}
+
+
+void executeBlackRightCastling(SPChessGame *src){
+    if(!src) { return; }
+    src->gameBoard[7][7] = src->gameBoard[7][4] = BLANK;
+    src->gameBoard[7][6] = KINGBLACK;
+    src->gameBoard[7][5] = ROOKBLACK;
+    blackLeftCasteling = blackRightCasteling = 0;
+    return;
+}
+
+
+int executeCastling(SPChessGame *src, SPCommand command){
+    if (!src) { return 0; }
+    if (!posOnBoard(command.source)) {
+        printf("Invalid position on the board\n");
+        return 0;
+    }
+    else if ((src->currentPlayer == 1 && !isWhite(src->gameBoard[command.source.row][command.source.column])) ||
+             (src->currentPlayer == 0 && !isBlack(src->gameBoard[command.source.row][command.source.column]))) {
+        printf("The specified position does not contain your piece\n");
+        return 0;
+    }
+    if (src->gameBoard[command.source.row][command.source.column] != ROOKWHITE &&
+        src->gameBoard[command.source.row][command.source.column]!= ROOKBLACK){
+        printf("Wrong position for a rook\n");
+        return 0;
+    }
+    if (command.source.row == 0 && command.source.column == 0){
+        if (isWhiteLeftCastlingValid(src)){
+            executeWhiteLeftCastling(src);
+            return 1;
+        }
+        else {
+            printf("Illegal castling move\n");
+            return 0;
+        }
+    }
+    else if (command.source.row == 0 && command.source.column == 7){
+        if (isWhiteRightCastlingValid(src)){
+            executeWhiteRightCastling(src);
+            return 1;
+        }
+        else {
+            printf("Illegal castling move\n");
+            return 0;
+        }        
+    }
+    else if (command.source.row == 0 && command.source.column == 0){
+        if (isBlackLeftCastlingValid(src)){
+            executeBlackLeftCastling(src);
+            return 1;
+        }
+        else {
+            printf("Illegal castling move\n");
+            return 0;
+        }
+    }
+    else if (command.source.row == 0 && command.source.column == 0){
+        if (isBlackRightCastlingValid(src)){
+            executeBlackRightCastling(src);
+            return 1;
+        }
+        else {
+            printf("Illegal castling move\n");
+            return 0;
+        }
+    }
+    else{
+        printf("Wrong position for a rook\n");
+        return 0;
+    }
+}
+
 void executeGetMoves(SPChessGame *game, SPCommand command) {
     SPArrayList *possibleActions;
     action move;
@@ -249,6 +387,11 @@ SPCommand gameState(SPChessGame *game) {
             case QUIT:
                 printf("Exiting...\n");
                 chessGameDestroy(&game);
+            case CASTLE:
+                if (executeCastling(game, command) == 0){
+                    command.cmd = INVALID;          // TODO ????
+                }
+                break;
             default:
                 printf("Invalid command\n");
                 break;
