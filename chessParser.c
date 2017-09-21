@@ -75,16 +75,14 @@ SPCommand setColorCmd(char* color){
 
 SPCommand setCastleCmd(char* origin){
     SPCommand command;
-    command.cmd = CASTLE;
-    if (origin == NULL){
-        command.cmd = IGNORE;
-        printf("Invalid command\n");
-    } else if (*origin != '<' || *(origin+2) != ',' || *(origin+4) != '>') {
-        command.cmd = IGNORE;
-        printf("Invalid command\n");
-    } else {
-        command.source.column = colToInt(origin[3]);
-        command.source.row = rowToInt(origin[1]);
+    command.cmd = INVALID;
+    char row[SP_MAX_LINE_LENGTH];
+    int i = 1;
+    if (origin != NULL){
+	while(source[i] != ',') { i++; }
+    	strncpy(row, source+1, i-2);
+        command.source.column = colToInt(source[i+1]);
+        command.source.row = rowToInt(atoi(row));
     }
     return command;
 }
@@ -201,7 +199,9 @@ SPCommand spParserParseLine(const char* str) {
             	}
             }
         } else if (!strcmp(firstToken, "castle")){
-            return setCastleCmd(nextToken);
+	    if (isValidFormat(nextToken)){
+           	return setCastleCmd(nextToken);
+	    }
         } else if (!strcmp(firstToken, "get_moves")){
             if (isValidFormat(nextToken)) {
                 return getMoveCmd(nextToken);
