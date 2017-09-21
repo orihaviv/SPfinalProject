@@ -84,9 +84,18 @@ int saveGame(char *filePath, SPChessGame *game) {
         startAndEndLabel(LEVEL, NULL, -1, 1, gameFile);
         startAndEndLabel(COLOR, NULL, -1, 1, gameFile);
     }
+    
     startLabel(BOARD, 1, gameFile);
     writeBoardData(gameFile, game);
     endLabel(BOARD, 1, gameFile);
+    
+    startLabel(GENERAL, 1, gameFile);
+    startAndEndLabel("whiteLeftCasteling", NULL, game->whiteLeftCasteling, 2, gameFile);
+    startAndEndLabel("whiteRightCasteling", NULL, game->whiteRightCasteling, 2, gameFile);
+    startAndEndLabel("blackLeftCasteling", NULL, game->blackLeftCasteling, 2, gameFile);
+    startAndEndLabel("blackRightCasteling", NULL, game->blackRightCasteling, 2, gameFile);
+    endLabel(GENERAL, 1, gameFile);
+    
     endLabel(GAME, 0, gameFile);
 
     if (fclose(gameFile) != 0) {     // fclose has failed
@@ -110,7 +119,7 @@ void getLabelInfo(char *info, char *label) {
 }
 
 
-bool loadChessGame(SPChessGame **game, char *filePath) {
+bool loadChessGame(SPChessGame **game, char *filePath) {   //TODO handle castling
     SPChessGame *outputGame = chessGameCreate();
     char labelInfo[9];
     char line[SP_MAX_LINE_LENGTH];
