@@ -18,6 +18,7 @@
 #define COLOR "user_color"
 #define BOARD "board"
 #define ROW "row_"
+#define GENERAL "general"
 
 
 
