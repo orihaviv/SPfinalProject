@@ -357,10 +357,8 @@ void executeSave(SPChessGame* game, SPCommand command){
 
 SPCommand gameState(SPChessGame *game) {
     char buffer[SP_MAX_LINE_LENGTH];
-    SP_CHESS_GAME_MESSAGE msg;
     SPCommand command;
     command.cmd = INVALID;
-    SP_CHESS_GAME_MESSAGE message;
     while (command.cmd == INVALID) {
         fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
         if (!(*buffer)) { continue; }
@@ -389,15 +387,15 @@ SPCommand gameState(SPChessGame *game) {
                 chessGameDestroy(&game);
             case CASTLE:
                 if (executeCastling(game, command) == 0){
-                    command.cmd = INVALID;          // TODO ????
+                    command.cmd = INVALID;
                 }
                 break;
             default:
                 printf("Invalid command\n");
                 break;
         }
-        return command;
     }
+    return command;
 }
 
 
@@ -416,6 +414,9 @@ void printWinnerMessage(SP_CHESS_GAME_STATE msg, SPChessGame *game){
             break;
         case SP_CHESS_GAME_BLACK_WINNER:
             printf("Checkmate! black player wins the game\n");
+            break;
+        default:
+            break;
     }
     return;
 }

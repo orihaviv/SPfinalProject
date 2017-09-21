@@ -536,10 +536,9 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
 
 
 SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
-    if (!src){ return NULL;}
+    if (!src){ return SP_CHESS_GAME_INVALID_GAME;}
     char tmp;
     SPArrayList *possibleMoves;
-    int cur = src->currentPlayer;
     if (src->currentPlayer == 1) {
         for (int i = 0; i < GAMESIZE; i++){
             for (int j = 0; j < GAMESIZE; j++){

@@ -93,6 +93,7 @@ typedef enum sp_chess_game_state_t {
     SP_CHESS_GAME_WHITE_WINNER,
     SP_CHESS_GAME_BLACK_WINNER,
     SP_CHESS_GAME_NO_WINNER,
+    SP_CHESS_GAME_INVALID_GAME,
 } SP_CHESS_GAME_STATE;
 
 /**
