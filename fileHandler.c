@@ -57,13 +57,6 @@ void writeBoardData(FILE *gameFile, SPChessGame *game) {
     return;
 }
 
-//int addToSaved(char* filePath){
-//    FILE *gameFile;
-//    gameFile = fopen("saved", "w");
-//}
-
-
-
 
 int saveGame(char *filePath, SPChessGame *game) {
     FILE *gameFile;
@@ -84,25 +77,25 @@ int saveGame(char *filePath, SPChessGame *game) {
         startAndEndLabel(LEVEL, NULL, -1, 1, gameFile);
         startAndEndLabel(COLOR, NULL, -1, 1, gameFile);
     }
-    
+
     startLabel(BOARD, 1, gameFile);
     writeBoardData(gameFile, game);
     endLabel(BOARD, 1, gameFile);
-    
+
     startLabel(GENERAL, 1, gameFile);
     startAndEndLabel("whiteLeftCasteling", NULL, game->whiteLeftCasteling, 2, gameFile);
     startAndEndLabel("whiteRightCasteling", NULL, game->whiteRightCasteling, 2, gameFile);
     startAndEndLabel("blackLeftCasteling", NULL, game->blackLeftCasteling, 2, gameFile);
     startAndEndLabel("blackRightCasteling", NULL, game->blackRightCasteling, 2, gameFile);
     endLabel(GENERAL, 1, gameFile);
-    
+
     endLabel(GAME, 0, gameFile);
 
     if (fclose(gameFile) != 0) {     // fclose has failed
         return 0;
     }
 
-    return  1;
+    return 1;
 }
 
 
@@ -161,6 +154,30 @@ bool loadChessGame(SPChessGame **game, char *filePath) {   //TODO handle castlin
                         outputGame->gameBoard[j][i] = labelInfo[i];
                     }
                 }
+            }
+        } else if (strstr(line, "whiteLeftCasteling") != NULL) {           // Fill userColor
+            getLabelInfo(labelInfo, line);
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) {
+                outputGame->whiteLeftCasteling = tmp - '0';
+            }
+        } else if (strstr(line, "whiteRightCasteling") != NULL) {           // Fill userColor
+            getLabelInfo(labelInfo, line);
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) {
+                outputGame->whiteRightCasteling = tmp - '0';
+            }
+        } else if (strstr(line, "blackLeftCasteling") != NULL) {           // Fill userColor
+            getLabelInfo(labelInfo, line);
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) {
+                outputGame->blackLeftCasteling = tmp - '0';
+            }
+        } else if (strstr(line, "blackRightCasteling") != NULL) {           // Fill userColor
+            getLabelInfo(labelInfo, line);
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) {
+                outputGame->blackRightCasteling = tmp - '0';
             }
         } else if ((strstr(line, GAME) != NULL) && (strchr(line, '/') != NULL)) { success = true; }
     }
