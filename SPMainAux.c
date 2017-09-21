@@ -2,7 +2,7 @@
 // Created by אורי חביב on 10/06/2017.
 //
 #include "SPMainAux.h"
-#include "chessParser.h"
+
 
 
 void loadGame(SPChessGame **src, char *path) {
@@ -33,7 +33,7 @@ int settings(SPChessGame **gamePointer) {
     printf("Specify game setting or type 'start' to begin a game with the current setting:\n");
     while (true) {
         fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
-        if (!buffer) { continue; }
+        if (!(*buffer)) { continue; }
         command = spParserParseLine(buffer);
         switch (command.cmd) {
             case GAME_MODE:
@@ -153,7 +153,7 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
 
 int isWhiteLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(whiteLeftCasteling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
+    if(src->whiteLeftCasteling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
         return 0;
     }
     return 1;
@@ -162,7 +162,7 @@ int isWhiteLeftCastlingValid(SPChessGame *src){
 
 int isWhiteRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(whiteRightCasteling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
+    if(src->whiteRightCasteling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
         return 0;
     }
     return 1;
@@ -171,7 +171,7 @@ int isWhiteRightCastlingValid(SPChessGame *src){
 
 int isBlackLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(blackLeftCasteling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
+    if(src->blackLeftCasteling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
         return 0;
     }
     return 1;
@@ -180,7 +180,7 @@ int isBlackLeftCastlingValid(SPChessGame *src){
 
 int isBlackRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(blackRightCasteling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
+    if(src->blackRightCasteling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
         return 0;
     }
     return 1;
@@ -192,7 +192,7 @@ void executeWhiteLeftCastling(SPChessGame *src){
     src->gameBoard[0][0] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][2] = KINGWHITE;
     src->gameBoard[0][3] = ROOKWHITE;
-    whiteLeftCasteling = whiteRightCasteling = 0;
+    src->whiteLeftCasteling = src->whiteRightCasteling = 0;
     return;
 }
 
@@ -202,7 +202,7 @@ void executeWhiteRightCastling(SPChessGame *src){
     src->gameBoard[0][7] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][6] = KINGWHITE;
     src->gameBoard[0][5] = ROOKWHITE;
-    whiteLeftCasteling = whiteRightCasteling = 0;
+    src->whiteLeftCasteling = src->whiteRightCasteling = 0;
     return;
 }
 
@@ -212,7 +212,7 @@ void executeBlackLeftCastling(SPChessGame *src){
     src->gameBoard[7][0] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][2] = KINGBLACK;
     src->gameBoard[7][3] = ROOKBLACK;
-    blackLeftCasteling = blackRightCasteling = 0;
+    src->blackLeftCasteling = src->blackRightCasteling = 0;
     return;
 }
 
@@ -222,7 +222,7 @@ void executeBlackRightCastling(SPChessGame *src){
     src->gameBoard[7][7] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][6] = KINGBLACK;
     src->gameBoard[7][5] = ROOKBLACK;
-    blackLeftCasteling = blackRightCasteling = 0;
+    src->blackLeftCasteling = src->blackRightCasteling = 0;
     return;
 }
 
@@ -363,7 +363,7 @@ SPCommand gameState(SPChessGame *game) {
     SP_CHESS_GAME_MESSAGE message;
     while (command.cmd == INVALID) {
         fgets(buffer, SP_MAX_LINE_LENGTH, stdin);
-        if (!buffer) { continue; }
+        if (!(*buffer)) { continue; }
         command = spParserParseLine(buffer);
         switch (command.cmd) {
             case MOVE:

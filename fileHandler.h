@@ -108,7 +108,7 @@ void getLabelInfo(char* info, char* label);
  * @param game - the current game
  *
  * @return
- * true - if thegame was loaded
+ * true - if the game was loaded
  * false - otherwise
 
  */

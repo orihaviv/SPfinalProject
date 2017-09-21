@@ -93,6 +93,7 @@ SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
     command.cmd = INVALID;
     char row[SP_MAX_LINE_LENGTH];
+    int i = 1, j = 1;
     if (source && dest){
     	while(source[i] != ',') { i++; }
     	strncpy(row, source+1, i-2);
@@ -111,12 +112,14 @@ SPCommand setMoveCmd(char* source, char* dest){
 SPCommand getMoveCmd(char* source){
     SPCommand command;
     command.cmd = INVALID;
+    char row[SP_MAX_LINE_LENGTH];
+    int i = 1;
     if (!source){ return command;}
-    if (source[0] == '<' && source[2] == ',' && source[4] == '>' ){
-        command.cmd = GET_MOVES;
-        command.source.column = colToInt(source[3]);
-        command.source.row = rowToInt(source[1]);
-    }
+    command.cmd = GET_MOVES;
+    while(source[i] != ',') { i++; }
+    strncpy(row, source+1, i-2);
+    command.source.column = colToInt(source[i+1]);
+    command.source.row = rowToInt(atoi(row));
     return command;
 }
 
@@ -150,7 +153,7 @@ char getPiece(char* source){
 }
 
 bool isValidFormat(char* token){
-	if(token == NULL || token[0] != '<' || !token[1].isdigit()){
+	if(token == NULL || token[0] != '<' || '0' > token[1] || '9' < token[1]){
 		return false;
 	}
 	int i = 2;
@@ -160,7 +163,7 @@ bool isValidFormat(char* token){
 	if(token[i++] != ','){
 		return false;
 	}
-	if(token[i] >= 'A' && token[i] <= 'Z'){
+	if(token[i] < 'A' || token[i] > 'Z'){
 		return false;
 	}
 	i++;
@@ -193,14 +196,16 @@ SPCommand spParserParseLine(const char* str) {
             char *thirdToken = strtok(NULL, " \t\r\n");
             char *forthToken = strtok(NULL, " \t\r\n");
             if (!strcmp(thirdToken, "to")){
-                if (isValidFormat(nextToken) && isValidFormat(forthFormat)){
+                if (isValidFormat(nextToken) && isValidFormat(forthToken)){
             		return setMoveCmd (nextToken, forthToken);
             	}
             }
         } else if (!strcmp(firstToken, "castle")){
             return setCastleCmd(nextToken);
         } else if (!strcmp(firstToken, "get_moves")){
-            return getMoveCmd(nextToken);
+            if (isValidFormat(nextToken)) {
+                return getMoveCmd(nextToken);
+            }
         } else if (!strcmp(firstToken, "load")) {
             strcpy(command.path, nextToken);
             command.cmd = LOAD;

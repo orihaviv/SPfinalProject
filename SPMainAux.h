@@ -4,10 +4,11 @@
 
 #include "SPMiniMax.h"
 #include "fileHandler.h"
+#include "chessGame.h"
 
 
 /**
- * Loading into src thje game described in the file the path leads to
+ * Loading into src the game described in the file the path leads to
  *
  *
  * @param src - A pointer to the target game to load into
