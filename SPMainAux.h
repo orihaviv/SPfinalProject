@@ -4,7 +4,7 @@
 
 #include "SPMiniMax.h"
 #include "fileHandler.h"
-#include "chessGame.h"
+
 
 
 /**

@@ -1,5 +1,5 @@
 
-#include "chessGame.h"
+
 #include "SPMainAux.h"
 
 int main() {
