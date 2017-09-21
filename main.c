@@ -14,7 +14,7 @@ int main() {
     char* player;
     int status;
     beginning:
-    status = settings(game);
+    status = settings(&game);
     if (status == 0){ return 0; }                       // Quit command executed
     if (game->gameMode == 1 && game->userColor == 0){
         executeComputerMove(game);

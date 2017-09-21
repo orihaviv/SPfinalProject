@@ -105,14 +105,15 @@ void getLabelInfo(char* info, char* label);
  * loading a game from the XML file
  *
  * @param filePath - a path to a file
+ * @param game - the current game
  *
  * @return
- * SPChessGame* - the loaded game
- * NULL - if the file is corrupted, not exist of couldn't be opened or closed
+ * true - if thegame was loaded
+ * false - otherwise
 
  */
 
-SPChessGame *loadChessGame(char *filePath);
+bool loadChessGame(SPChessGame **game, char *filePath);
 
 
 

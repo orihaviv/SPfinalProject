@@ -19,10 +19,10 @@ action generateAction(position a, position b, char c, char d){
 
 
 void gameSpArrayListAdd(SPArrayList* src, action elem){
-    SP_ARRAY_LIST_MESSAGE message1 = spArrayListAddLast(src, elem);
+    SP_ARRAY_LIST_MESSAGE message1 = spArrayListAddFirst(src, elem);
     if (message1 == SP_ARRAY_LIST_FULL){
-        spArrayListRemoveFirst(src);
-        spArrayListAddLast(src, elem);
+        spArrayListRemoveLast(src);
+        spArrayListAddFirst(src, elem);
         return;
     }
     return;

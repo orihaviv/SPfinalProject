@@ -12,12 +12,12 @@
  * Loading into src thje game described in the file the path leads to
  *
  *
- * @param src - The target game to load into
+ * @param src - A pointer to the target game to load into
  * @param src - The path to the required game
  * @return
 
  */
-void loadGame (SPChessGame* src, char* path);
+void loadGame (SPChessGame** src, char* path);
 
 
 
@@ -36,7 +36,7 @@ void printSettings(SPChessGame* game);
  *
  * Does'nt affect the game if the command is illegal for the settings mode or undefined.
  *
- * @param src - The current game
+ * @param gamePointer - A pointer to the current game
  *
  * @return
  * 0 - if the command is to quit the game at this point.
@@ -44,7 +44,7 @@ void printSettings(SPChessGame* game);
  */
 
 
-int settings(SPChessGame *game);
+int settings(SPChessGame **gamePointer);
 
 
 

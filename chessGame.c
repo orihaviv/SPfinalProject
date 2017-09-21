@@ -282,18 +282,18 @@ bool isWhite(char soldier){
 
 bool pawnValidMove(SPChessGame* src, position origin , position dest){
     int direction = src->currentPlayer == 1 ? 1 : -1;
-    if (origin.column == dest.column && dest.row == (origin.row + direction) && src->gameBoard[dest.row][dest.column] == BLANK){ return true;}
+    if (origin.column == dest.column && dest.row == (origin.row + direction) && src->gameBoard[dest.row][dest.column] == BLANK){ return true;} // moving one step forward
     if (origin.column == dest.column && direction == 1 && origin.row == 1 && dest.row == (origin.row + 2*direction)
-        && src->gameBoard[dest.row][dest.column] == BLANK && src->gameBoard[dest.row][dest.column + direction] == BLANK){ return true;}
+        && src->gameBoard[dest.row][dest.column] == BLANK && src->gameBoard[origin.row + direction][origin.column] == BLANK){ return true;} // moving two steps forward - white
     if (origin.column == dest.column && direction == -1 && origin.row == 6 && dest.row == (origin.row + 2*direction)
-        && src->gameBoard[dest.row][dest.column] == BLANK && src->gameBoard[dest.row][dest.column + direction] == BLANK){ return true;}
+        && src->gameBoard[dest.row][dest.column] == BLANK && src->gameBoard[origin.row  + direction][origin.column] == BLANK){ return true;} // moving two steps forward - black
     if (direction == 1){
         if ((origin.column == dest.column-1 || origin.column == dest.column+1)
-            && dest.row == (origin.row + direction) && isBlack(src->gameBoard[dest.row][dest.column])){ return true;}
+            && dest.row == (origin.row + direction) && isBlack(src->gameBoard[dest.row][dest.column])){ return true;} // eating - white
     }
     else{
         if ((origin.column == dest.column-1 || origin.column == dest.column+1)
-            && dest.row == (origin.row + direction) && isWhite(src->gameBoard[dest.row][dest.column])){ return true;}
+            && dest.row == (origin.row + direction) && isWhite(src->gameBoard[dest.row][dest.column])){ return true;} // eating - black
     }
     return false;
 }

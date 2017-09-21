@@ -50,12 +50,19 @@ void writeBoardData(FILE *gameFile, SPChessGame *game) {
     char stringLine[GAMESIZE + 1];
     for (int j = GAMESIZE - 1; j >= 0; j--) {
         for (int i = 0; i < GAMESIZE; i++)
-            stringLine[i] = game->gameBoard[i][j];
+            stringLine[i] = game->gameBoard[j][i];
         stringLine[GAMESIZE] = '\0';
         fprintf(gameFile, "\t\t<%s%d>%s</%s%d>\n", ROW, j + 1, stringLine, ROW, j + 1);
     }
     return;
 }
+
+//int addToSaved(char* filePath){
+//    FILE *gameFile;
+//    gameFile = fopen("saved", "w");
+//}
+
+
 
 
 int saveGame(char *filePath, SPChessGame *game) {
@@ -67,12 +74,12 @@ int saveGame(char *filePath, SPChessGame *game) {
     fprintf(gameFile, XML_HEADLINE);
     startLabel(GAME, 0, gameFile);
     char *player = (game->currentPlayer == 1) ? "WHITE" : "BLACK";
-    startAndEndLabel(CURRENT_TURN, NULL, player, 1, gameFile);
+    startAndEndLabel(CURRENT_TURN, player, -1, 1, gameFile);
     startAndEndLabel(MODE, NULL, game->gameMode, 1, gameFile);
     if (game->gameMode == 1) {
         startAndEndLabel(LEVEL, NULL, game->difficulty, 1, gameFile);
         char *user = (game->userColor == 1) ? "WHITE" : "BLACK";
-        startAndEndLabel(COLOR, NULL, user, 1, gameFile);
+        startAndEndLabel(COLOR, user, -1, 1, gameFile);
     } else {
         startAndEndLabel(LEVEL, NULL, -1, 1, gameFile);
         startAndEndLabel(COLOR, NULL, -1, 1, gameFile);
@@ -85,7 +92,8 @@ int saveGame(char *filePath, SPChessGame *game) {
     if (fclose(gameFile) != 0) {     // fclose has failed
         return 0;
     }
-    return 1;
+
+    return  1;
 }
 
 
@@ -102,7 +110,7 @@ void getLabelInfo(char *info, char *label) {
 }
 
 
-SPChessGame *loadChessGame(char *filePath) {
+bool loadChessGame(SPChessGame **game, char *filePath) {
     SPChessGame *outputGame = chessGameCreate();
     char labelInfo[9];
     char line[SP_MAX_LINE_LENGTH];
@@ -111,7 +119,7 @@ SPChessGame *loadChessGame(char *filePath) {
     FILE *gameFile = fopen(filePath, "r");
     if (!gameFile) {                                          // File Opening error
         chessGameDestroy(&outputGame);
-        return NULL;
+        return false;
     }
     while (fgets(line, sizeof(line), gameFile) != NULL && !success) {
         if (strstr(line, CURRENT_TURN) != NULL) {            // Fill currentPlayer
@@ -141,17 +149,19 @@ SPChessGame *loadChessGame(char *filePath) {
                 if (fgets(line, sizeof(line), gameFile)) {
                     for (int i = 0; i < GAMESIZE; i++) {
                         getLabelInfo(labelInfo, line);
-                        outputGame->gameBoard[i][j] = labelInfo[i];
+                        outputGame->gameBoard[j][i] = labelInfo[i];
                     }
                 }
             }
         } else if ((strstr(line, GAME) != NULL) && (strchr(line, '/') != NULL)) { success = true; }
     }
-    if (success && fclose(gameFile)) {              // File closing error
-        return outputGame;
+    if (success && fclose(gameFile) == 0) {              // no File closing error
+        chessGameDestroy(game);
+        *game = outputGame;
+        return true;
     }
     chessGameDestroy(&outputGame);
-    return NULL;
+    return false;
 }
 
 

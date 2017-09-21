@@ -5,10 +5,10 @@
 #include "chessParser.h"
 
 
-void loadGame(SPChessGame *src, char *path) {
-    chessGameDestroy(&src);
-    src = loadChessGame(path);
-    if (!src) {
+void loadGame(SPChessGame **src, char *path) {
+    bool isLoaded;
+    isLoaded = loadChessGame(src, path);
+    if (!isLoaded) {
         printf("Error: File does not exist or cannot be opened\n");
         return;
     }
@@ -24,7 +24,8 @@ void printSettings(SPChessGame *game) {
 }
 
 
-int settings(SPChessGame *game) {
+int settings(SPChessGame **gamePointer) {
+    SPChessGame *game = *gamePointer;
     if (!game) { return 0; }
     game->state = 0;
     char buffer[SP_MAX_LINE_LENGTH];
@@ -58,7 +59,7 @@ int settings(SPChessGame *game) {
                 }
                 break;
             case LOAD:
-                loadGame(game, command.path);
+                loadGame(gamePointer, command.path);
                 break;
             case DEFAULT_GAME:
                 game->gameMode = 1;
@@ -181,13 +182,17 @@ void executeUndo(SPChessGame *game) {
     }
     action* lastMovePointer;
     action lastMove;
-    lastMovePointer = (spArrayListGetFirst(game->lastMoves));
+    lastMovePointer = spArrayListGetFirst(game->lastMoves);
+    if (lastMovePointer == NULL){
+        printf("Empty history, move cannot be undone\n");
+        return;
+    }
+    lastMove = *lastMovePointer;
     SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
     if (msg == SP_CHESS_GAME_NO_HISTORY) {
         printf("Empty history, move cannot be undone\n");
         return;
     }
-    lastMove = *lastMovePointer;
     char *player;
     if (msg == SP_CHESS_GAME_SUCCESS) {
         player = game->currentPlayer == 1 ? "black" : "white";
