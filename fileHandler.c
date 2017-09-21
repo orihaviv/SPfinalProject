@@ -112,7 +112,7 @@ void getLabelInfo(char *info, char *label) {
 }
 
 
-bool loadChessGame(SPChessGame **game, char *filePath) {   //TODO handle castling
+bool loadChessGame(SPChessGame **game, char *filePath) {
     SPChessGame *outputGame = chessGameCreate();
     char labelInfo[9];
     char line[SP_MAX_LINE_LENGTH];
@@ -146,7 +146,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {   //TODO handle castlin
                 getLabelInfo(labelInfo, line);
                 outputGame->userColor = (!strcasecmp(labelInfo, "WHITE")) ? 1 : 0;
             }
-        } else if (strstr(line, BOARD) != NULL && (strchr(line, '/') == NULL)) {
+        } else if (strstr(line, BOARD) != NULL && (strchr(line, '/') == NULL)) { // Fill board
             for (int j = GAMESIZE - 1; j >= 0; j--) {
                 if (fgets(line, sizeof(line), gameFile)) {
                     for (int i = 0; i < GAMESIZE; i++) {
@@ -155,25 +155,25 @@ bool loadChessGame(SPChessGame **game, char *filePath) {   //TODO handle castlin
                     }
                 }
             }
-        } else if (strstr(line, "whiteLeftCasteling") != NULL) {           // Fill userColor
+        } else if (strstr(line, "whiteLeftCasteling") != NULL) {           // Fill whiteLeftCasteling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
             if (spParserIsInt(labelInfo)) {
                 outputGame->whiteLeftCasteling = tmp - '0';
             }
-        } else if (strstr(line, "whiteRightCasteling") != NULL) {           // Fill userColor
+        } else if (strstr(line, "whiteRightCasteling") != NULL) {           // Fill whiteRightCasteling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
             if (spParserIsInt(labelInfo)) {
                 outputGame->whiteRightCasteling = tmp - '0';
             }
-        } else if (strstr(line, "blackLeftCasteling") != NULL) {           // Fill userColor
+        } else if (strstr(line, "blackLeftCasteling") != NULL) {           // Fill blackLeftCasteling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
             if (spParserIsInt(labelInfo)) {
                 outputGame->blackLeftCasteling = tmp - '0';
             }
-        } else if (strstr(line, "blackRightCasteling") != NULL) {           // Fill userColor
+        } else if (strstr(line, "blackRightCasteling") != NULL) {           // Fill blackRightCasteling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
             if (spParserIsInt(labelInfo)) {
