@@ -79,10 +79,12 @@ SPCommand setCastleCmd(char* origin){
     char row[SP_MAX_LINE_LENGTH];
     int i = 1;
     if (origin != NULL){
-	while(source[i] != ',') { i++; }
-    	strncpy(row, source+1, i-2);
-        command.source.column = colToInt(source[i+1]);
-        command.source.row = rowToInt(atoi(row));
+        while(origin[i] != ',') { i++; }
+        strncpy(row, origin+1, i-1);
+        row[i-1] = '\0';
+        command.source.column = colToInt(origin[i+1]);
+        command.source.row = atoi(row) - 1;
+        command.cmd = CASTLE;
     }
     return command;
 }
@@ -93,15 +95,17 @@ SPCommand setMoveCmd(char* source, char* dest){
     char row[SP_MAX_LINE_LENGTH];
     int i = 1, j = 1;
     if (source && dest){
-    	while(source[i] != ',') { i++; }
-    	strncpy(row, source+1, i-2);
+        while(source[i] != ',') { i++; }
+        strncpy(row, source+1, i-1);
+        row[i-1] = '\0';
         command.source.column = colToInt(source[i+1]);
-        command.source.row = rowToInt(atoi(row));
-        
-    	while(dest[j] != ',') { j++; }
-    	strncpy(row, dest+1, j-2);
+        command.source.row = atoi(row) - 1;
+
+        while(dest[j] != ',') { j++; }
+        strncpy(row, dest+1, j-1);
+        row[j-1] = '\0';
         command.destination.column = colToInt(dest[j+1]);
-        command.destination.row = rowToInt(atoi(row));
+        command.destination.row = atoi(row) - 1;
         command.cmd = MOVE;
     }
     return command;
@@ -115,9 +119,10 @@ SPCommand getMoveCmd(char* source){
     if (!source){ return command;}
     command.cmd = GET_MOVES;
     while(source[i] != ',') { i++; }
-    strncpy(row, source+1, i-2);
+    strncpy(row, source+1, i-1);
+    row[i-1] = '\0';
     command.source.column = colToInt(source[i+1]);
-    command.source.row = rowToInt(atoi(row));
+    command.source.row = atoi(row) - 1;
     return command;
 }
 

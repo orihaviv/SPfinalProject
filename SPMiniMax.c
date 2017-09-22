@@ -61,6 +61,8 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
     }
     spArrayListDestroy(&possibleActions);
     chessGameDestroy(&gameCopy);
-    return &(bestAction);
+    action* bestActionPointer = (action*)  malloc(sizeof(action));     //TODO check memory leaks
+    bestActionPointer = &bestAction;
+    return bestActionPointer;
 
 }
