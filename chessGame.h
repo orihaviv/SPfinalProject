@@ -305,7 +305,6 @@ bool pawnValidMove(SPChessGame *src, position origin, position dest);
 /**
 * Checks if a knight can be moved from origin to destination.
 *
-* @param src - The source game
 * @param origin - The origin position of the soldier
 * @param dest - The destination position of the soldier
 * @return
@@ -314,14 +313,13 @@ bool pawnValidMove(SPChessGame *src, position origin, position dest);
 */
 
 
-bool knightValidMove(SPChessGame *src, position origin, position dest);
+bool knightValidMove(position origin, position dest);
 
 
 
 /**
 * Checks if a king can be moved from origin to destination.
 *
-* @param src - The source game
 * @param origin - The origin position of the soldier
 * @param dest - The destination position of the soldier
 * @return
@@ -331,7 +329,7 @@ bool knightValidMove(SPChessGame *src, position origin, position dest);
 
 
 
-bool kingValidMove(SPChessGame *src, position origin, position dest);
+bool kingValidMove(position origin, position dest);
 
 
 /**

@@ -137,7 +137,7 @@ position getKingPosition(SPChessGame *src, int color) {
 
 bool pawnsThreatSoldier(SPChessGame *src, int color, position soldier) {
     char pawn = PAWNBLACK;
-    if (color == 0) {  // king is black
+    if (color == 0) {  // soldier is black
         pawn = PAWNWHITE;
         if ((whosThere(src, soldier.row - 1, soldier.column - 1) == pawn) ||
             (whosThere(src, soldier.row - 1, soldier.column + 1) == pawn)) {
@@ -154,8 +154,8 @@ bool pawnsThreatSoldier(SPChessGame *src, int color, position soldier) {
 
 
 bool knightsThreatSoldier(SPChessGame *src, int color, position soldier) {
-    char knight = KNIGHTBLACK;   //king is white
-    if (color == 0) {           // king is black
+    char knight = KNIGHTBLACK;   //soldier is white
+    if (color == 0) {           // soldier is black
         knight = KNIGHTWHITE;
     }
     if ((whosThere(src, soldier.row - 2, soldier.column - 1) == knight) ||
@@ -215,10 +215,10 @@ bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, cha
 
 
 bool QRBThreatensSoldier(SPChessGame *src, int color, position soldier) {
-    char queen = QUEENBLACK;   //our king is white
+    char queen = QUEENBLACK;   //our soldier is white
     char bishop = BISHOPBLACK;
     char rook = ROOKBLACK;
-    if (color == 0) {           // our king is black
+    if (color == 0) {           // our soldier is black
         queen = QUEENWHITE;
         bishop = BISHOPWHITE;
         rook = ROOKWHITE;
@@ -254,11 +254,23 @@ bool isTheKingThreatened(SPChessGame *src, int color) {
 
 bool isMoveRiskTheKing(SPChessGame* src, position origin , position dest){
     char tmp = src->gameBoard[dest.row][dest.column];
+    if(src->gameBoard[origin.row][origin.column] == KINGBLACK){
+        src->blackKing = dest;
+    }
+    if(src->gameBoard[origin.row][origin.column] == KINGWHITE){
+        src->whiteKing = dest;
+    }
     src->gameBoard[dest.row][dest.column] = src->gameBoard[origin.row][origin.column];
     src->gameBoard[origin.row][origin.column] = BLANK;
     bool result = isTheKingThreatened(src, src->currentPlayer);
     src->gameBoard[origin.row][origin.column] = src->gameBoard[dest.row][dest.column];
     src->gameBoard[dest.row][dest.column] = tmp;
+    if(src->gameBoard[origin.row][origin.column] == KINGBLACK){
+        src->blackKing = origin;
+    }
+    if(src->gameBoard[origin.row][origin.column] == KINGWHITE){
+        src->whiteKing = origin;
+    }
     return result;
 }
 
@@ -299,7 +311,7 @@ bool pawnValidMove(SPChessGame* src, position origin , position dest){
 }
 
 
-bool knightValidMove(SPChessGame* src, position origin , position dest){
+bool knightValidMove(position origin , position dest){
     if (!((abs(origin.row - dest.row) == 2 && abs(origin.column - dest.column) == 1)
         || (abs(origin.row - dest.row) == 1 && abs(origin.column - dest.column) == 2))){
         return false;
@@ -307,7 +319,7 @@ bool knightValidMove(SPChessGame* src, position origin , position dest){
     return true;
 }
 
-bool kingValidMove(SPChessGame* src, position origin , position dest){
+bool kingValidMove(position origin , position dest){
     if (abs(dest.column - origin.column) > 1 || abs(dest.row - origin.row) > 1){
         return false;
     }
@@ -379,8 +391,8 @@ SP_CHESS_GAME_MESSAGE isValidMove(SPChessGame* src, position origin , position d
     char soldier = (src->gameBoard[origin.row][origin.column]);
     bool flag = true;
     if (soldier == PAWNWHITE || soldier == PAWNBLACK){ flag = pawnValidMove(src, origin, dest);}
-    else if (soldier == KNIGHTBLACK || soldier == KNIGHTWHITE) { flag = knightValidMove(src, origin, dest);}
-    else if (soldier == KINGBLACK || soldier == KINGWHITE) { flag = kingValidMove(src, origin, dest);}
+    else if (soldier == KNIGHTBLACK || soldier == KNIGHTWHITE) { flag = knightValidMove(origin, dest);}
+    else if (soldier == KINGBLACK || soldier == KINGWHITE) { flag = kingValidMove(origin, dest);}
     else if (soldier == ROOKBLACK || soldier == ROOKWHITE) { flag = rookValidMove(src, origin, dest);}
     else if (soldier == BISHOPBLACK || soldier == BISHOPWHITE) { flag = bishopValidMove(src, origin, dest);}
     else if (soldier == QUEENBLACK || soldier == QUEENWHITE) { flag = queenValidMove(src, origin, dest);}
