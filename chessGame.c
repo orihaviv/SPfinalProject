@@ -535,7 +535,21 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
 
 
 
-SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
+
+void printCheckMessage(SPChessGame* src, int current){
+    char* player;
+    if (src->gameMode == 1 && current == src->userColor){
+        printf("Check!\n");
+    }
+    else{
+        player = current == 0 ? "black" : "white";
+        printf("Check: %s King is threatened!\n", player);
+    }
+}
+
+
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
+    bool flag = true;
     if (!src){ return SP_CHESS_GAME_INVALID_GAME;}
     char tmp;
     SPArrayList *possibleMoves;
@@ -545,26 +559,46 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src){
                 tmp = whosThere(src, i, j);
                 if (isWhite(tmp)){
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0){ return SP_CHESS_GAME_NO_WINNER; }
+                    if (possibleMoves->actualSize > 0){
+                        flag = false;
+                        goto next1;
+                    }
                 }
             }
         }
-        // no possible moves at all for the white
-        if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_BLACK_WINNER;}  // is the white king threatened?
-        else return SP_CHESS_GAME_TIE;
+        next1:
+        if (isTheKingThreatened(src, src->currentPlayer)){       // is the white king threatened?
+            if (flag){ return SP_CHESS_GAME_BLACK_WINNER; }      // no possible moves at all for the white && check
+            else{                                                // just check
+                if (isMini == 0){printCheckMessage(src, src->currentPlayer); }
+                return SP_CHESS_GAME_NO_WINNER;
+            }
+        }
+        else if (flag){ return SP_CHESS_GAME_TIE; }             // No moves but no check
+        else return SP_CHESS_GAME_NO_WINNER;                    // there are moves, no check
     }
     else {
         for (int i = 0; i < GAMESIZE; i++){
             for (int j = 0; j < GAMESIZE; j++){
                 tmp = whosThere(src, i, j);
-                if (isBlack(tmp)){
+                if (isBlack(tmp)) {
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0){ return SP_CHESS_GAME_NO_WINNER; }
+                    if (possibleMoves->actualSize > 0) {
+                        flag = false;
+                        goto next2;
+                    }
                 }
             }
         }
-        // no possible moves at all for the black
-        if (isTheKingThreatened(src, src->currentPlayer)){ return SP_CHESS_GAME_WHITE_WINNER;}  // is the black king threatened?
-        else return SP_CHESS_GAME_TIE;
+        next2:
+        if (isTheKingThreatened(src, src->currentPlayer)){       // is the black king threatened?
+            if (flag){ return SP_CHESS_GAME_WHITE_WINNER; }      // no possible moves at all for the black && check
+            else {                                               // just check
+                if (isMini == 0){printCheckMessage(src, src->currentPlayer); }
+                return SP_CHESS_GAME_NO_WINNER;
+            }
+        }
+        else if (flag){ return SP_CHESS_GAME_TIE; }             // No moves but no check
+        else return SP_CHESS_GAME_NO_WINNER;                    // there are moves, no check
     }
 }

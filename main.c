@@ -13,6 +13,7 @@ int main() {
     SPCommand lastCommand;
     char* player;
     int status;
+    bool toPrint = true;
     beginning:
     status = settings(&game);
     if (status == 0){ return 0; }                       // Quit command executed
@@ -20,7 +21,10 @@ int main() {
         executeComputerMove(game);
     }
     while (winner == SP_CHESS_GAME_NO_WINNER) {
-        chessGamePrintBoard(game);
+        if (toPrint){
+            chessGamePrintBoard(game);
+        }
+        toPrint = true;
         player = game->currentPlayer == 0 ? "black" : "white";
         printf("%s player - enter your move\n", player);
         lastCommand = gameState(game);
@@ -30,12 +34,13 @@ int main() {
             goto beginning;
         }
         if (lastCommand.cmd == MOVE){
-            winner = chessCheckWinner(game);
+            winner = chessCheckWinner(game, 0);
             if (game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER){
                 executeComputerMove(game);
-                winner = chessCheckWinner(game);
+                winner = chessCheckWinner(game, 0);
             }
         }
+        if (lastCommand.cmd == INVALID || lastCommand.cmd == IGNORE) {toPrint = false; }
     }
     printWinnerMessage(winner, game);
     chessGameDestroy(&game);

@@ -125,15 +125,11 @@ void executeComputerMove(SPChessGame *src) {
     char *name = translateToSoldiersName(soldier);
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
            toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
-    if (isTheKingThreatened(src, src->currentPlayer)){
-        printf("Check!\n");
-    }
 }
 
 
 int executePlayerMove(SPChessGame *src, SPCommand command) {
     SP_CHESS_GAME_MESSAGE msg = chessGameSetMove(src, command.source, command.destination, 0);
-    char* player;
     if (msg == SP_CHESS_GAME_INVALID_POSITION_ON_BOARD) {
         printf("Invalid position on the board\n");
     } else if (msg == SP_CHESS_GAME_SOLDIER_MISMATCH) {
@@ -142,10 +138,6 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
         printf("Illegal move\n");
     }
     else{
-        if (isTheKingThreatened(src, src->currentPlayer)){
-            player = src->currentPlayer == 0 ? "black" : "white";
-            printf("Check: %s King is threatened!\n", player);
-        }
         return 1;
     }
     return 0;
@@ -366,7 +358,7 @@ SPCommand gameState(SPChessGame *game) {
         switch (command.cmd) {
             case MOVE:
                 if (executePlayerMove(game, command) == 0){
-                    command.cmd = INVALID;
+                    command.cmd = IGNORE;
                 }
                 break;
             case GET_MOVES:

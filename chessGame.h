@@ -467,18 +467,13 @@ SPArrayList *getMovesForSoldier(SPChessGame *src, int row, int col);
 
 
 /**
-* Checks if there's a winner in the specified game status. The function returns either
-* 1 or 0 in case there's a winner, where
-* the value returned is the symbol of the winner's color. If the game is over and there's a tie
-* then the value 2 is returned. in any other case the -1 is returned.
+* Checks if there's a winner in the specified game status. The function the correct message
 * @param src - the source game
+* @param isMini - inicates if part of the miniMan proccess
 * @return
-* 1 - if the white won
-* 0 - if the black won
-* 2 - If the game is over and there's a tie
-* -1 - otherwise
+* SP_CHESS_GAME_STATE message tells what is the winning state
 */
-SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src);
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src, int isMini);
 
 
 #endif//SPFINAL_CHESSGAME_H

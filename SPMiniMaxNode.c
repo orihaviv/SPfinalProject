@@ -36,13 +36,13 @@ int soldierScore(char soldier) {
 }
 
 int scoreOfLeafNode(SPChessGame *currentGame) {
-    int score = chessCheckWinner(currentGame);
-    if (score == 1) {         // white player won
+    SP_CHESS_GAME_STATE msg = chessCheckWinner(currentGame, 1);
+    if (msg == SP_CHESS_GAME_WHITE_WINNER) {         // white player won
         return INT_MAX;
-    } else if (score == 0) {    // black player won
+    } else if (msg == SP_CHESS_GAME_BLACK_WINNER) {    // black player won
         return INT_MIN;
-    } else if (score == 2) { return 999; } // tie
-    score = 0;
+    } else if (msg == SP_CHESS_GAME_TIE) { return 999; } // tie
+    int score = 0;
     for (int i = 0; i < GAMESIZE; i++) {
         for (int j = 0; j < GAMESIZE; j++) {
             score += soldierScore(currentGame->gameBoard[i][j]);
