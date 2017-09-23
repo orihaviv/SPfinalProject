@@ -6,7 +6,7 @@
 #include "SPArrayList.h"
 
 
-action generateAction(position a, position b, char c, char d){
+action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e){
     action res;
     res.prev.row = a.row;
     res.prev.column = a.column;
