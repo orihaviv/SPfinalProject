@@ -126,7 +126,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
     while (fgets(line, sizeof(line), gameFile) != NULL && !success) {
         if (strstr(line, CURRENT_TURN) != NULL) {            // Fill currentPlayer
             getLabelInfo(labelInfo, line);
-            outputGame->currentPlayer = (!strcasecmp(labelInfo, "BLACK")) ? 0 : 1;
+            outputGame->currentPlayer = (!strcmp(labelInfo, "BLACK")) ? 0 : 1;
         } else if (strstr(line, MODE) != NULL) {             // Fill gameMode
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
@@ -144,7 +144,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
         } else if (strstr(line, COLOR) != NULL) {           // Fill userColor
             if (outputGame->gameMode == 1) {
                 getLabelInfo(labelInfo, line);
-                outputGame->userColor = (!strcasecmp(labelInfo, "WHITE")) ? 1 : 0;
+                outputGame->userColor = (!strcmp(labelInfo, "WHITE")) ? 1 : 0;
             }
         } else if (strstr(line, BOARD) != NULL && (strchr(line, '/') == NULL)) { // Fill board
             for (int j = GAMESIZE - 1; j >= 0; j--) {
