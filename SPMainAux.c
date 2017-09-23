@@ -123,8 +123,21 @@ void executeComputerMove(SPChessGame *src) {
     char soldier = nextMove.piece;
     while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
-    printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
-           toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+    if (nextMove.castling == SP_CHESS_NO_CASTLING) {
+        printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
+               toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+    }
+    else {
+        position kingsPos;
+        if (src->userColor == 1){       // user is white, COM is black
+            kingsPos = src->blackKing;
+        }
+        else{                           // user is black, COM is white
+            kingsPos = src->whiteKing;
+        }
+        printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(kingsPos.row) , toColChar(kingsPos.column)
+        , toRowNum(nextMove.prev.row), toColChar(nextMove.prev.column));
+    }
 }
 
 
@@ -148,7 +161,15 @@ int isWhiteLeftCastlingValid(SPChessGame *src){
     if(src->whiteLeftCastling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
         return 0;
     }
-    return 1;
+    int res = 1;
+    position tmpKingsPos = src->whiteKing;
+    src->whiteKing.row = 0;
+    src->whiteKing.column = 2;
+    if (isTheKingThreatened(src , 1)){
+        res = 0;
+    }
+    src->whiteKing = tmpKingsPos;
+    return res;
 }
 
 
@@ -157,7 +178,16 @@ int isWhiteRightCastlingValid(SPChessGame *src){
     if(src->whiteRightCastling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
         return 0;
     }
-    return 1;
+
+    int res = 1;
+    position tmpKingsPos = src->whiteKing;
+    src->whiteKing.row = 0;
+    src->whiteKing.column = 6;
+    if (isTheKingThreatened(src , 1)){
+        res = 0;
+    }
+    src->whiteKing = tmpKingsPos;
+    return res;
 }
 
 
@@ -166,7 +196,15 @@ int isBlackLeftCastlingValid(SPChessGame *src){
     if(src->blackLeftCastling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
         return 0;
     }
-    return 1;
+    int res = 1;
+    position tmpKingsPos = src->blackKing;
+    src->blackKing.row = 7;
+    src->blackKing.column = 2;
+    if (isTheKingThreatened(src , 0)){
+        res = 0;
+    }
+    src->blackKing = tmpKingsPos;
+    return res;
 }
 
 
@@ -175,7 +213,15 @@ int isBlackRightCastlingValid(SPChessGame *src){
     if(src->blackRightCastling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
         return 0;
     }
-    return 1;
+    int res = 1;
+    position tmpKingsPos = src->blackKing;
+    src->blackKing.row = 7;
+    src->blackKing.column = 6;
+    if (isTheKingThreatened(src , 0)){
+        res = 0;
+    }
+    src->blackKing = tmpKingsPos;
+    return res;
 }
 
 
@@ -184,6 +230,16 @@ void executeWhiteLeftCastling(SPChessGame *src){
     src->gameBoard[0][0] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][2] = KINGWHITE;
     src->gameBoard[0][3] = ROOKWHITE;
+    action move;
+    move.prev.row = 0;
+    move.prev.column = 0;
+    move.current.row = 0;
+    move.current.column = 3;
+    move.captured = BLANK;
+    move.piece = ROOKWHITE;
+    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
+    else { move.castling = SP_CHESS_WHITE_LEFT_CASTLING; }
+    spArrayListAddFirst(src->lastMoves, move);
     src->whiteLeftCastling = src->whiteRightCastling = 0;
     return;
 }
@@ -194,6 +250,16 @@ void executeWhiteRightCastling(SPChessGame *src){
     src->gameBoard[0][7] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][6] = KINGWHITE;
     src->gameBoard[0][5] = ROOKWHITE;
+    action move;
+    move.prev.row = 0;
+    move.prev.column = 7;
+    move.current.row = 0;
+    move.current.column = 5;
+    move.captured = BLANK;
+    move.piece = ROOKWHITE;
+    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
+    else { move.castling = SP_CHESS_WHITE_RIGHT_CASTLING; }
+    spArrayListAddFirst(src->lastMoves, move);
     src->whiteLeftCastling = src->whiteRightCastling = 0;
     return;
 }
@@ -204,6 +270,16 @@ void executeBlackLeftCastling(SPChessGame *src){
     src->gameBoard[7][0] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][2] = KINGBLACK;
     src->gameBoard[7][3] = ROOKBLACK;
+    action move;
+    move.prev.row = 7;
+    move.prev.column = 0;
+    move.current.row = 7;
+    move.current.column = 3;
+    move.captured = BLANK;
+    move.piece = ROOKBLACK;
+    if (src->blackRightCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
+    else { move.castling = SP_CHESS_BLACK_LEFT_CASTLING; }
+    spArrayListAddFirst(src->lastMoves, move);
     src->blackLeftCastling = src->blackRightCastling = 0;
     return;
 }
@@ -214,6 +290,16 @@ void executeBlackRightCastling(SPChessGame *src){
     src->gameBoard[7][7] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][6] = KINGBLACK;
     src->gameBoard[7][5] = ROOKBLACK;
+    action move;
+    move.prev.row = 7;
+    move.prev.column = 7;
+    move.current.row = 7;
+    move.current.column = 5;
+    move.captured = BLANK;
+    move.piece = ROOKBLACK;
+    if (src->blackLeftCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
+    else { move.castling = SP_CHESS_BLACK_RIGHT_CASTLING; }
+    spArrayListAddFirst(src->lastMoves, move);
     src->blackLeftCastling = src->blackRightCastling = 0;
     return;
 }
@@ -255,7 +341,7 @@ int executeCastling(SPChessGame *src, SPCommand command){
             return 0;
         }        
     }
-    else if (command.source.row == 0 && command.source.column == 0){
+    else if (command.source.row == 7 && command.source.column == 0){
         if (isBlackLeftCastlingValid(src)){
             executeBlackLeftCastling(src);
             return 1;
@@ -265,7 +351,7 @@ int executeCastling(SPChessGame *src, SPCommand command){
             return 0;
         }
     }
-    else if (command.source.row == 0 && command.source.column == 0){
+    else if (command.source.row == 7 && command.source.column == 7){
         if (isBlackRightCastlingValid(src)){
             executeBlackRightCastling(src);
             return 1;
@@ -296,7 +382,12 @@ void executeGetMoves(SPChessGame *game, SPCommand command) {
         possibleActions = getMovesForSoldier(game, command.source.row, command.source.column);
         for (int index = 0; index < possibleActions->actualSize; index++) {
             move = *(spArrayListGetAt(possibleActions, index));
-            printf("<%d,%c>", toRowNum(move.current.row), toColChar(move.current.column));
+            if (move.castling == SP_CHESS_NO_CASTLING){
+                printf("<%d,%c>", toRowNum(move.current.row), toColChar(move.current.column));
+            }
+            else{
+                printf("castle <%d,%c>", toRowNum(move.prev.row), toColChar(move.prev.column));
+            }
             if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) { printf("*"); }
             if (move.captured != BLANK) { printf("^"); }
             printf("\n");
