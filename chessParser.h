@@ -50,6 +50,16 @@ typedef struct command_t {
 	char* path;
 } SPCommand;
 
+typedef enum sp_chess_castling_state_t {
+    SP_CHESS_NO_CASTLING,
+    SP_CHESS_BLACK_LEFT_CASTLING,
+    SP_CHESS_BLACK_RIGHT_CASTLING,
+    SP_CHESS_BLACK_BOTH_CASTLINGS,
+    SP_CHESS_WHITE_LEFT_CASTLING,
+    SP_CHESS_WHITE_RIGHT_CASTLING,
+    SP_CHESS_WHITE_BOTH_CASTLINGS,
+} SP_CHESS_CASTLING_STATE;
+
 /**
  * Checks if a specified string represents a valid integer. It is recommended
  * to use this function prior to calling the standard library function atoi.
