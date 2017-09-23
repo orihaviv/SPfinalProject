@@ -422,6 +422,22 @@ void pawnPromotion (SPChessGame* src, action move, int isMini);
 
 SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame *src, position origin, position dest, int isMini);
 
+/**
+* Undo a regular move
+*
+* @param src - The source game
+* @param lastMove - The last action done
+*/
+void regularUndo(SPChessGame* src , action lastMove);
+
+
+/**
+* Undo a castling move
+*
+* @param src - The source game
+* @param lastMove - The last action done
+*/
+void castlingUndo(SPChessGame* src , action lastMove);
 
 /**
  * Undo the last move happened in the game
