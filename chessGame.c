@@ -466,6 +466,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     move.prev = origin;
     move.captured = captured;
     move.piece = soldier;
+    move.castling = SP_CHESS_NO_CASTLING;
     gameSpArrayListAdd(src->lastMoves, move);
     if ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7)) {
         pawnPromotion(src, move, isMini);
@@ -475,6 +476,84 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
 }
 
 
+void regularUndo(SPChessGame* src , action lastMove){
+    if (lastMove.piece == KINGBLACK) {
+        src->blackKing.row = lastMove.prev.row;
+        src->blackKing.column = lastMove.prev.column;
+    } else if (lastMove.piece == KINGWHITE) {
+        src->whiteKing.row = lastMove.prev.row;
+        src->whiteKing.column = lastMove.prev.column;
+    }
+    src->gameBoard[lastMove.prev.row][lastMove.prev.column] = lastMove.piece;
+    src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
+}
+
+void castlingUndo(SPChessGame* src , action lastMove){
+    switch (lastMove.castling) {
+        case SP_CHESS_WHITE_LEFT_CASTLING:
+            src->whiteLeftCastling = 1;
+            src->gameBoard[0][0] = ROOKWHITE;
+            src->gameBoard[0][4] = KINGWHITE;
+            src->gameBoard[0][2] = src->gameBoard[0][3] = BLANK;
+            src->whiteKing.row = 0;
+            src->whiteKing.column = 4;
+            break;
+        case SP_CHESS_WHITE_RIGHT_CASTLING:
+            src->whiteRightCastling = 1;
+            src->gameBoard[0][7] = ROOKWHITE;
+            src->gameBoard[0][4] = KINGWHITE;
+            src->gameBoard[0][5] = src->gameBoard[0][6] = BLANK;
+            src->whiteKing.row = 0;
+            src->whiteKing.column = 4;
+            break;
+        case SP_CHESS_WHITE_BOTH_CASTLINGS:
+            src->whiteLeftCastling = src->whiteRightCastling = 1;
+            src->whiteKing.row = 0;
+            src->whiteKing.column = 4;
+            src->gameBoard[0][4] = KINGWHITE;
+            if (lastMove.prev.row == 0){                // left castling was done
+                src->gameBoard[0][0] = ROOKWHITE;
+                src->gameBoard[0][2] = src->gameBoard[0][3] = BLANK;
+            }
+            else {                                      // right castling was done
+                src->gameBoard[0][7] = ROOKWHITE;
+                src->gameBoard[0][5] = src->gameBoard[0][6] = BLANK;
+            }
+            break;
+        case SP_CHESS_BLACK_LEFT_CASTLING:
+            src->blackLeftCastling = 1;
+            src->gameBoard[7][0] = ROOKBLACK;
+            src->gameBoard[7][4] = KINGBLACK;
+            src->gameBoard[7][2] = src->gameBoard[7][3] = BLANK;
+            src->whiteKing.row = 7;
+            src->whiteKing.column = 4;
+            break;
+        case SP_CHESS_BLACK_RIGHT_CASTLING:
+            src->blackRightCastling = 1;
+            src->gameBoard[7][7] = ROOKBLACK;
+            src->gameBoard[7][4] = KINGBLACK;
+            src->gameBoard[7][5] = src->gameBoard[7][6] = BLANK;
+            src->whiteKing.row = 7;
+            src->whiteKing.column = 4;
+            break;
+        case SP_CHESS_BLACK_BOTH_CASTLINGS:
+            src->blackLeftCastling = src->blackRightCastling = 1;
+            src->whiteKing.row = 7;
+            src->whiteKing.column = 4;
+            src->gameBoard[7][4] = KINGBLACK;
+            if (lastMove.prev.row == 0){                    // left castling was done
+                src->gameBoard[7][0] = ROOKBLACK;
+                src->gameBoard[7][2] = src->gameBoard[7][3] = BLANK;
+            }
+            else {                                          // right castling was done
+                src->gameBoard[7][7] = ROOKBLACK;
+                src->gameBoard[7][5] = src->gameBoard[7][6] = BLANK;
+            }
+            break;
+        default:
+            break;
+    }
+}
 
 SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     if (!src){
@@ -485,16 +564,12 @@ SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     }
     action lastMove = *(spArrayListGetFirst(src->lastMoves));
     spArrayListRemoveFirst(src->lastMoves);
-    if (lastMove.piece == KINGBLACK){
-        src->blackKing.row = lastMove.prev.row;
-        src->blackKing.column = lastMove.prev.column;
+    if (lastMove.castling == SP_CHESS_NO_CASTLING) {
+        regularUndo(src, lastMove);
     }
-    else if (lastMove.piece == KINGWHITE){
-        src->whiteKing.row = lastMove.prev.row;
-        src->whiteKing.column = lastMove.prev.column;
+    else {
+        castlingUndo(src, lastMove);
     }
-    src->gameBoard[lastMove.prev.row][lastMove.prev.column] = lastMove.piece;
-    src->gameBoard[lastMove.current.row][lastMove.current.column] = lastMove.captured;
     src->currentPlayer = 1 - src->currentPlayer;
     return SP_CHESS_GAME_SUCCESS;
 }
@@ -536,16 +611,36 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
             tmpDest.row = i;
             tmpDest.column = j;
             if (isValidMove(src, soldierPos, tmpDest)){
-                spArrayListAddLast(possibleMoves, generateAction(soldierPos, tmpDest, whosThere(src, i, j), src->gameBoard[row][col]));
+                spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, whosThere(src, i, j), src->gameBoard[row][col], SP_CHESS_NO_CASTLING));
             }
         }
     }
+    if (row == 0 && col == 0 && src->whiteLeftCastling == 1 && src->gameBoard[0][1] == BLANK
+        && src->gameBoard[0][2] == BLANK && src->gameBoard[0][3] == BLANK){
+        soldierPos.row = 0;
+        soldierPos.column = 0;
+        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+    }
+    else if (row == 0 && col == 7 && src->whiteRightCastling == 1
+        && src->gameBoard[0][5] == BLANK && src->gameBoard[0][6] == BLANK){
+        soldierPos.row = 0;
+        soldierPos.column = 7;
+        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+    }
+    else if (row == 7 && col == 0 && src->blackLeftCastling == 1 && src->gameBoard[7][1] == BLANK
+                 && src->gameBoard[7][2] == BLANK && src->gameBoard[7][3] == BLANK){
+        soldierPos.row = 7;
+        soldierPos.column = 0;
+        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+    }
+    else if (row == 7 && col == 7 && src->blackRightCastling == 1
+             && src->gameBoard[7][5] == BLANK && src->gameBoard[7][6] == BLANK){
+        soldierPos.row = 7;
+        soldierPos.column = 7;
+        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+    }
     return possibleMoves;
 }
-
-
-
-
 
 
 void printCheckMessage(SPChessGame* src, int current){
