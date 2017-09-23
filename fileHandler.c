@@ -134,9 +134,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
         } else if (strstr(line, MODE) != NULL) {             // Fill gameMode
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->gameMode = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->gameMode = tmp - '0'; }
         } else if (strstr(line, LEVEL) != NULL) {            // Fill difficulty
             if (outputGame->gameMode == 1) {
                 getLabelInfo(labelInfo, line);
@@ -162,51 +160,35 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
         } else if (strstr(line, "whiteLeftCastling") != NULL) {           // Fill whiteLeftCastling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->whiteLeftCastling = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->whiteLeftCastling = tmp - '0'; }
         } else if (strstr(line, "whiteRightCastling") != NULL) {           // Fill whiteRightCastling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->whiteRightCastling = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->whiteRightCastling = tmp - '0'; }
         } else if (strstr(line, "blackLeftCastling") != NULL) {           // Fill blackLeftCastling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->blackLeftCastling = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->blackLeftCastling = tmp - '0'; }
         } else if (strstr(line, "blackRightCastling") != NULL) {           // Fill blackRightCastling
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->blackRightCastling = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->blackRightCastling = tmp - '0'; }
         } else if (strstr(line, "whiteKingRow") != NULL) {
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->whiteKing.row = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->whiteKing.row = tmp - '0'; }
         } else if (strstr(line, "whiteKingCol") != NULL) {
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->whiteKing.column = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->whiteKing.column = tmp - '0'; }
         } else if (strstr(line, "blackKingRow") != NULL) {
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->blackKing.row = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->blackKing.row = tmp - '0'; }
         } else if (strstr(line, "blackKingCol") != NULL) {
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
-            if (spParserIsInt(labelInfo)) {
-                outputGame->blackKing.column = tmp - '0';
-            }
+            if (spParserIsInt(labelInfo)) { outputGame->blackKing.column = tmp - '0'; }
         } else if ((strstr(line, GAME) != NULL) && (strchr(line, '/') != NULL)) { success = true; }
     }
     if (success && fclose(gameFile) == 0) {              // no File closing error

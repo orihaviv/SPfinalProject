@@ -21,7 +21,7 @@ int main() {
         executeComputerMove(game);
     }
     while (winner == SP_CHESS_GAME_NO_WINNER) {
-        if (toPrint){
+        if (toPrint){                                                   // if we want the board to be printed again
             chessGamePrintBoard(game);
         }
         toPrint = true;
@@ -40,7 +40,7 @@ int main() {
                 winner = chessCheckWinner(game, 0);
             }
         }
-        if (lastCommand.cmd == INVALID || lastCommand.cmd == IGNORE) {toPrint = false; }
+        if (lastCommand.cmd == INVALID || lastCommand.cmd == IGNORE || lastCommand.cmd == SAVE) {toPrint = false; } //TODO should we print the board on save?
     }
     printWinnerMessage(winner, game);
     chessGameDestroy(&game);
