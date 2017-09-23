@@ -16,6 +16,7 @@ typedef struct positions_on_board {
     position current;
     char captured;
 	char piece;
+	SP_CHESS_CASTLING_STATE castling;
 } action;
 
 /**
@@ -81,11 +82,12 @@ typedef enum sp_array_list_message_t {
  *  @param b - the destination position != NULL.
  *  @param c - the destination captured soldier != NULL.
  *  @param d - the moving soldier != NULL.
+ *  @param e - the relevant castling state
  *  @return
  *  ACTION FROM A TO B
  */
 
-action generateAction(position a, position b, char c, char d);
+action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e);
 
 /**
  *  Creates an empty array list with the specified maximum capacity.
