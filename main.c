@@ -33,7 +33,7 @@ int main() {
             game = chessGameCreate();
             goto beginning;
         }
-        if (lastCommand.cmd == MOVE){
+        if (lastCommand.cmd == MOVE || lastCommand.cmd == CASTLE){      // TODO ask ORI
             winner = chessCheckWinner(game, 0);
             if (game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER){
                 executeComputerMove(game);
