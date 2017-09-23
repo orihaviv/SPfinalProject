@@ -32,8 +32,6 @@ int soldierScore(char soldier) {
             return KINGWHITESCORE;
         case KINGBLACK:
             return KINGBLACKSCORE;
-        default:
-            return 0;
     }
 }
 
