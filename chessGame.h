@@ -439,6 +439,54 @@ void regularUndo(SPChessGame* src , action lastMove);
 */
 void castlingUndo(SPChessGame* src , action lastMove);
 
+
+/**
+ * Indicates whether white left castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isWhiteLeftCastlingValid(SPChessGame *src);
+
+
+/**
+ * Indicates whether white right castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isWhiteRightCastlingValid(SPChessGame *src);
+
+/**
+ * Indicates whether black left castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isBlackLeftCastlingValid(SPChessGame *src);
+
+
+/**
+ * Indicates whether black right castling is valid.
+ *
+ * @param src - The target game
+ *
+ * @return
+ * 1 - if castling is valid
+ * 0 - otherwise
+ */
+int isBlackRightCastlingValid(SPChessGame *src);
+
+
 /**
  * Undo the last move happened in the game
  *
