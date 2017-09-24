@@ -9,7 +9,7 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdio.h>
-#include "SPchessGUIManager.h"
+//#include "SPchessGUIManager.h"
 
 
 

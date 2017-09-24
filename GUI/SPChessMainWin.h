@@ -3,7 +3,7 @@
 #include <SDL.h>
 
 typedef enum {
-	SP_MAIN_EXIT, SP_MAIN_NEW_GAME, SP_MAIN_LOAD_GAME ,SP_MAIN_INVALID_ARGUMENT, SP_MAIN_NONE
+	SP_MAIN_QUIT_GAME, SP_MAIN_NEW_GAME, SP_MAIN_LOAD_GAME ,SP_MAIN_INVALID_ARGUMENT, SP_MAIN_NONE
 } SP_MAIN_EVENT;
 
 typedef struct {
@@ -17,8 +17,8 @@ typedef struct {
 } SPMainWin;
 
 SPMainWin* spMainWindowCreate();
-void spMainWindowDraw(SPMainWin* src);
 void spMainWindowDestroy(SPMainWin* src);
+void spMainWindowDraw(SPMainWin* src);
 void spMainWindowHide(SPMainWin* src);
 void spMainWindowShow(SPMainWin* src);
 SP_MAIN_EVENT spMainWindowHandleEvent(SPMainWin* src, SDL_Event* event);
