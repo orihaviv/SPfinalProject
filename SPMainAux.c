@@ -387,6 +387,7 @@ SPCommand gameState(SPChessGame *game) {
             case QUIT:
                 printf("Exiting...\n");
                 chessGameDestroy(&game);
+                break;
             case CASTLE:
                 if (executeCastling(game, command) == 0){
                     command.cmd = INVALID;
