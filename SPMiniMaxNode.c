@@ -85,6 +85,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                         alpha = maxi(bestScore, alpha);
                         if (beta <= alpha) { break; }
                     }
+                    spArrayListDestroy(&possibleActions);
                 }
             }
         }
@@ -104,10 +105,10 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                         beta = mini(bestScore, beta);
                         if (beta <= alpha) { break; }
                     }
+                    spArrayListDestroy(&possibleActions);
                 }
             }
         }
     }
-    spArrayListDestroy(&possibleActions);
     return bestScore;
 }

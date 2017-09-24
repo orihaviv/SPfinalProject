@@ -723,6 +723,7 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
     bool flag = true;
     if (!src){ return SP_CHESS_GAME_INVALID_GAME;}
     char tmp;
+    int num;
     SPArrayList *possibleMoves;
     if (src->currentPlayer == 1) {
         for (int i = 0; i < GAMESIZE; i++){
@@ -730,15 +731,17 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
                 tmp = whosThere(src, i, j);
                 if (isWhite(tmp)){
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0){
+                    num = possibleMoves->actualSize;
+                    spArrayListDestroy(&possibleMoves);
+                    if (num > 0){
                         flag = false;
                         goto next1;
                     }
+
                 }
             }
         }
         next1:
-        spArrayListDestroy(&possibleMoves);
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the white king threatened?
             if (flag){ return SP_CHESS_GAME_BLACK_WINNER; }      // no possible moves at all for the white && check
             else{                                                // just check
@@ -755,7 +758,9 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
                 tmp = whosThere(src, i, j);
                 if (isBlack(tmp)) {
                     possibleMoves = getMovesForSoldier(src, i, j);
-                    if (possibleMoves->actualSize > 0) {
+                    num = possibleMoves->actualSize;
+                    spArrayListDestroy(&possibleMoves);
+                    if (num > 0) {
                         flag = false;
                         goto next2;
                     }
@@ -763,7 +768,6 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
             }
         }
         next2:
-        spArrayListDestroy(&possibleMoves);
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the black king threatened?
             if (flag){ return SP_CHESS_GAME_WHITE_WINNER; }      // no possible moves at all for the black && check
             else {                                               // just check

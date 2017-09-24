@@ -34,6 +34,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                         }
                         chessGameUndoPrevMove(gameCopy);
                     }
+                    spArrayListDestroy(&possibleActions);
                 }
             }
         }
@@ -55,11 +56,11 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                         }
                         chessGameUndoPrevMove(gameCopy);
                     }
+                    spArrayListDestroy(&possibleActions);
                 }
             }
         }
     }
-    spArrayListDestroy(&possibleActions);
     chessGameDestroy(&gameCopy);
     action* bestActionPointer;
     bestActionPointer = &bestAction;

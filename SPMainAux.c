@@ -87,7 +87,7 @@ int settings(SPChessGame **gamePointer) {
 
 
 char* translateToSoldiersName(char soldier) {
-    char *name = (char *) malloc(10);
+    char *name;
     switch (soldier) {
         case 'm':
         case 'M':
@@ -113,6 +113,8 @@ char* translateToSoldiersName(char soldier) {
         case 'Q':
             name = "queen";
             break;
+        default:
+            return NULL;
     }
     return name;
 }
@@ -123,9 +125,12 @@ void executeComputerMove(SPChessGame *src) {
     char soldier = nextMove.piece;
     while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
+    if (name == NULL){
+        printf("problem in translateToSoldierName");
+        return;
+    }
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
                toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
-    free(name);
 }
 
 
