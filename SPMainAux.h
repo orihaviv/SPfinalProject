@@ -85,52 +85,6 @@ int executePlayerMove (SPChessGame* src, SPCommand command);
 
 
 /**
- * Indicates whether white left castling is valid.
- *
- * @param src - The target game
- *
- * @return
- * 1 - if castling is valid
- * 0 - otherwise
- */
-int isWhiteLeftCastlingValid(SPChessGame *src);
-
-
-/**
- * Indicates whether white right castling is valid.
- *
- * @param src - The target game
- *
- * @return
- * 1 - if castling is valid
- * 0 - otherwise
- */
-int isWhiteRightCastlingValid(SPChessGame *src);
-
-/**
- * Indicates whether black left castling is valid.
- *
- * @param src - The target game
- *
- * @return
- * 1 - if castling is valid
- * 0 - otherwise
- */
-int isBlackLeftCastlingValid(SPChessGame *src);
-
-
-/**
- * Indicates whether black right castling is valid.
- *
- * @param src - The target game
- *
- * @return
- * 1 - if castling is valid
- * 0 - otherwise
- */
-int isBlackRightCastlingValid(SPChessGame *src);
-
-/**
  * Executing white left castling move.
  *
  * @param src - The target game
