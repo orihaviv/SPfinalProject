@@ -253,6 +253,7 @@ bool isTheKingThreatened(SPChessGame *src, int color) {
 
 
 bool isMoveRiskTheKing(SPChessGame* src, position origin , position dest){
+    if (!src){ return false;}
     char tmp = src->gameBoard[dest.row][dest.column];
     if(src->gameBoard[origin.row][origin.column] == KINGBLACK){
         src->blackKing = dest;

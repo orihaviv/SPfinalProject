@@ -317,6 +317,7 @@ void executeGetMoves(SPChessGame *game, SPCommand command) {
             if (move.captured != BLANK) { printf("^"); }
             printf("\n");
         }
+        spArrayListDestroy(&possibleActions);
     }
     return;
 }
