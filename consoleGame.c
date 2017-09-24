@@ -3,7 +3,7 @@
 //
 
 #include "consoleGame.h"
-#include "SPMainAux.h"
+
 
 
 int executeConsoleGame(){

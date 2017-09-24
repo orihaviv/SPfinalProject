@@ -4,6 +4,6 @@
 
 int main() {
 
-    executeConsoleGame();
+    return executeConsoleGame();
 
 }

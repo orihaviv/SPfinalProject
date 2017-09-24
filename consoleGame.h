@@ -5,7 +5,7 @@
 #ifndef FINALPROJECT_CONSOLEGAME_H
 #define FINALPROJECT_CONSOLEGAME_H
 
-
+#include "SPMainAux.h"
 
 /**
  * Exectutes the game in console mode
