@@ -44,6 +44,7 @@ SPCommand setDifficultyCmd(char* diff) {
     if (spParserIsInt(diff)){
         level = atoi(diff);
         if (level > 0 && level < 5){
+            command.cmd = DIFFICULTY;
             command.arg = level;
         }
         else if (level == 5){
@@ -211,11 +212,11 @@ SPCommand spParserParseLine(const char* str) {
             if (isValidFormat(nextToken)) {
                 return getMoveCmd(nextToken);
             }
-        } else if (!strcmp(firstToken, "load") && nextToken != NULL) {
-            command.path = nextToken;
+        } else if (!strcmp(firstToken, "load")) {
+            strcpy(command.path, nextToken);
             command.cmd = LOAD;
-        } else if (!strcmp(firstToken, "save") && nextToken != NULL){
-            command.path = nextToken;
+        } else if (!strcmp(firstToken, "save")){
+            strcpy(command.path, nextToken);
             command.cmd = SAVE;
         } else if (nextToken != NULL) {}
         else if (!strcmp(firstToken, "default")) {
