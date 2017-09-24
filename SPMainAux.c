@@ -391,6 +391,9 @@ SPCommand gameState(SPChessGame *game) {
                 if (executeCastling(game, command) == 0){
                     command.cmd = INVALID;
                 }
+                else{
+                    game->currentPlayer = 1 - game->currentPlayer;
+                }
                 break;
             default:
                 printf("Invalid command\n");
