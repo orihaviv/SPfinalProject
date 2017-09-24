@@ -123,21 +123,8 @@ void executeComputerMove(SPChessGame *src) {
     char soldier = nextMove.piece;
     while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
-    if (nextMove.castling == SP_CHESS_NO_CASTLING) {
-        printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
+    printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
                toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
-    }
-    else {
-        position kingsPos;
-        if (src->userColor == 1){       // user is white, COM is black
-            kingsPos = src->blackKing;
-        }
-        else{                           // user is black, COM is white
-            kingsPos = src->whiteKing;
-        }
-        printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(kingsPos.row) , toColChar(kingsPos.column)
-        , toRowNum(nextMove.prev.row), toColChar(nextMove.prev.column));
-    }
 }
 
 
@@ -348,13 +335,13 @@ void executeUndo(SPChessGame *game) {
     }
     char *player;
     if (msg == SP_CHESS_GAME_SUCCESS) {
-        player = game->currentPlayer == 1 ? "black" : "white";
+        player = game->currentPlayer == 1 ? "white" : "black";
         printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
                toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
         lastMove = *(spArrayListGetFirst(game->lastMoves));
         SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
         if (msg == SP_CHESS_GAME_SUCCESS) {
-            player = game->currentPlayer == 1 ? "black" : "white";
+            player = game->currentPlayer == 1 ? "white" : "black";
             printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
                    toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
         }
