@@ -14,6 +14,7 @@ action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_
     res.current.column = b.column;
     res.captured = c;
     res.piece = d;
+    res.castling = e;
     return res;
 }
 
