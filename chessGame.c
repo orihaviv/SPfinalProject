@@ -661,7 +661,7 @@ SP_CHESS_GAME_MESSAGE chessGamePrintBoard(SPChessGame *src) {
     for (int i = 0; i < GAMESIZE; i++) {
         printf(" %c", (i + 65));
     }
-    printf("\n\n");
+    printf("\n");
     return SP_CHESS_GAME_SUCCESS;
 }
 

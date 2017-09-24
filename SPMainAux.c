@@ -147,7 +147,7 @@ int executePlayerMove(SPChessGame *src, SPCommand command) {
 void executeWhiteLeftCastling(SPChessGame *src){
     if(!src) { return; }
     src->gameBoard[0][0] = src->gameBoard[0][4] = BLANK;
-    src->gameBoard[0][2] = KINGWHITE;
+    src->gameBoard[0][2] = KINGWHITE;9
     src->gameBoard[0][3] = ROOKWHITE;
     action move;
     move.prev.row = 0;
