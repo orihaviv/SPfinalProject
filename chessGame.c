@@ -738,6 +738,7 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
             }
         }
         next1:
+        spArrayListDestroy(&possibleMoves);
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the white king threatened?
             if (flag){ return SP_CHESS_GAME_BLACK_WINNER; }      // no possible moves at all for the white && check
             else{                                                // just check
@@ -762,6 +763,7 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
             }
         }
         next2:
+        spArrayListDestroy(&possibleMoves);
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the black king threatened?
             if (flag){ return SP_CHESS_GAME_WHITE_WINNER; }      // no possible moves at all for the black && check
             else {                                               // just check

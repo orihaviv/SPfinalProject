@@ -188,29 +188,35 @@ SPCommand spParserParseLine(const char* str) {
     if (strCopy != NULL) {
         strcpy(strCopy, str);
         char *firstToken = strtok(strCopy, " \t\r\n");
-        if (firstToken == NULL){ return command; }
+        if (firstToken == NULL){ goto end; }
         char *nextToken = strtok(NULL, " \t\r\n");
         if (!strcmp(firstToken, "game_mode")) {
-            return setGameModeCmd(nextToken);
+            command = setGameModeCmd(nextToken);
+            goto end;
         } else if (!strcmp(firstToken, "difficulty")) {
-            return setDifficultyCmd(nextToken);
+            command = setDifficultyCmd(nextToken);
+            goto end;
         } else if (!strcmp(firstToken, "user_color")) {
-            return setColorCmd(nextToken);
+            command = setColorCmd(nextToken);
+            goto end;
         } else if (!strcmp(firstToken, "move")){
             char *thirdToken = strtok(NULL, " \t\r\n");
             char *forthToken = strtok(NULL, " \t\r\n");
             if (!strcmp(thirdToken, "to")){
                 if (isValidFormat(nextToken) && isValidFormat(forthToken)){
-            		return setMoveCmd (nextToken, forthToken);
+            		command = setMoveCmd (nextToken, forthToken);
+                    goto end;
             	}
             }
         } else if (!strcmp(firstToken, "castle")){
 	    if (isValidFormat(nextToken)){
-           	return setCastleCmd(nextToken);
+           	command = setCastleCmd(nextToken);
+            goto end;
 	    }
         } else if (!strcmp(firstToken, "get_moves")){
             if (isValidFormat(nextToken)) {
-                return getMoveCmd(nextToken);
+                command = getMoveCmd(nextToken);
+                goto end;
             }
         } else if (!strcmp(firstToken, "load")) {
             strcpy(command.path, nextToken);
@@ -232,6 +238,7 @@ SPCommand spParserParseLine(const char* str) {
         } else if (!strcmp(firstToken, "reset")) {
             command.cmd = RESET;
         }
+        end:
         free(strCopy);
     }
     return command;

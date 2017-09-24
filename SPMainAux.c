@@ -125,6 +125,7 @@ void executeComputerMove(SPChessGame *src) {
     char *name = translateToSoldiersName(soldier);
     printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
                toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+    free(name);
 }
 
 
