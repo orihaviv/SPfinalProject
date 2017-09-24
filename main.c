@@ -4,6 +4,7 @@
 
 int main() {
 
-    return executeConsoleGame();
+//    return executeConsoleGame();
+
 
 }

@@ -3,11 +3,11 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include "SPChessWindow.h"
-#include "../SPTicTacToe.h"       //TODO change
+#include "../SPMainAux.h"
 
 typedef enum {
-	SP_GAME_EVENT_X_WON,
-	SP_GAME_EVENT_O_WON,
+	SP_GAME_EVENT_WHITE_WON,
+	SP_GAME_EVENT_BLACK_WON,
 	SP_GAME_EVENT_TIE,
 	SP_GAME_EVENT_QUIT,
 	SP_GAME_EVENT_INVALID_ARGUMENT,
@@ -20,7 +20,7 @@ typedef struct{
 	SDL_Texture* bgTexture;
 	SDL_Texture* xTexture;
 	SDL_Texture* oTexture;
-	SPTicTacToe* game;
+	SPChessGame* game;
 }SPGameWin;
 
 SPGameWin* spGameWindowCreate();

@@ -42,12 +42,12 @@ void spManagerDraw(SPGuiManager* src) {
 }
 
 
-SP_MANAGER_EVENET handleManagerDueToMainEvent(SPGuiManager* src,
+SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager* src,
 		SP_MAIN_EVENT event) {
 	if (src == NULL ) {
 		return SP_MANAGER_NONE;
 	}
-	if (event == SP_MAIN_START) {
+	if (event == SP_MAIN_NEW_GAME) {
 		spMainWindowHide(src->mainWin);
 		src->gameWin = spGameWindowCreate();
 		if (src->gameWin == NULL ) {
@@ -56,6 +56,9 @@ SP_MANAGER_EVENET handleManagerDueToMainEvent(SPGuiManager* src,
 		}
 		src->activeWin = SP_GAME_WINDOW_ACTIVE;
 	}
+
+	else if (event == SP_MAIN_LOAD_GAME){}// TODO
+
 	if (event == SP_MAIN_EXIT) {
 		return SP_MANAGER_QUTT;
 	}
@@ -63,7 +66,7 @@ SP_MANAGER_EVENET handleManagerDueToMainEvent(SPGuiManager* src,
 }
 
 
-SP_MANAGER_EVENET handleManagerDueToGameEvent(SPGuiManager* src,
+SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src,
 		SP_GAME_EVENT event) {
 	if (event == SP_GAME_EVENT_NONE || src == NULL ) {
 		return SP_MANAGER_NONE;
@@ -86,7 +89,7 @@ SP_MANAGER_EVENET handleManagerDueToGameEvent(SPGuiManager* src,
 }
 
 
-SP_MANAGER_EVENET spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
+SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
 	if (src == NULL || event == NULL ) {
 		return SP_MANAGER_NONE;
 	}
