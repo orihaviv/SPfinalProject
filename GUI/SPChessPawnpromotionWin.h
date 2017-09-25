@@ -1,0 +1,32 @@
+//
+// Created by אורי חביב on 25/09/2017.
+//
+
+#ifndef FINALPROJECT_SPCHESSPAWNPROMOTIONWIN_H
+#define FINALPROJECT_SPCHESSPAWNPROMOTIONWIN_H
+
+
+#include <stdbool.h>
+#include <SDL.h>
+
+
+typedef enum {
+    SP_PROMOTION_PAWN,
+    SP_PROMOTION_ROOK,
+    SP_PROMOTION_KNIGHT,
+    SP_PROMOTION_BISHOP,
+    SP_PROMOTION_QUEEN,
+    SP_PROMOTION_INVALID
+} SP_SETTINGS_EVENT;
+
+
+SP_SETTINGS_EVENT showPromotionMessageBox ();
+
+
+
+
+
+
+
+
+#endif //FINALPROJECT_SPCHESSPAWNPROMOTIONWIN_H
