@@ -23,6 +23,32 @@ int isClickOnQuit(int x, int y) {
     return 0;
 }
 
+
+
+bool loadingSurfaceFunc(SPMainWin *src, SDL_Texture** texture, char* path) {
+    SDL_Surface *loadingSurface = NULL;
+    loadingSurface = SDL_LoadBMP(path);
+    if (loadingSurface == NULL) {
+        spMainWindowDestroy(src);
+        printf("couldn't create %s surface\n", path);
+        SDL_FreeSurface(loadingSurface);
+        return false;
+    }
+    *texture = SDL_CreateTextureFromSurface(src->mainRenderer, loadingSurface);
+    if (*texture == NULL) {
+        SDL_FreeSurface(loadingSurface);
+        spMainWindowDestroy(src);
+        printf("couldn't create %s texture\n", path);
+        SDL_FreeSurface(loadingSurface);
+        return false;
+    }
+    SDL_FreeSurface(loadingSurface);
+    return true;
+}
+
+
+
+
 SPMainWin *spMainWindowCreate() {
     SPMainWin *res = NULL;
     SDL_Surface *loadingSurface = NULL;
@@ -47,6 +73,8 @@ SPMainWin *spMainWindowCreate() {
         return NULL;
     }
 
+    bool check;
+
 
     // Creating rederer and checking it's real
     res->mainRenderer = SDL_CreateRenderer(res->mainWindow, -1,
@@ -58,66 +86,23 @@ SPMainWin *spMainWindowCreate() {
         return NULL;
     }
 
+    // picture
+    check = loadingSurfaceFunc(res, &(res->pictureTexture), "../GUI/images/mainWindow/dragon.bmp");
+    if (!check){ return  NULL; }
 
-    loadingSurface = SDL_LoadBMP("../GUI/images/mainWindow/dragon.bmp");
-    if (loadingSurface == NULL) {
-        spMainWindowDestroy(res);
-        printf("couldn't create dragon.bmp surface\n");
-        return NULL;
-    }
-    res->pictureTexture = SDL_CreateTextureFromSurface(res->mainRenderer, loadingSurface);
-    if (res->pictureTexture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        spMainWindowDestroy(res);
-        printf("couldn't create dragon.bmp texture\n");
-        return NULL;
-    }
+    // New Game button
+    check = loadingSurfaceFunc(res, &(res->newGameTexture), "../GUI/images/mainWindow/newGame.bmp");
+    if (!check){ return  NULL; }
 
 
-    loadingSurface = SDL_LoadBMP("../GUI/images/mainWindow/newGame.bmp");
-    if (loadingSurface == NULL) {
-        spMainWindowDestroy(res);
-        printf("couldn't create newGame.bmp surface\n");
-        return NULL;
-    }
-    res->newGameTexture = SDL_CreateTextureFromSurface(res->mainRenderer, loadingSurface);
-    if (res->newGameTexture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        spMainWindowDestroy(res);
-        printf("couldn't create newGame.bmp texture\n");
-        return NULL;
-    }
-    SDL_FreeSurface(loadingSurface);
+    // Load Game button
+    check = loadingSurfaceFunc(res, &(res->loadGameTexture), "../GUI/images/mainWindow/loadGame.bmp");
+    if (!check){ return  NULL; }
 
 
-    loadingSurface = SDL_LoadBMP("../GUI/images/mainWindow/loadGame.bmp");
-    if (loadingSurface == NULL) {
-        spMainWindowDestroy(res);
-        printf("couldn't create loadGame.bmp surface\n");
-        return NULL;
-    }
-    res->loadGameTexture = SDL_CreateTextureFromSurface(res->mainRenderer, loadingSurface);
-    if (res->loadGameTexture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        spMainWindowDestroy(res);
-        printf("couldn't create loadGame.bmp texture\n");
-        return NULL;
-    }
-
-
-    loadingSurface = SDL_LoadBMP("../GUI/images/mainWindow/quitGame.bmp");
-    if (loadingSurface == NULL) {
-        spMainWindowDestroy(res);
-        printf("couldn't create quitGame.bmp surface\n");
-        return NULL;
-    }
-    res->quitGameTexture = SDL_CreateTextureFromSurface(res->mainRenderer, loadingSurface);
-    if (res->quitGameTexture == NULL) {
-        SDL_FreeSurface(loadingSurface);
-        spMainWindowDestroy(res);
-        printf("couldn't create quitGame.bmp texture\n");
-        return NULL;
-    }
+    // Quit Game button
+    check = loadingSurfaceFunc(res, &(res->quitGameTexture), "../GUI/images/mainWindow/quitGame.bmp");
+    if (!check){ return  NULL; }
 
 
     SDL_FreeSurface(loadingSurface);

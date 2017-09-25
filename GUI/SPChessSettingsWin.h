@@ -5,6 +5,7 @@
 #ifndef FINALPROJECT_SPCHESSSETTINGSWIN_H
 #define FINALPROJECT_SPCHESSSETTINGSWIN_H
 
+#include <stdbool.h>
 #include <SDL.h>
 
 typedef enum {

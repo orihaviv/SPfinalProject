@@ -1,5 +1,11 @@
+
+
+
+
 #ifndef SPCHESSMAINWIN_H_
 #define SPCHESSMAINWIN_H_
+
+#include <stdbool.h>
 #include <SDL.h>
 
 typedef enum {
