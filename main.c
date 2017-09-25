@@ -6,7 +6,7 @@
 int main() {
 
 //    return executeConsoleGame();
-    executeGuiGame();
+    return executeGuiGame();
 
 
 }

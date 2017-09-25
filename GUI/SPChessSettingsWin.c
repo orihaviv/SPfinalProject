@@ -53,7 +53,7 @@ bool loadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
 
 
 
-SPSettingsWin *spMainWindowCreate() {
+SPSettingsWin *spSettingsWindowCreate() {
     SPSettingsWin *res = NULL;
     res = (SPSettingsWin *) malloc(sizeof(SPSettingsWin));
     if (res == NULL) {
@@ -64,8 +64,8 @@ SPSettingsWin *spMainWindowCreate() {
     res->settingsWindow = SDL_CreateWindow("Chess Game - Settings", // window title
                                        SDL_WINDOWPOS_CENTERED,           // initial x position
                                        SDL_WINDOWPOS_CENTERED,           // initial y position
-                                       600,                               // width, in pixels
-                                       400,                               // height, in pixels
+                                       800,                               // width, in pixels
+                                       600,                               // height, in pixels
                                        SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -216,23 +216,30 @@ void spSettingsWindowDestroy(SPSettingsWin *src) {
 }
 
 
-void spMainWindowDraw(SPSettingsWin *src) {
+void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
-    SDL_Rect gameModeR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect difficultyR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect userColorR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect whiteR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect blackR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect startR = {.x = 75, .y = 180, .h = 50, .w = 250};
-    SDL_Rect backR = {.x = 75, .y = 245, .h = 50, .w = 250};
-    SDL_Rect onePlayerR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_Rect twoPlayersR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_Rect noobR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_Rect easyR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_Rect moderateR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_Rect hardR = {.x = 75, .y = 310, .h = 50, .w = 250};
+    SDL_Rect gameModeR = {.x = 20, .y = 50, .h = 75, .w = 150};
+    SDL_Rect onePlayerR = {.x = 170, .y = 50, .h = 75, .w = 190};
+    SDL_Rect twoPlayersR = {.x = 390, .y = 50, .h = 75, .w = 190};
+
+    SDL_Rect userColorR = {.x = 20, .y = 155, .h = 75, .w = 200};
+    SDL_Rect whiteR = {.x = 170, .y = 155, .h = 75, .w = 200};
+    SDL_Rect blackR = {.x = 390, .y = 155, .h = 75, .w = 200};
+
+
+    SDL_Rect difficultyR = {.x = 20, .y = 260, .h = 75, .w = 200};
+    SDL_Rect noobR = {.x = 30, .y = 350, .h = 50, .w = 120};
+    SDL_Rect easyR = {.x = 170, .y = 350, .h = 50, .w = 120};
+    SDL_Rect moderateR = {.x = 310, .y = 350, .h = 50, .w = 120};
+    SDL_Rect hardR = {.x = 450, .y = 350, .h = 50, .w = 120};
+
+
+
+    SDL_Rect startR = {.x = 350, .y = 430, .h = 50, .w = 150};
+    SDL_Rect backR = {.x = 100, .y = 430, .h = 50, .w = 150};
+
 
     SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 0);
 

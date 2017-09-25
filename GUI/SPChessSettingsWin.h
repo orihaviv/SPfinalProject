@@ -18,8 +18,8 @@ typedef enum {
     SP_SETTINGS_EASY,
     SP_SETTINGS_MODERATE,
     SP_SETTINGS_HARD,
-    SP_MAIN_INVALID_ARGUMENT,
-    SP_MAIN_NONE
+    SP_SETTINGS_INVALID_ARGUMENT,
+    SP_SETTINGS_NONE,
 } SP_SETTINGS_EVENT;
 
 typedef struct {
@@ -56,6 +56,6 @@ void spSettingsWindowDestroy(SPSettingsWin* src);
 void spSettingsWindowDraw(SPSettingsWin* src);
 void spSettingsWindowHide(SPSettingsWin* src);
 void spSettingsWindowShow(SPSettingsWin* src);
-SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
+//SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
 
 #endif //FINALPROJECT_SPCHESSSETTINGSWIN_H

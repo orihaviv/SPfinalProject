@@ -4,7 +4,8 @@
 
 #include "GuiGame.h"
 //#include "SPChessGUIManager.h"
-#include "SPChessMainWin.h"
+//#include "SPChessMainWin.h"
+
 
 
 int executeGuiGame() {
@@ -12,11 +13,15 @@ int executeGuiGame() {
         printf("ERROR: unable to init SDL: %s\n", SDL_GetError());
         return 1;
     }
-    SPMainWin *wind = spMainWindowCreate();
-    if (wind != NULL) {
-        spMainWindowDraw(wind);
-    } else { printf("naaa"); }
+//    SPMainWin *wind = spMainWindowCreate();
+//    if (wind != NULL) {
+//        spMainWindowDraw(wind);
+//    } else { printf("naaa"); }
 
+    SPSettingsWin *wind = spSettingsWindowCreate();
+    if (wind!=NULL){
+        spSettingsWindowDraw(wind);
+    } else { printf("naaa"); }
 
 //    SPGuiManager* manager = spManagerCreate();
 //    if (manager == NULL ) {
