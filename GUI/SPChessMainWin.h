@@ -8,6 +8,10 @@
 #include <stdbool.h>
 #include <SDL.h>
 
+//Definitions
+#define BUTTONS_H 49
+#define BUTTONS_W 260
+
 typedef enum {
 	SP_MAIN_QUIT_GAME, SP_MAIN_NEW_GAME, SP_MAIN_LOAD_GAME ,SP_MAIN_INVALID_ARGUMENT, SP_MAIN_NONE
 } SP_MAIN_EVENT;
