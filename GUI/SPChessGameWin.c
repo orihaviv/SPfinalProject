@@ -1,7 +1,7 @@
-//#include "SPChessGameWin.h"
-//#include <assert.h>
-//#include <stdio.h>
-//
+#include "SPChessGameWin.h"
+#include <assert.h>
+#include <stdio.h>
+
 
 //
 //int getClickX(int x) {
