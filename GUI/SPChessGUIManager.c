@@ -139,8 +139,20 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager* src, SP_SETTINGS_
 }
 
 
-int saveGame(SPGuiManager* src){
-    return guiSaveGame(src->game);
+void handleSaveGame(SPGuiManager* src){
+    if (src->gameWin->isTheGameSaved == 0){
+        if (guiSaveGame(src->game) == 0){
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to save the game", NULL);
+        }
+        else {
+            src->gameWin->isTheGameSaved = 1;
+        }
+    }
+}
+
+void handleLoadGame(SPGuiManager* src){
+    //TODO
+    src->gameWin->isTheGameSaved = 1;
 }
 
 int askWhetherToSave(SPGuiManager* src){
@@ -179,7 +191,7 @@ int askWhetherToSave(SPGuiManager* src){
     }
     switch (buttonID) {
         case 0:
-            saveGame(src);
+            handleSaveGame(src);
             return 1;
         case 1:
             return 1;
@@ -188,6 +200,41 @@ int askWhetherToSave(SPGuiManager* src){
         default:
             break;
     }
+}
+
+SP_MANAGER_EVENT handleQuitGame(SPGuiManager* src){
+    int whetherToQuit = 1;
+    if (src->gameWin->isTheGameSaved == 0) {
+        whetherToQuit = askWhetherToSave(src);
+    }
+    if (whetherToQuit == 1){
+        return SP_MANAGER_QUTT;
+    }
+}
+
+
+void handleMainMenu(SPGuiManager* src){
+    int whetherToQuit = 1;
+    if (src->gameWin->isTheGameSaved == 0) {
+        whetherToQuit = askWhetherToSave(src);
+    }
+    if (whetherToQuit == 1) {
+        spGameWindowDestroy(src->gameWin);
+        spSettingsWindowDestroy(src->settingsWin);
+        src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+    }
+}
+
+
+SP_MANAGER_EVENT handleQuitGame(SPGuiManager* src){
+    int whetherToQuit = 1;
+    if (src->gameWin->isTheGameSaved == 0) {
+        whetherToQuit = askWhetherToSave(src);
+    }
+    if (whetherToQuit == 1){
+        return SP_MANAGER_QUTT;
+    }
+    return SP_MANAGER_NONE;
 }
 
 
@@ -210,63 +257,31 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
             src->gameWin->isTheGameSaved = 0;
             break;
         case SP_GAME_EVENT_SAVE:
-            if (src->gameWin->isTheGameSaved == 0){
-                if (guiSaveGame(src->game) == 0){
-                    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to save the game", NULL);
-                }
-                else {
-                    src->gameWin->isTheGameSaved = 1;
-                }
-            }
+            handleSaveGame(src);
             break;
         case SP_GAME_EVENT_LOAD:
-            // TODO Load
-            src->gameWin->isTheGameSaved = 1;
+            handleLoadGame(src);
             break;
         case SP_GAME_EVENT_UNDO:
             chessGameUndoPrevMove(src->game);
             chessGameUndoPrevMove(src->game);
             break;
         case SP_GAME_EVENT_MAIN_MENU:
-            int whetherToQuit = 1;
-            if (src->gameWin->isTheGameSaved == 0) {
-                whetherToQuit = askWhetherToSave(src);
-            }
-            if (whetherToQuit == 1) {
-                spGameWindowDestroy(src->gameWin);
-                spSettingsWindowDestroy(src->settingsWin);
-                src->activeWin = SP_MAIN_WINDOW_ACTIVE;
-            }
+            handleMainMenu(src);
             break;
         case SP_GAME_EVENT_QUIT:
-            int whetherToQuit = 1;
-            if (src->gameWin->isTheGameSaved == 0) {
-                whetherToQuit = askWhetherToSave(src);
-            }
-            if (whetherToQuit == 1){
-                return SP_MANAGER_QUTT;
-            }
-            break;
+            return handleQuitGame(src);
         case SP_GAME_EVENT_MOVE:
             src->gameWin->isTheGameSaved = 1;
-
-
+            // TODO
+            break;
+        default:
+            break;
     }
-
-
-	if (event == SP_GAME_EVENT_X_WON) {
-
-	} else if (event == SP_GAME_EVENT_O_WON) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "O won",
-				NULL );
-	} else if (event == SP_GAME_EVENT_TIE) {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over",
-				"it's a tie", NULL );
-	}
-	spGameWindowDestroy(src->gameWin);
-	src->gameWin = NULL;
-	src->activeWin = SP_MAIN_WINDOW_ACTIVE;
-	spMainWindowShow(src->mainWin);
+//	spGameWindowDestroy(src->gameWin);
+//	src->gameWin = NULL;
+//	src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+//	spMainWindowShow(src->mainWin);
 	return SP_MANAGER_NONE;
 }
 

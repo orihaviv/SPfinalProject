@@ -203,3 +203,187 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 
 
+/****************** GUI ******************/
+
+
+
+
+
+bool savedGameExists(){
+    FILE *gameFile;
+    gameFile = fopen("GUI/savedGames.xml", "r");
+    if (gameFile == NULL) {         // fopen has failed
+        return false;
+    }
+    if (fclose(gameFile) != 0) {     // fclose has failed
+        return false;
+    }
+    return true;
+}
+
+
+bool createSavedGames(char* first, char* second, char* third, char* forth, char* fifth){
+    int num = 5;
+    if (!fifth || strlen(fifth) == 0){
+        fifth = "";
+        num--;
+        if (!forth || strlen(forth) == 0){
+            forth = "";
+            num--;
+            if(!third || strlen(third) == 0){
+                third = "";
+                num--;
+                if (!second || strlen(second) == 0){
+                    second = "";
+                    num--;
+                    if (!first || strlen(first) == 0){
+                        first = "";
+                        num--;
+                    }
+                }
+            }
+        }
+    }
+    FILE *gameFile;
+    gameFile = fopen("GUI/savedGames.xml", "w");
+    if (gameFile == NULL) {         // fopen has failed
+        return false;
+    }
+    fprintf(gameFile, XML_HEADLINE);
+    startLabel(ALL_GAMES, 0, gameFile);
+
+    startAndEndLabel(NUM_OF_SAVED, NULL, num, 1, gameFile);
+    startLabel(SAVED_LIST, 1, gameFile);
+    startAndEndLabel(SLOT_ONE, first, -1, 1, gameFile);
+    startAndEndLabel(SLOT_TWO, second, -1, 1, gameFile);
+    startAndEndLabel(SLOT_THREE, third, -1, 1, gameFile);
+    startAndEndLabel(SLOT_FOUR, forth, -1, 1, gameFile);
+    startAndEndLabel(SLOT_FIVE, fifth, -1, 1, gameFile);
+    endLabel(SAVED_LIST, 1, gameFile);
+
+    endLabel(ALL_GAMES, 0, gameFile);
+
+    if (fclose(gameFile) != 0) {     // fclose has failed
+        return false;
+    }
+
+    return true;
+}
+
+
+int extractNumOfSavedGames(){
+    char tmp;
+    char labelInfo[SP_MAX_LINE_LENGTH];
+    char line[SP_MAX_LINE_LENGTH];
+
+    FILE *gameFile = fopen("GUI/savedGames.xml", "r");
+    if (!gameFile) {                                          // File Opening error
+        return -1;
+    }
+    while (fgets(line, sizeof(line), gameFile) != NULL) {
+        if (strstr(line, NUM_OF_SAVED) != NULL) {
+            getLabelInfo(labelInfo, line);
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) { return (tmp - '0'); }
+            else {return -1;}
+        }
+    }
+
+    if (fclose(gameFile) != 0) {     // fclose has failed
+        return -1;
+    }
+    return -1;
+}
+
+
+char* extractPathOfSlot(int slotNum){
+    if (extractNumOfSavedGames() < slotNum || slotNum < 1 ){ return NULL; }
+    char* path = (char *) malloc(SP_MAX_LINE_LENGTH);
+    char line[SP_MAX_LINE_LENGTH];
+    char* requiredSlot;
+
+    FILE *gameFile = fopen("GUI/savedGames.xml", "r");
+    if (!gameFile) {                                          // File Opening error
+        return NULL;
+    }
+    switch(slotNum){
+        case 1:
+            requiredSlot = SLOT_ONE;
+            break;
+        case 2:
+            requiredSlot = SLOT_TWO;
+            break;
+        case 3:
+            requiredSlot = SLOT_THREE;
+            break;
+        case 4:
+            requiredSlot = SLOT_FOUR;
+            break;
+        case 5:
+            requiredSlot = SLOT_FIVE;
+            break;
+        default:
+            return NULL;
+    }
+    while (fgets(line, sizeof(line), gameFile) != NULL) {
+        if (strstr(line, requiredSlot) != NULL) {
+            getLabelInfo(path, line);
+            if (strlen(path) <= 0){ return NULL;}
+            else { return path; }
+        }
+    }
+}
+
+
+bool guiLoadChessGame(SPChessGame **game, int slot) {
+    if (*game == NULL || slot < 1 || slot > 5) {return false; }
+    char* path = extractPathOfSlot(slot);
+    return loadChessGame(game, path);
+}
+
+int guiSaveGame(SPChessGame *game){
+    bool success;
+    int gameSaved;
+    int numOfGames;
+    if (!savedGameExists()){
+        gameSaved = saveGame("GUI/saved/game1", game);
+        success = createSavedGames("GUI/saved/game1", NULL, NULL, NULL, NULL);
+        if (success && gameSaved) { return 1; }
+        return 0;
+    }
+
+    numOfGames = extractNumOfSavedGames();
+    char* one = NULL;
+    char* two = extractPathOfSlot(1);
+    char* three = extractPathOfSlot(2);
+    char* four = extractPathOfSlot(3);
+    char* five = extractPathOfSlot(4);
+
+    switch(numOfGames){
+        case 1:
+            one = "GUI/saved/game2";
+            break;
+        case 2:
+            one = "GUI/saved/game3";
+            break;
+        case 3:
+            one = "GUI/saved/game4";
+            break;
+        case 4:
+            one = "GUI/saved/game5";
+            break;
+        case 5:
+            one = extractPathOfSlot(5);
+            break;
+        default:
+            return 0;
+    }
+    gameSaved = saveGame(one, game);
+    success = createSavedGames(one, two, three, four, five);
+    if (success && gameSaved) { return 1; }
+    return 0;
+}
+
+
+
+
