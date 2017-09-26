@@ -8,6 +8,26 @@
 #include <stdbool.h>
 #include <SDL.h>
 
+//Definitions
+#define LABELS_H 43
+#define BUTTONS_H 49
+#define PRESSED_BUTTONS_H 55
+#define GAME_MODE_W 194
+#define COLOR_W 86
+#define DIFFICULTY_W 210
+#define 1_PLAYER_W 242
+#define 1_PLAYER_PRESSED_W 248
+#define 2_PLAYERS_W 254
+#define 2_PLAYERS_PRESSED_W 260
+#define WHITE_BLACK_W 222
+#define WHITE_BLACKR_PRESSED_W 228
+#define NOOB_EASY_HARD_W 210
+#define NOOB_EASY_HARD_PRESSED_W 216
+#define MODERATE_W 228
+#define MODERATE_PRESSED_W 236
+#define START_W 246
+#define BACK_W 234
+
 typedef enum {
     SP_SETTINGS_BACK,
     SP_SETTINGS_START,
