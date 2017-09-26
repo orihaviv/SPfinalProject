@@ -11,22 +11,62 @@
 //Definitions
 #define LABELS_H 43
 #define BUTTONS_H 49
-#define PRESSED_BUTTONS_H 55
+//#define PRESSED_BUTTONS_H 55
 #define GAME_MODE_W 194
 #define COLOR_W 86
 #define DIFFICULTY_W 210
-#define 1_PLAYER_W 242
-#define 1_PLAYER_PRESSED_W 248
-#define 2_PLAYERS_W 254
-#define 2_PLAYERS_PRESSED_W 260
+#define ONE_PLAYER_W 242
+//#define ONE_PLAYER_PRESSED_W 248
+#define TWO_PLAYERS_W 254
+//#define TWO_PLAYERS_PRESSED_W 260
 #define WHITE_BLACK_W 222
-#define WHITE_BLACKR_PRESSED_W 228
+//#define WHITE_BLACKR_PRESSED_W 228
 #define NOOB_EASY_HARD_W 210
-#define NOOB_EASY_HARD_PRESSED_W 216
+//#define NOOB_EASY_HARD_PRESSED_W 216
 #define MODERATE_W 228
-#define MODERATE_PRESSED_W 236
+//#define MODERATE_PRESSED_W 236
 #define START_W 246
 #define BACK_W 234
+
+#define GAMEMODEX 20
+#define GAMEMODEY 50
+#define ONEPLAYERX 170
+#define ONEPLAYERY 50
+#define TWOPLAYERSX 390
+#define TWOPLAYERSY 50
+
+#define GAMEMODEY 50
+#define GAMEMODEY 50
+#define GAMEMODEY 50
+#define GAMEMODEY 50
+#define GAMEMODEY 50
+
+
+
+
+
+
+
+
+//src->userColorR = {.x = 20, .y = 155, .h = LABELS_H, .w = COLOR_W};
+//src->whiteR = {.x = 170, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+//src->blackR = {.x = 390, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+//
+//
+//src->difficultyR = {.x = 20, .y = 260, .h = LABELS_H, .w = DIFFICULTY_W};
+//src->noobR = {.x = 30, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+//src->easyR = {.x = 170, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+//src->moderateR = {.x = 310, .y = 350, .h = BUTTONS_H, .w = MODERATE_W};
+//src->hardR = {.x = 450, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+//
+//
+//
+//src->startR = {.x = 350, .y = 430, .h = BUTTONS_H, .w = START_W};
+//src->backR = {.x = 100, .y = 430, .h = BUTTONS_H, .w = BACK_W};
+
+
+
+
 
 typedef enum {
     SP_SETTINGS_BACK,
@@ -70,6 +110,19 @@ typedef struct {
     int numOfPlayers;
     int diff;
     int color;
+    SDL_Rect gameModeR;
+    SDL_Rect onePlayerR;
+    SDL_Rect twoPlayersR;
+    SDL_Rect userColorR;
+    SDL_Rect whiteR;
+    SDL_Rect blackR;
+    SDL_Rect difficultyR;
+    SDL_Rect noobR;
+    SDL_Rect easyR;
+    SDL_Rect moderateR;
+    SDL_Rect hardR;
+    SDL_Rect startR;
+    SDL_Rect backR;
 } SPSettingsWin;
 
 SPSettingsWin* spSettingsWindowCreate();

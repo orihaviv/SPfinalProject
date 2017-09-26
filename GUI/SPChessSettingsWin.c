@@ -3,29 +3,83 @@
 //
 
 
+
 #include "SPChessSettingsWin.h"
 
 //Inner functions
-//int isClickOnNew(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 180 && y <= 230)) {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//int isClickOnLoad(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 245 && y <= 295)) {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//int isClickOnQuit(int x, int y) {
+
+int isClickOnStart(int x, int y) {
 //    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
 //        return 1;
 //    }
 //    return 0;
-//}
+}
+
+int isClickOnBack(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnOnePlayer(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 180 && y <= 230)) {
+//        return 1;
+//    }
+    return 0;
+}
+
+int isClickOnTwoPlayers(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 245 && y <= 295)) {
+//        return 1;
+//    }
+    return 0;
+}
+
+int isClickOnNoob(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnEasy(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnModerate(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnHard(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnWhite(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+int isClickOnBlack(int x, int y) {
+//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+//        return 1;
+//    }
+//    return 0;
+}
+
+
+
 
 
 bool loadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
@@ -220,71 +274,124 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
-    SDL_Rect gameModeR = {.x = 20, .y = 50, .h = 75, .w = 150};
-    SDL_Rect onePlayerR = {.x = 170, .y = 50, .h = 75, .w = 190};
-    SDL_Rect twoPlayersR = {.x = 390, .y = 50, .h = 75, .w = 190};
+    src->gameModeR = {.x = GAMEMODEX, .y = 50, .h = LABELS_H, .w = GAME_MODE_W};
+    src->onePlayerR = {.x = 170, .y = 50, .h = BUTTONS_H, .w = ONE_PLAYER_W};
+    src->twoPlayersR = {.x = 390, .y = 50, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
 
-    SDL_Rect userColorR = {.x = 20, .y = 155, .h = 75, .w = 200};
-    SDL_Rect whiteR = {.x = 170, .y = 155, .h = 75, .w = 200};
-    SDL_Rect blackR = {.x = 390, .y = 155, .h = 75, .w = 200};
-
-
-    SDL_Rect difficultyR = {.x = 20, .y = 260, .h = 75, .w = 200};
-    SDL_Rect noobR = {.x = 30, .y = 350, .h = 50, .w = 120};
-    SDL_Rect easyR = {.x = 170, .y = 350, .h = 50, .w = 120};
-    SDL_Rect moderateR = {.x = 310, .y = 350, .h = 50, .w = 120};
-    SDL_Rect hardR = {.x = 450, .y = 350, .h = 50, .w = 120};
+    src->userColorR = {.x = 20, .y = 155, .h = LABELS_H, .w = COLOR_W};
+    src->whiteR = {.x = 170, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+    src->blackR = {.x = 390, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
 
 
+    src->difficultyR = {.x = 20, .y = 260, .h = LABELS_H, .w = DIFFICULTY_W};
+    src->noobR = {.x = 30, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->easyR = {.x = 170, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->moderateR = {.x = 310, .y = 350, .h = BUTTONS_H, .w = MODERATE_W};
+    src->hardR = {.x = 450, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
 
-    SDL_Rect startR = {.x = 350, .y = 430, .h = 50, .w = 150};
-    SDL_Rect backR = {.x = 100, .y = 430, .h = 50, .w = 150};
+
+
+    src->startR = {.x = 350, .y = 430, .h = BUTTONS_H, .w = START_W};
+    src->backR = {.x = 100, .y = 430, .h = BUTTONS_H, .w = BACK_W};
 
 
     SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 0);
 
 
     SDL_RenderClear(src->settingsRenderer);
-    SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &gameModeR);
-    SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &difficultyR);
-    SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &userColorR);
-    SDL_RenderCopy(src->settingsRenderer, src->whiteUserBoldTexture, NULL, &whiteR);
-    SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &blackR);
-    SDL_RenderCopy(src->settingsRenderer, src->startTexture, NULL, &startR);
-    SDL_RenderCopy(src->settingsRenderer, src->backTexture, NULL, &backR);
-    SDL_RenderCopy(src->settingsRenderer, src->onePlayerBoldTexture, NULL, &onePlayerR);
-    SDL_RenderCopy(src->settingsRenderer, src->twoPlayersTexture, NULL, &twoPlayersR);
-    SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &noobR);
-    SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &easyR);
-    SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &moderateR);
-    SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &hardR);
+    SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &src->gameModeR);
+    SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &src->difficultyR);
+    SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &src->userColorR);
+    SDL_RenderCopy(src->settingsRenderer, src->whiteUserBoldTexture, NULL, &src->whiteR);
+    SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
+    SDL_RenderCopy(src->settingsRenderer, src->startTexture, NULL, &src->startR);
+    SDL_RenderCopy(src->settingsRenderer, src->backTexture, NULL, &src->backR);
+    SDL_RenderCopy(src->settingsRenderer, src->onePlayerBoldTexture, NULL, &src->onePlayerR);
+    SDL_RenderCopy(src->settingsRenderer, src->twoPlayersTexture, NULL, &src->twoPlayersR);
+    SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
+    SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
+    SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
+    SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
     SDL_RenderPresent(src->settingsRenderer);
 }
 
-//SP_MAIN_EVENT spMainWindowHandleEvent(SPMainWin *src, SDL_Event *event) {
-//    if (!event) {
-//        return SP_MAIN_INVALID_ARGUMENT;
-//    }
-//    switch (event->type) {
-//        case SDL_MOUSEBUTTONUP:
-//            if (isClickOnNew(event->button.x, event->button.y)) {
-//                return SP_MAIN_NEW_GAME;
-//            } else if (isClickOnQuit(event->button.x, event->button.y)) {
-//                return SP_MAIN_QUIT_GAME;
-//            } else if (isClickOnLoad(event->button.x, event->button.y)) {
-//                return SP_MAIN_LOAD_GAME;
-//            }
-//            break;
-//        case SDL_WINDOWEVENT:
-//            if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-//                return SP_MAIN_QUIT_GAME;
-//            }
-//            break;
-//        default:
-//            return SP_MAIN_NONE;
-//    }
-//    return SP_MAIN_NONE;
-//}
+SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin *src, SDL_Event *event) {
+    if (!event) {
+        return SP_SETTINGS_INVALID_ARGUMENT;
+    }
+    switch (event->type) {
+        case SDL_MOUSEBUTTONUP:
+            if (isClickOnStart(event->button.x, event->button.y)) {
+                return SP_SETTINGS_START;
+            } else if (isClickOnBack(event->button.x, event->button.y)) {
+                return SP_SETTINGS_BACK;
+            } else if (isClickOnNoob(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->noobBoldTexture, NULL, &src->noobR);
+                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
+                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
+                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_NOOB;
+            } else if (isClickOnEasy(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
+                SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
+                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
+                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_EASY;
+            } else if (isClickOnModerate(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
+                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
+                SDL_RenderCopy(src->settingsRenderer, src->moderateBoldTexture, NULL, &src->moderateR);
+                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_MODERATE;
+            } else if (isClickOnHard(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
+                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
+                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
+                SDL_RenderCopy(src->settingsRenderer, src->hardBoldTexture, NULL, &src->hardR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_HARD;
+            } else if (isClickOnOnePlayer(event->button.x, event->button.y)  && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
+                src->numOfPlayers = 1;
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_ONE_PLAYER;
+            } else if (isClickOnTwoPlayers(event->button.x, event->button.y)) {
+                src->numOfPlayers = 2;
+                SDL_RenderCopy(src->settingsRenderer, src->onePlayerTexture, NULL, &src->onePlayerR);
+                SDL_RenderCopy(src->settingsRenderer, src->twoPlayersBoldTexture, NULL, &src->twoPlayersR);
+                SDL_RenderCopy(src->settingsRenderer, src->whiteUserTexture, NULL, &src->whiteR);
+                SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
+                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
+                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
+                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
+                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_TWO_PLAYERS;
+            } else if (isClickOnWhite(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->whiteUserBoldTexture, NULL, &src->whiteR);
+                SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_WHITE_USER;
+            } else if (isClickOnBlack(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+                SDL_RenderCopy(src->settingsRenderer, src->whiteUserTexture, NULL, &src->whiteR);
+                SDL_RenderCopy(src->settingsRenderer, src->blackUserBoldTexture, NULL, &src->blackR);
+                SDL_RenderPresent(src->settingsRenderer);
+                return SP_SETTINGS_BLACK_USER;
+            }
+            break;
+        case SDL_WINDOWEVENT:
+            if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
+                return SP_SETTINGS_BACK;
+            }
+            break;
+        default:
+            return SP_SETTINGS_NONE;
+    }
+    return SP_SETTINGS_NONE;
+}
 
 
 void spSettingsWindowHide(SPSettingsWin *src) {
