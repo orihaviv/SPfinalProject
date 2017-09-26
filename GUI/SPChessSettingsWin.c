@@ -9,73 +9,73 @@
 //Inner functions
 
 int isClickOnStart(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= STARTX && x <= START_W + STARTX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnBack(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= BACKX && x <= START_W + BACKX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnOnePlayer(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 180 && y <= 230)) {
-//        return 1;
-//    }
+    if ((x >= ONEPLAYERX && x <= ONEPLAYERX + ONE_PLAYER_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
+        return 1;
+    }
     return 0;
 }
 
 int isClickOnTwoPlayers(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 245 && y <= 295)) {
-//        return 1;
-//    }
+    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
+        return 1;
+    }
     return 0;
 }
 
 int isClickOnNoob(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= NOOBX && x <= NOOBX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnEasy(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= EASYX && x <= EASYX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnModerate(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= MODERATEX && x <= MODERATEX + MODERATE_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnHard(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= HARDX && x <= HARDX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnWhite(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= WHITEX && x <= WHITEX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnBlack(int x, int y) {
-//    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= BLACKX && x <= BLACKX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 
@@ -130,7 +130,6 @@ SPSettingsWin *spSettingsWindowCreate() {
         return NULL;
     }
 
-
     // Creating rederer and checking it's real
     res->settingsRenderer = SDL_CreateRenderer(res->settingsWindow, -1,
                                            SDL_RENDERER_ACCELERATED);
@@ -145,8 +144,6 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->diff = 2;
     res->numOfPlayers = 1;
     bool check;
-
-
 
     // Start button
     check = loadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
@@ -274,29 +271,25 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
-    src->gameModeR = {.x = GAMEMODEX, .y = 50, .h = LABELS_H, .w = GAME_MODE_W};
-    src->onePlayerR = {.x = 170, .y = 50, .h = BUTTONS_H, .w = ONE_PLAYER_W};
-    src->twoPlayersR = {.x = 390, .y = 50, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
+    src->gameModeR = {.x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
+    src->onePlayerR = {.x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
+    src->twoPlayersR = {.x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
 
-    src->userColorR = {.x = 20, .y = 155, .h = LABELS_H, .w = COLOR_W};
-    src->whiteR = {.x = 170, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-    src->blackR = {.x = 390, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-
-
-    src->difficultyR = {.x = 20, .y = 260, .h = LABELS_H, .w = DIFFICULTY_W};
-    src->noobR = {.x = 30, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->easyR = {.x = 170, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->moderateR = {.x = 310, .y = 350, .h = BUTTONS_H, .w = MODERATE_W};
-    src->hardR = {.x = 450, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->userColorR = {.x = USERCOLORX, .y = USERCOLORY, .h = LABELS_H, .w = COLOR_W};
+    src->whiteR = {.x = WHITEX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+    src->blackR = {.x = BLACKX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
 
 
+    src->difficultyR = {.x = DIFFICULTYX, .y = DIFFICULTYY, .h = LABELS_H, .w = DIFFICULTY_W};
+    src->noobR = {.x = NOOBX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->easyR = {.x = EASYX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->moderateR = {.x = MODERATEX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = MODERATE_W};
+    src->hardR = {.x = HARDX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
 
-    src->startR = {.x = 350, .y = 430, .h = BUTTONS_H, .w = START_W};
-    src->backR = {.x = 100, .y = 430, .h = BUTTONS_H, .w = BACK_W};
+    src->startR = {.x = STARTX, .y = START_BACK_Y, .h = BUTTONS_H, .w = START_W};
+    src->backR = {.x = BACKX, .y = START_BACK_Y, .h = BUTTONS_H, .w = BACK_W};
 
-
-    SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 0);
-
+    SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 192);
 
     SDL_RenderClear(src->settingsRenderer);
     SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &src->gameModeR);
