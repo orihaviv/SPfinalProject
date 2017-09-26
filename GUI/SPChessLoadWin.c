@@ -171,11 +171,11 @@ SPLoadWin *spLoadWindowCreate() {
     check = loadingSurfaceFunc(res, &(res->fiveBold), "../GUI/images/loadWindow/fiveBold.bmp");
     if (!check){ return  NULL; }
 
-    res->one = &res->oneThin;
-    res->two = &res->twoThin;
-    res->three = &res->threeThin;
-    res->four = &res->fourThin;
-    res->five = &res->fiveThin;
+    res->one = &(res->oneThin);
+    res->two = &(res->twoThin);
+    res->three = &(res->threeThin);
+    res->four = &(res->fourThin);
+    res->five = &(res->fiveThin);
 
     return res;
 }
@@ -225,11 +225,11 @@ void spLoadWindowDraw(SPLoadWin *src) {
     SDL_RenderClear(src->loadRenderer);
     SDL_RenderCopy(src->loadRenderer, src->loadGameTitle, NULL, &titleR);
     SDL_RenderCopy(src->loadRenderer, src->loadGame, NULL, &loadR);
-    SDL_RenderCopy(src->loadRenderer, *src->one, NULL, &oneR);
-    SDL_RenderCopy(src->loadRenderer, *src->two, NULL, &twoR);
-    SDL_RenderCopy(src->loadRenderer, *src->three, NULL, &threeR);
-    SDL_RenderCopy(src->loadRenderer, *src->four, NULL, &fourR);
-    SDL_RenderCopy(src->loadRenderer, *src->five, NULL, &fiveR);
+    SDL_RenderCopy(src->loadRenderer, *(src->one), NULL, &oneR);
+    SDL_RenderCopy(src->loadRenderer, *(src->two), NULL, &twoR);
+    SDL_RenderCopy(src->loadRenderer, *(src->three), NULL, &threeR);
+    SDL_RenderCopy(src->loadRenderer, *(src->four), NULL, &fourR);
+    SDL_RenderCopy(src->loadRenderer, *(src->five), NULL, &fiveR);
 
     SDL_RenderPresent(src->loadRenderer);
 }
@@ -238,50 +238,50 @@ void spLoadWindowDraw(SPLoadWin *src) {
 
 
 
-SP_LOAD_EVENT spSettingsWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
+SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
     if (!event) {
         return SP_LOAD_INVALID_ARGUMENT;
     }
     switch (event->type) {
         case SDL_MOUSEBUTTONUP:
             if (isClickOnOne(event->button.x, event->button.y) && src->numOfSlots > 0) {
-                src->one = &src->oneBold;
-                src->two = &src->twoThin;
-                src->three = &src->threeThin;
-                src->four = &src->fourThin;
-                src->five = &src->fiveThin;
+                src->one = &(src->oneBold);
+                src->two = &(src->twoThin);
+                src->three = &(src->threeThin);
+                src->four = &(src->fourThin);
+                src->five = &(src->fiveThin);
                 src->marked = 1;
                 return SP_LOAD_NONE;
             } else if (isClickOnTwo(event->button.x, event->button.y) && src->numOfSlots > 1) {
-                src->one = &src->oneThin;
-                src->two = &src->twoBold;
-                src->three = &src->threeThin;
-                src->four = &src->fourThin;
-                src->five = &src->fiveThin;
+                src->one = &(src->oneThin);
+                src->two = &(src->twoBold);
+                src->three = &(src->threeThin);
+                src->four = &(src->fourThin);
+                src->five = &(src->fiveThin);
                 src->marked = 2;
                 return SP_LOAD_NONE;
             } else if (isClickOnThree(event->button.x, event->button.y) && src->numOfSlots > 2) {
-                src->one = &src->oneThin;
-                src->two = &src->twoThin;
-                src->three = &src->threeBold;
-                src->four = &src->fourThin;
-                src->five = &src->fiveThin;
+                src->one = &(src->oneThin);
+                src->two = &(src->twoThin);
+                src->three = &(src->threeBold);
+                src->four = &(src->fourThin);
+                src->five = &(src->fiveThin);
                 src->marked = 3;
                 return SP_LOAD_NONE;
             } else if (isClickOnFour(event->button.x, event->button.y) && src->numOfSlots > 3) {
-                src->one = &src->oneThin;
-                src->two = &src->twoThin;
-                src->three = &src->threeThin;
-                src->four = &src->fourBold;
-                src->five = &src->fiveThin;
+                src->one = &(src->oneThin);
+                src->two = &(src->twoThin);
+                src->three = &(src->threeThin);
+                src->four = &(src->fourBold);
+                src->five = &(src->fiveThin);
                 src->marked = 4;
                 return SP_LOAD_NONE;
             } else if (isClickOnFive(event->button.x, event->button.y) && src->numOfSlots > 4) {
-                src->one = &src->oneThin;
-                src->two = &src->twoThin;
-                src->three = &src->threeThin;
-                src->four = &src->fourThin;
-                src->five = &src->fiveBold;
+                src->one = &(src->oneThin);
+                src->two = &(src->twoThin);
+                src->three = &(src->threeThin);
+                src->four = &(src->fourThin);
+                src->five = &(src->fiveBold);
                 src->marked = 5;
                 return SP_LOAD_NONE;
             } else if (isClickOnLoadGame(event->button.x, event->button.y) && src->marked > 0) {
@@ -299,13 +299,13 @@ SP_LOAD_EVENT spSettingsWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
                     default:
                         return SP_LOAD_NONE;
                 }
-            } else if (isClickOnBack(event->button.x, event->button.y) {
+            } else if (isClickOnBack(event->button.x, event->button.y)) {
                 return SP_LOAD_BACK;
             }
             break;
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-                return SP_LOAD_INVALID_ARGUMENT;
+                return SP_LOAD_BACK;
             }
             break;
         default:

@@ -38,9 +38,9 @@ typedef enum {
     SP_LOAD_3,
     SP_LOAD_4,
     SP_LOAD_5,
+    SP_LOAD_BACK,
     SP_LOAD_INVALID_ARGUMENT,
     SP_LOAD_NONE,
-    SP_LOAD_BACK
 } SP_LOAD_EVENT;
 
 typedef struct {

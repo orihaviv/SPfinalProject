@@ -250,7 +250,7 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_SAVE:
             handleSaveGame(src);
             break;
-        case SP_GAME_EVENT_LOAD:
+        case SP_GAME_EVENT_LOAD: //TODO
             handleLoadGame(src);
             break;
         case SP_GAME_EVENT_UNDO:
@@ -263,7 +263,7 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_QUIT:
             return handleQuitGame(src);
         case SP_GAME_EVENT_MOVE:
-            src->gameWin->isTheGameSaved = 1;
+            src->gameWin->isTheGameSaved = 0;
             // TODO
             break;
         default:
