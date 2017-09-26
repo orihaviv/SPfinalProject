@@ -29,43 +29,30 @@ typedef enum {
     SP_LOAD_GAME,
     SP_SETTINGS_INVALID_ARGUMENT,
     SP_SETTINGS_NONE,
-} SP_SETTINGS_EVENT;
+} SP_LOAD_EVENT;
 
 typedef struct {
-    SDL_Window* settingsWindow;
-    SDL_Renderer* settingsRenderer;
-    SDL_Texture* numOfPlayersTitle;
-    SDL_Texture* difficultyTitle;
-    SDL_Texture* userColorTitle;
-    SDL_Texture* startTexture;
-    SDL_Texture* backTexture;
-    SDL_Texture* onePlayerTexture;
-    SDL_Texture* onePlayerBoldTexture;
-    SDL_Texture* twoPlayersTexture;
-    SDL_Texture* twoPlayersBoldTexture;
-    SDL_Texture* whiteUserTexture;
-    SDL_Texture* whiteUserBoldTexture;
-    SDL_Texture* blackUserTexture;
-    SDL_Texture* blackUserBoldTexture;
-    SDL_Texture* noobTexture;
-    SDL_Texture* noobBoldTexture;
-    SDL_Texture* easyTexture;
-    SDL_Texture* easyBoldTexture;
-    SDL_Texture* moderateTexture;
-    SDL_Texture* moderateBoldTexture;
-    SDL_Texture* hardTexture;
-    SDL_Texture* hardBoldTexture;
-    int numOfPlayers;
-    int diff;
-    int color;
-} SPSettingsWin;
+    SDL_Window* loadWindow;
+    SDL_Renderer* loadRenderer;
+    SDL_Texture* one;
+    SDL_Texture* oneBold;
+    SDL_Texture* two;
+    SDL_Texture* twoBold;
+    SDL_Texture* three;
+    SDL_Texture* threeBold;
+    SDL_Texture* four;
+    SDL_Texture* fourBold;
+    SDL_Texture* five;
+    SDL_Texture* fiveBold;
+    SDL_Texture* loadGame;
+} SPLoadWin;
 
-SPSettingsWin* spSettingsWindowCreate();
-void spSettingsWindowDestroy(SPSettingsWin* src);
-void spSettingsWindowDraw(SPSettingsWin* src);
-void spSettingsWindowHide(SPSettingsWin* src);
-void spSettingsWindowShow(SPSettingsWin* src);
-//SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
+SPSettingsWin* spLoadWindowCreate();
+void spLoadWindowDestroy(SPLoadWin* src);
+void spLoadWindowDraw(SPLoadWin* src);
+void spLoadWindowHide(SPLoadWin* src);
+void spLoadWindowShow(SPLoadWin* src);
+//SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin* src, SDL_Event* event);
 
 
 #endif //SPFINALPROJECT_SPCHESSLOADWIN_H
