@@ -6,6 +6,34 @@
 #include <ctype.h>
 #include "chessGame.h"
 
+void initializeBoard(SPChessGame* game){
+    for (int i = 1; i < GAMESIZE - 1; i++) {
+        for (int j = 0; j < GAMESIZE; j++) {
+            if (i == 1) {
+                game->gameBoard[i][j] = PAWNWHITE;
+            } else if (i == GAMESIZE - 2) {
+                game->gameBoard[i][j] = PAWNBLACK;
+            } else { game->gameBoard[i][j] = BLANK; }
+        }
+    }
+    game->gameBoard[0][0] = ROOKWHITE;
+    game->gameBoard[0][1] = KNIGHTWHITE;
+    game->gameBoard[0][2] = BISHOPWHITE;
+    game->gameBoard[0][3] = QUEENWHITE;
+    game->gameBoard[0][4] = KINGWHITE;
+    game->gameBoard[0][5] = BISHOPWHITE;
+    game->gameBoard[0][6] = KNIGHTWHITE;
+    game->gameBoard[0][7] = ROOKWHITE;
+    game->gameBoard[7][0] = ROOKBLACK;
+    game->gameBoard[7][1] = KNIGHTBLACK;
+    game->gameBoard[7][2] = BISHOPBLACK;
+    game->gameBoard[7][3] = QUEENBLACK;
+    game->gameBoard[7][4] = KINGBLACK;
+    game->gameBoard[7][5] = BISHOPBLACK;
+    game->gameBoard[7][6] = KNIGHTBLACK;
+    game->gameBoard[7][7] = ROOKBLACK;
+}
+
 
 SPChessGame *chessGameCreate() {
     SPChessGame *game = (SPChessGame *) malloc(sizeof(SPChessGame));
@@ -26,31 +54,7 @@ SPChessGame *chessGameCreate() {
             game->blackLeftCastling = 1;
             game->blackRightCastling = 1;
 
-            for (int i = 1; i < GAMESIZE - 1; i++) {
-                for (int j = 0; j < GAMESIZE; j++) {
-                    if (i == 1) {
-                        game->gameBoard[i][j] = PAWNWHITE;
-                    } else if (i == GAMESIZE - 2) {
-                        game->gameBoard[i][j] = PAWNBLACK;
-                    } else { game->gameBoard[i][j] = BLANK; }
-                }
-            }
-            game->gameBoard[0][0] = ROOKWHITE;
-            game->gameBoard[0][1] = KNIGHTWHITE;
-            game->gameBoard[0][2] = BISHOPWHITE;
-            game->gameBoard[0][3] = QUEENWHITE;
-            game->gameBoard[0][4] = KINGWHITE;
-            game->gameBoard[0][5] = BISHOPWHITE;
-            game->gameBoard[0][6] = KNIGHTWHITE;
-            game->gameBoard[0][7] = ROOKWHITE;
-            game->gameBoard[7][0] = ROOKBLACK;
-            game->gameBoard[7][1] = KNIGHTBLACK;
-            game->gameBoard[7][2] = BISHOPBLACK;
-            game->gameBoard[7][3] = QUEENBLACK;
-            game->gameBoard[7][4] = KINGBLACK;
-            game->gameBoard[7][5] = BISHOPBLACK;
-            game->gameBoard[7][6] = KNIGHTBLACK;
-            game->gameBoard[7][7] = ROOKBLACK;
+            initializeBoard(game);
 
             return game;
         }

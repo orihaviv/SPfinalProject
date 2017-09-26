@@ -96,6 +96,15 @@ typedef enum sp_chess_game_state_t {
     SP_CHESS_GAME_INVALID_GAME,
 } SP_CHESS_GAME_STATE;
 
+
+
+/**
+ *	Initializes the game board
+ *
+ *	@param game - the source game which will be copied
+ */
+void initializeBoard(SPChessGame* game);
+
 /**
  * Creates a new game with a specified history size. The history size is a
  * parameter which specifies the number of previous moves to store. If the number
