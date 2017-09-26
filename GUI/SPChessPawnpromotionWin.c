@@ -2,6 +2,7 @@
 // Created by אורי חביב on 25/09/2017.
 //
 
+#include <opencl-c.h>
 #include "SPChessPawnpromotionWin.h"
 
 
@@ -42,7 +43,7 @@ SP_SETTINGS_EVENT showPromotionMessageBox ()
     };
     int buttonid;
     if (SDL_ShowMessageBox(&messageboxdata, &buttonid) < 0) {
-        printf("error displaying message box");
+        printf("Error: displaying message box");
         return SP_PROMOTION_INVALID;
     }
     if (buttonid == -1) {
@@ -66,3 +67,5 @@ SP_SETTINGS_EVENT showPromotionMessageBox ()
         }
     }
 }
+
+

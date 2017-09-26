@@ -23,10 +23,4 @@ typedef enum {
 SP_SETTINGS_EVENT showPromotionMessageBox ();
 
 
-
-
-
-
-
-
 #endif //FINALPROJECT_SPCHESSPAWNPROMOTIONWIN_H
