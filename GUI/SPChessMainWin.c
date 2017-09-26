@@ -141,7 +141,7 @@ void spMainWindowDraw(SPMainWin *src) {
     SDL_Rect newR = {.x = 75, .y = 180, .h = 50, .w = 250};
     SDL_Rect loadR = {.x = 75, .y = 245, .h = 50, .w = 250};
     SDL_Rect quitR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_SetRenderDrawColor(src->mainRenderer, 13 4, 134, 134, 0);
+    SDL_SetRenderDrawColor(src->mainRenderer, 134, 134, 134, 0);
     SDL_RenderClear(src->mainRenderer);
     SDL_RenderCopy(src->mainRenderer, src->pictureTexture, NULL, &pictureR);
     SDL_RenderCopy(src->mainRenderer, src->newGameTexture, NULL, &newR);
