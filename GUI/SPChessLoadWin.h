@@ -29,37 +29,30 @@ typedef enum {
     SP_LOAD_GAME,
     SP_SETTINGS_INVALID_ARGUMENT,
     SP_SETTINGS_NONE,
-} SP_SETTINGS_EVENT;
+} SP_LOAD_EVENT;
 
 typedef struct {
-    SDL_Window* settingsWindow;
-    SDL_Renderer* settingsRenderer;
+    SDL_Window* loadWindow;
+    SDL_Renderer* loadRenderer;
+    SDL_Texture* one;
+    SDL_Texture* oneBold;
+    SDL_Texture* two;
+    SDL_Texture* twoBold;
+    SDL_Texture* three;
+    SDL_Texture* threeBold;
+    SDL_Texture* four;
+    SDL_Texture* fourBold;
+    SDL_Texture* five;
+    SDL_Texture* fiveBold;
+    SDL_Texture* loadGame;
+} SPLoadWin;
 
-    SDL_Texture* loadGameTitle;
-    SDL_Texture* load;
-    SDL_Texture* back;
-    SDL_Texture* slotOne;
-    SDL_Texture* slotOneBold;
-    SDL_Texture* slotTwo;
-    SDL_Texture* slotTwoBold;
-    SDL_Texture* slotThree;
-    SDL_Texture* slotThreeBold;
-    SDL_Texture* slotFour;
-    SDL_Texture* slotFourBold;
-    SDL_Texture* slotFive;
-    SDL_Texture* slotFiveBold;
-
-    int chosen;
-    int diff;
-    int color;
-} SPSettingsWin;
-
-SPSettingsWin* spSettingsWindowCreate();
-void spSettingsWindowDestroy(SPSettingsWin* src);
-void spSettingsWindowDraw(SPSettingsWin* src);
-void spSettingsWindowHide(SPSettingsWin* src);
-void spSettingsWindowShow(SPSettingsWin* src);
-SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
+SPSettingsWin* spLoadWindowCreate();
+void spLoadWindowDestroy(SPLoadWin* src);
+void spLoadWindowDraw(SPLoadWin* src);
+void spLoadWindowHide(SPLoadWin* src);
+void spLoadWindowShow(SPLoadWin* src);
+//SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin* src, SDL_Event* event);
 
 
 #endif //SPFINALPROJECT_SPCHESSLOADWIN_H

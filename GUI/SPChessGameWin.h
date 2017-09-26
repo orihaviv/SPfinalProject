@@ -67,6 +67,7 @@ typedef struct{
 	SDL_Texture* xTexture;
 	SDL_Texture* oTexture;
 	SPChessGame* game;
+	int isTheGameSaved;
 }SPGameWin;
 
 SPGameWin* spGameWindowCreate();
