@@ -2,6 +2,54 @@
 //#include <assert.h>
 //#include <stdio.h>
 //
+
+//
+//int getClickX(int x) {
+//    if (x < ZERO_X || x > RIGHT_X){
+//        return -1;
+//    }
+//    else if (x >= ZERO_X && x < ONE_X){
+//        return 0;
+//    } else if (x >= ONE_X && x < TWO_X){
+//        return 1;
+//    } else if (x >= TWO_X && x < THREE_X){
+//        return 2;
+//    } else if (x >= THREE_X && x < FOUR_X){
+//        return 3;
+//    } else if (x >= FOUR_X && x < FIVE_X){
+//        return 4;
+//    } else if (x >= FIVE_X && x < SIX_X){
+//        return 5;
+//    } else if (x >= SIX_X && x < SEVEN_X){
+//        return 6;
+//    } else if (x >= SEVEN_X && x <= RIGHT_X) {
+//        return 7;
+//    }
+//}
+//
+//int getClickY(int y) {
+//    if (y < ZERO_Y || y > BOTTOM_Y){
+//        return -1;
+//    }
+//    else if (y >= ZERO_Y && y < ONE_Y){
+//        return 0;
+//    } else if (y >= ONE_Y && y < TWO_Y){
+//        return 1;
+//    } else if (y >= TWO_Y && y < THREE_Y){
+//        return 2;
+//    } else if (y >= THREE_Y && y < FOUR_Y){
+//        return 3;
+//    } else if (y >= FOUR_Y && y < FIVE_Y){
+//        return 4;
+//    } else if (y >= FIVE_Y && y < SIX_Y){
+//        return 5;
+//    } else if (y >= SIX_Y && y < SEVEN_Y){
+//        return 6;
+//    } else if (y >= SEVEN_Y && x <= BOTTOM_Y) {
+//        return 7;
+//    }
+//}
+
 //SPGameWin* spGameWindowCreate() {
 //	SPGameWin* res = (SPGameWin*) calloc(sizeof(SPGameWin), sizeof(char));
 //	SDL_Surface* loadingSurface = NULL; //Used as temp surface
@@ -144,30 +192,30 @@
 //	SDL_RenderPresent(src->renderer);
 //}
 //
+//SP_GAME_EVENT spGameWindowHandleButtonsEvent(SPGameWin* src, SDL_Event* event){}
+//SP_GAME_EVENT spGameWindowHandleBoardEvent(SPGameWin* src, SDL_Event* event){}
+//
 //SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SDL_Event* event) {
-//	if (event == NULL || src == NULL ) {
-//		return SP_GAME_EVENT_INVALID_ARGUMENT;
-//	}
-//	switch (event->type) {
-//	case SDL_MOUSEBUTTONUP:
-//		spTicTacToeSetMove(src->game, event->button.y / 200,
-//				event->button.x / 200);
-//		char winner = spTicTacToeCheckWinner(src->game);
-//		if (winner == SP_PLAYER_1_SYMBOL) {
-//			return SP_GAME_EVENT_X_WON;
-//		} else if (winner == SP_PLAYER_2_SYMBOL) {
-//			return SP_GAME_EVENT_O_WON;
-//		} else if (spTicTacToeIsGameOver(src->game)) {
-//			return SP_GAME_EVENT_TIE;
-//		}
-//		break;
-//	case SDL_WINDOWEVENT:
-//		if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-//			return SP_GAME_EVENT_QUIT;
-//		}
-//		break;
-//	default:
-//		return SP_GAME_EVENT_NONE;
-//	}
-//	return SP_GAME_EVENT_NONE;
+//    if (event == NULL || src == NULL ) {
+//        return SP_GAME_EVENT_INVALID_ARGUMENT;
+//    }
+//    switch (event->type) {
+//        case SDL_MOUSEBUTTONUP:
+//            if (event->button.x > RIGHT_X){
+//                SP_GAME_EVENT spGameWindowHandleButtonsEvent(src, event);
+//            }
+//            else{
+//                SP_GAME_EVENT spGameWindowHandleBoardEvent(src, event);
+//            }
+//            break;
+//        case SDL_WINDOWEVENT:
+//            if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
+//                return SP_GAME_EVENT_QUIT;
+//            }
+//            break;
+//        default:
+//            return SP_GAME_EVENT_NONE;
+//    }
+//    return SP_GAME_EVENT_NONE;
 //}
+
