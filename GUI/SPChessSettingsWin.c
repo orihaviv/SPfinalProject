@@ -78,10 +78,6 @@ int isClickOnBlack(int x, int y) {
     return 0;
 }
 
-
-
-
-
 bool loadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
