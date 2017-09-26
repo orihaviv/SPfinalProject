@@ -76,7 +76,7 @@ SPMainWin *spMainWindowCreate() {
     bool check;
 
 
-    // Creating rederer and checking it's real
+    // Creating renderer and checking it's real
     res->mainRenderer = SDL_CreateRenderer(res->mainWindow, -1,
                                            SDL_RENDERER_ACCELERATED);
     if (res->mainRenderer == NULL) {
