@@ -31,39 +31,24 @@
 #define GAMEMODEX 20
 #define GAMEMODEY 50
 #define ONEPLAYERX 170
-#define ONEPLAYERY 50
 #define TWOPLAYERSX 390
-#define TWOPLAYERSY 50
 
-#define GAMEMODEY 50
-#define GAMEMODEY 50
-#define GAMEMODEY 50
-#define GAMEMODEY 50
-#define GAMEMODEY 50
+#define USERCOLORX 20
+#define USERCOLORY 155
+#define WHITEX 175
+#define BLACKX 395
 
+#define STARTX 350
+#define START_BACK_Y 430
+#define BACKX 100
 
-
-
-
-
-
-
-//src->userColorR = {.x = 20, .y = 155, .h = LABELS_H, .w = COLOR_W};
-//src->whiteR = {.x = 170, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-//src->blackR = {.x = 390, .y = 155, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-//
-//
-//src->difficultyR = {.x = 20, .y = 260, .h = LABELS_H, .w = DIFFICULTY_W};
-//src->noobR = {.x = 30, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-//src->easyR = {.x = 170, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-//src->moderateR = {.x = 310, .y = 350, .h = BUTTONS_H, .w = MODERATE_W};
-//src->hardR = {.x = 450, .y = 350, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-//
-//
-//
-//src->startR = {.x = 350, .y = 430, .h = BUTTONS_H, .w = START_W};
-//src->backR = {.x = 100, .y = 430, .h = BUTTONS_H, .w = BACK_W};
-
+#define DIFFICULTYX 20
+#define DIFFICULTYY 260
+#define NOOB_EASY_MODERATE_HARD_Y 350
+#define NOOBX 30
+#define EASYX 170
+#define MODERATEX 310
+#define HARDX 450
 
 
 
@@ -130,6 +115,6 @@ void spSettingsWindowDestroy(SPSettingsWin* src);
 void spSettingsWindowDraw(SPSettingsWin* src);
 void spSettingsWindowHide(SPSettingsWin* src);
 void spSettingsWindowShow(SPSettingsWin* src);
-//SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
+SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
 
 #endif //FINALPROJECT_SPCHESSSETTINGSWIN_H
