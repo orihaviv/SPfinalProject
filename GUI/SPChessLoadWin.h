@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <SDL.h>
+#include "../SPMainAux.h"
 
 //Definitions
 #define LABEL_H 47
@@ -25,7 +26,7 @@ typedef enum {
     SP_LOAD_3,
     SP_LOAD_4,
     SP_LOAD_5,
-    SP_LOAD_GAME, ,
+    SP_LOAD_GAME,
     SP_SETTINGS_INVALID_ARGUMENT,
     SP_SETTINGS_NONE,
 } SP_SETTINGS_EVENT;
