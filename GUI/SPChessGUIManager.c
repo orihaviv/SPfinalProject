@@ -71,6 +71,7 @@ SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager* src, SP_MAIN_EVENT ev
         case SP_MAIN_LOAD_GAME:
             spMainWindowHide(src->mainWin);
             src->settingsWin = spSettingsWindowCreate();
+            src->game = chessGameCreate();
             if (src->settingsWin == NULL ) {
                 printf("Couldn't create settings window\n");
                 return SP_MANAGER_QUTT;
@@ -98,11 +99,38 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager* src, SP_SETTINGS_
         case SP_SETTINGS_START:
             spMainWindowHide(src->settingsWin);
             src->settingsWin = spGameWindowCreate();
+            src->game->state = 1;
             if (src->gameWin == NULL ) {
                 printf("Couldn't create settings window\n");
                 return SP_MANAGER_QUTT;
             }
             src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_SETTINGS_ONE_PLAYER:
+            src->game->gameMode = 1;
+            src->game->userColor = 1;
+            src->game->difficulty = 2;
+            break;
+        case SP_SETTINGS_TWO_PLAYERS:
+            src->game->gameMode = 2;
+            break;
+        case SP_SETTINGS_WHITE_USER:
+            src->game->userColor = 1;
+            break;
+        case SP_SETTINGS_BLACK_USER:
+            src->game->userColor = 0;
+            break;
+        case SP_SETTINGS_NOOB:
+            src->game->difficulty = 1;
+            break;
+        case SP_SETTINGS_EASY:
+            src->game->difficulty = 2;
+            break;
+        case SP_SETTINGS_MODERATE:
+            src->game->difficulty = 3;
+            break;
+        case SP_SETTINGS_HARD:
+            src->game->difficulty = 4;
             break;
         default:
             break;
@@ -134,17 +162,31 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager* src, SP_SETTINGS_
 //}
 //
 //
-//SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
-//	if (src == NULL || event == NULL ) {
-//		return SP_MANAGER_NONE;
-//	}
-//	if (src->activeWin == SP_MAIN_WINDOW_ACTIVE) {
-//		SP_MAIN_EVENT mainEvent = spMainWindowHandleEvent(src->mainWin, event);
-//		return handleManagerDueToMainEvent(src, mainEvent);
-//	} else {
-//		SP_GAME_EVENT gameEvent = spGameWindowHandleEvent(src->gameWin, event);
-//		spManagerDraw(src);
-//		return handleManagerDueToGameEvent(src, gameEvent);
-//	}
-//	return SP_MANAGER_NONE;
-//}
+SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
+	if (src == NULL || event == NULL ) {
+		return SP_MANAGER_NONE;
+	}
+    switch (src->activeWin){
+        case SP_MAIN_WINDOW_ACTIVE:
+            SP_MAIN_EVENT mainEvent = spMainWindowHandleEvent(src->mainWin, event);
+            return handleManagerDueToMainEvent(src, mainEvent);
+        case SP_SETTINGS_WINDOW_ACTIVE:
+            SP_SETTINGS_EVENT settingsEvent = spSettingsWindowHandleEvent(src->settingsWin, event);
+            return handleManagerDueToSettingsEvent(src, settingsEvent);
+        case SP_SETTINGS_WINDOW_ACTIVE:
+            SP_GAME_EVENT gameEvent = spGameWindowHandleEvent(src->gameWin, event);
+            return handleManagerDueToMainEvent(src, gameEvent);
+        case SP_SETTINGS_WINDOW_ACTIVE:
+            SP_LOAD_EVENT settingsEvent = spSettingsWindowHandleEvent(src->mainWin, event);
+            return handleManagerDueToMainEvent(src, mainEvent);
+    }
+	if (src->activeWin == SP_MAIN_WINDOW_ACTIVE) {
+		SP_MAIN_EVENT mainEvent = spMainWindowHandleEvent(src->mainWin, event);
+		return handleManagerDueToMainEvent(src, mainEvent);
+	} else {
+		SP_GAME_EVENT gameEvent = spGameWindowHandleEvent(src->gameWin, event);
+		spManagerDraw(src);
+		return handleManagerDueToGameEvent(src, gameEvent);
+	}
+	return SP_MANAGER_NONE;
+}

@@ -24,6 +24,7 @@ typedef struct {
 	SPLoadWin* loadWin;
 	SPGameWin* gameWin;
 	ACTIVE_WINDOW activeWin;
+	SPChessGame* game;
 } SPGuiManager;
 
 SPGuiManager* spManagerCreate();
