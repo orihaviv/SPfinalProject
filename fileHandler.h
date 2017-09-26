@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
 #include "chessGame.h"
 
 
@@ -130,7 +131,17 @@ bool loadChessGame(SPChessGame **game, char *filePath);
 
 // GUI
 
+/**
+ * Checking if a saved games XML file exists
+ *
+ *
+ * @return
+ * false - Saved games does not exists
+ * true - Saved Games exists
+ *
+ */
 
+bool savedGameExists();
 
 /**
  * Creating  a saved games list into the XML file

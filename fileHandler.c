@@ -3,6 +3,7 @@
 //
 
 
+
 #include "fileHandler.h"
 
 
@@ -210,15 +211,11 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 
 bool savedGameExists(){
-    FILE *gameFile;
-    gameFile = fopen("GUI/savedGames.xml", "r");
-    if (gameFile == NULL) {         // fopen has failed
-        return false;
+
+    if (access("GUI/savedGames.xml", F_OK) != -1){
+        return true;
     }
-    if (fclose(gameFile) != 0) {     // fclose has failed
-        return false;
-    }
-    return true;
+    return false;
 }
 
 
@@ -374,9 +371,9 @@ int guiSaveGame(SPChessGame *game){
             break;
         case 5:
             one = extractPathOfSlot(5);
-            break;
         default:
             return 0;
+
     }
     gameSaved = saveGame(one, game);
     success = createSavedGames(one, two, three, four, five);

@@ -4,77 +4,56 @@
 
 #include "SPChessLoadWin.h"
 
-//
-//
-//int isClickOnStart(int x, int y) {
+
+
+int isClickOnOne(int x, int y) {
 //    if ((x >= STARTX && x <= START_W + STARTX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnBack(int x, int y) {
+}
+
+int isClickOnTwo(int x, int y) {
 //    if ((x >= BACKX && x <= START_W + BACKX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnOnePlayer(int x, int y) {
+}
+
+int isClickOnThree(int x, int y) {
 //    if ((x >= ONEPLAYERX && x <= ONEPLAYERX + ONE_PLAYER_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnTwoPlayers(int x, int y) {
+}
+
+int isClickOnFour(int x, int y) {
 //    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnNoob(int x, int y) {
-//    if ((x >= NOOBX && x <= NOOBX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+}
+
+int isClickOnFive(int x, int y) {
+//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnEasy(int x, int y) {
-//    if ((x >= EASYX && x <= EASYX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+}
+
+int isClickOnLoadGame(int x, int y) {
+//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnModerate(int x, int y) {
-//    if ((x >= MODERATEX && x <= MODERATEX + MODERATE_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
+}
+
+int isClickOnBack(int x, int y) {
+//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
 //        return 1;
 //    }
 //    return 0;
-//}
-//
-//int isClickOnHard(int x, int y) {
-//    if ((x >= HARDX && x <= HARDX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//int isClickOnWhite(int x, int y) {
-//    if ((x >= WHITEX && x <= WHITEX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
-//}
-//
-//int isClickOnBlack(int x, int y) {
-//    if ((x >= BLACKX && x <= BLACKX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
-//}
+}
 
 
 
@@ -105,290 +84,241 @@ bool loadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
 
 
 
-SPSettingsWin *spSettingsWindowCreate() {
-    SPSettingsWin *res = NULL;
-    res = (SPSettingsWin *) malloc(sizeof(SPSettingsWin));
+SPLoadWin *spLoadWindowCreate() {
+    SPLoadWin *res = NULL;
+    res = (SPLoadWin *) malloc(sizeof(SPLoadWin));
     if (res == NULL) {
         return NULL;
     }
 
     // Create an application window with the following settings:
-    res->settingsWindow = SDL_CreateWindow("Chess Game - Settings", // window title
+    res->loadWindow = SDL_CreateWindow("Chess Game - Settings", // window title
                                            SDL_WINDOWPOS_CENTERED,           // initial x position
                                            SDL_WINDOWPOS_CENTERED,           // initial y position
-                                           800,                               // width, in pixels
-                                           600,                               // height, in pixels
+                                           670,                               // width, in pixels
+                                           450,                               // height, in pixels
                                            SDL_WINDOW_OPENGL                  // flags - see below
     );
 
     // Check that the window was successfully created
-    if (res->settingsWindow == NULL) {
-        spSettingsWindowDestroy(res);
+    if (res->loadWindow == NULL) {
+        spLoadWindowDestroy(res);
         printf("Could not create window: %s\n", SDL_GetError());
         return NULL;
     }
 
     // Creating rederer and checking it's real
-    res->settingsRenderer = SDL_CreateRenderer(res->settingsWindow, -1,
+    res->loadRenderer = SDL_CreateRenderer(res->loadWindow, -1,
                                                SDL_RENDERER_ACCELERATED);
-    if (res->settingsRenderer == NULL) {
+    if (res->loadRenderer == NULL) {
         // In the case that the window could not be made...
-        spSettingsWindowDestroy(res);
+        spLoadWindowDestroy(res);
         printf("Could not create window: %s\n", SDL_GetError());
         return NULL;
     }
 
-    res->color = 1;
-    res->diff = 2;
-    res->numOfPlayers = 1;
+    res->marked = 0;
+    res->numOfSlots = (savedGameExists()) ? extractNumOfSavedGames() : 0;
+
     bool check;
 
-    // Start button
-    check = loadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
+    // Load Game button
+    check = loadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/loadWindow/load.bmp");
     if (!check){ return  NULL; }
 
-    // Back button
-    check = loadingSurfaceFunc(res, &(res->backTexture), "../GUI/images/settingsWindow/back.bmp");
+    // Load Game Title button
+    check = loadingSurfaceFunc(res, &(res->loadGameTitle), "../GUI/images/loadWindow/loadGame.bmp");
     if (!check){ return  NULL; }
 
-    // Noob button
-    check = loadingSurfaceFunc(res, &(res->noobTexture), "../GUI/images/settingsWindow/noob.bmp");
+    // 1 button
+    check = loadingSurfaceFunc(res, &(res->oneThin), "../GUI/images/loadWindow/one.bmp");
     if (!check){ return  NULL; }
 
-    // Easy button
-    check = loadingSurfaceFunc(res, &(res->easyTexture), "../GUI/images/settingsWindow/easy.bmp");
+    // 2 button
+    check = loadingSurfaceFunc(res, &(res->twoThin), "../GUI/images/loadWindow/two.bmp");
     if (!check){ return  NULL; }
 
-    // moderate button
-    check = loadingSurfaceFunc(res, &(res->moderateTexture), "../GUI/images/settingsWindow/moderate.bmp");
+    // 3 button
+    check = loadingSurfaceFunc(res, &(res->threeThin), "../GUI/images/loadWindow/three.bmp");
     if (!check){ return  NULL; }
 
-    // Hard button
-    check = loadingSurfaceFunc(res, &(res->hardTexture), "../GUI/images/settingsWindow/hard.bmp");
+    // 4 button
+    check = loadingSurfaceFunc(res, &(res->fourThin), "../GUI/images/loadWindow/four.bmp");
     if (!check){ return  NULL; }
 
-    // White button
-    check = loadingSurfaceFunc(res, &(res->whiteUserTexture), "../GUI/images/settingsWindow/white.bmp");
+    // 5 button
+    check = loadingSurfaceFunc(res, &(res->fiveThin), "../GUI/images/loadWindow/five.bmp");
     if (!check){ return  NULL; }
 
-    // Black button
-    check = loadingSurfaceFunc(res, &(res->blackUserTexture), "../GUI/images/settingsWindow/black.bmp");
+    // 1 Bold button
+    check = loadingSurfaceFunc(res, &(res->oneBold), "../GUI/images/loadWindow/oneBold.bmp");
     if (!check){ return  NULL; }
 
-    // onePlayer button
-    check = loadingSurfaceFunc(res, &(res->onePlayerTexture), "../GUI/images/settingsWindow/onePlayer.bmp");
+    // 2 Bold button
+    check = loadingSurfaceFunc(res, &(res->twoBold), "../GUI/images/loadWindow/twoBold.bmp");
     if (!check){ return  NULL; }
 
-    // twoPlayers button
-    check = loadingSurfaceFunc(res, &(res->twoPlayersTexture), "../GUI/images/settingsWindow/twoPlayers.bmp");
+    // 3 Bold button
+    check = loadingSurfaceFunc(res, &(res->threeBold), "../GUI/images/loadWindow/threeBold.bmp");
     if (!check){ return  NULL; }
 
 
-    // Bold Noob button
-    check = loadingSurfaceFunc(res, &(res->noobBoldTexture), "../GUI/images/settingsWindow/noobBold.bmp");
+    // 4 Bold button
+    check = loadingSurfaceFunc(res, &(res->fourBold), "../GUI/images/loadWindow/fourBold.bmp");
     if (!check){ return  NULL; }
 
-    // Bold Easy button
-    check = loadingSurfaceFunc(res, &(res->easyBoldTexture), "../GUI/images/settingsWindow/easyBold.bmp");
+    // 5 Bold  button
+    check = loadingSurfaceFunc(res, &(res->fiveBold), "../GUI/images/loadWindow/fiveBold.bmp");
     if (!check){ return  NULL; }
 
-    // Bold moderate button
-    check = loadingSurfaceFunc(res, &(res->moderateBoldTexture), "../GUI/images/settingsWindow/moderateBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Bold Hard button
-    check = loadingSurfaceFunc(res, &(res->hardBoldTexture), "../GUI/images/settingsWindow/hardBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Bold White button
-    check = loadingSurfaceFunc(res, &(res->whiteUserBoldTexture), "../GUI/images/settingsWindow/whiteBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Bold Black button
-    check = loadingSurfaceFunc(res, &(res->blackUserBoldTexture), "../GUI/images/settingsWindow/blackBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Bold onePlayer button
-    check = loadingSurfaceFunc(res, &(res->onePlayerBoldTexture), "../GUI/images/settingsWindow/onePlayerBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Bold twoPlayers button
-    check = loadingSurfaceFunc(res, &(res->twoPlayersBoldTexture), "../GUI/images/settingsWindow/twoPlayersBold.bmp");
-    if (!check){ return  NULL; }
-
-    // Num of players title
-    check = loadingSurfaceFunc(res, &(res->numOfPlayersTitle), "../GUI/images/settingsWindow/gameMode.bmp");
-    if (!check){ return  NULL; }
-
-    // Difficulty title
-    check = loadingSurfaceFunc(res, &(res->difficultyTitle), "../GUI/images/settingsWindow/difficulty.bmp");
-    if (!check){ return  NULL; }
-
-    // User color title
-    check = loadingSurfaceFunc(res, &(res->userColorTitle), "../GUI/images/settingsWindow/userColor.bmp");
-    if (!check){ return  NULL; }
+    res->one = &res->oneThin;
+    res->two = &res->twoThin;
+    res->three = &res->threeThin;
+    res->four = &res->fourThin;
+    res->five = &res->fiveThin;
 
     return res;
 }
 
 
-void spSettingsWindowDestroy(SPSettingsWin *src) {
+void spLoadWindowDestroy(SPLoadWin *src) {
 
     if (!src) { return; }
 
-    if (src->startTexture != NULL) { SDL_DestroyTexture(src->startTexture); }
-    if (src->backTexture != NULL) { SDL_DestroyTexture(src->backTexture); }
-    if (src->whiteUserTexture != NULL) { SDL_DestroyTexture(src->whiteUserTexture); }
-    if (src->whiteUserBoldTexture != NULL) { SDL_DestroyTexture(src->whiteUserBoldTexture); }
-    if (src->blackUserTexture != NULL) { SDL_DestroyTexture(src->blackUserTexture); }
-    if (src->blackUserBoldTexture != NULL) { SDL_DestroyTexture(src->blackUserBoldTexture); }
-    if (src->onePlayerTexture != NULL) { SDL_DestroyTexture(src->onePlayerTexture); }
-    if (src->onePlayerBoldTexture != NULL) { SDL_DestroyTexture(src->onePlayerBoldTexture); }
-    if (src->twoPlayersTexture != NULL) { SDL_DestroyTexture(src->twoPlayersTexture); }
-    if (src->twoPlayersBoldTexture != NULL) { SDL_DestroyTexture(src->twoPlayersBoldTexture); }
-    if (src->noobTexture != NULL) { SDL_DestroyTexture(src->noobTexture); }
-    if (src->noobBoldTexture != NULL) { SDL_DestroyTexture(src->noobBoldTexture); }
-    if (src->easyTexture != NULL) { SDL_DestroyTexture(src->easyTexture); }
-    if (src->easyBoldTexture != NULL) { SDL_DestroyTexture(src->easyBoldTexture); }
-    if (src->moderateTexture != NULL) { SDL_DestroyTexture(src->moderateTexture); }
-    if (src->moderateBoldTexture != NULL) { SDL_DestroyTexture(src->moderateBoldTexture); }
-    if (src->hardTexture != NULL) { SDL_DestroyTexture(src->hardTexture); }
-    if (src->hardBoldTexture != NULL) { SDL_DestroyTexture(src->hardBoldTexture); }
+    if (src->oneThin != NULL) { SDL_DestroyTexture(src->oneThin); }
+    if (src->oneBold != NULL) { SDL_DestroyTexture(src->oneBold); }
+    if (src->twoThin != NULL) { SDL_DestroyTexture(src->twoThin); }
+    if (src->twoBold != NULL) { SDL_DestroyTexture(src->twoBold); }
+    if (src->threeThin != NULL) { SDL_DestroyTexture(src->threeThin); }
+    if (src->threeBold != NULL) { SDL_DestroyTexture(src->threeBold); }
+    if (src->fourThin != NULL) { SDL_DestroyTexture(src->fourThin); }
+    if (src->fourBold != NULL) { SDL_DestroyTexture(src->fourBold); }
+    if (src->fiveThin != NULL) { SDL_DestroyTexture(src->fiveThin); }
+    if (src->fiveBold != NULL) { SDL_DestroyTexture(src->fiveBold); }
 
-    if (src->numOfPlayersTitle != NULL) { SDL_DestroyTexture(src->hardBoldTexture); }
-    if (src->difficultyTitle != NULL) { SDL_DestroyTexture(src->hardBoldTexture); }
-    if (src->userColorTitle != NULL) { SDL_DestroyTexture(src->hardBoldTexture); }
+    if (src->loadGame != NULL) { SDL_DestroyTexture(src->loadGameTitle); }
+    if (src->loadGame != NULL) { SDL_DestroyTexture(src->loadGame); }
 
-    if (src->settingsRenderer != NULL) { SDL_DestroyRenderer(src->settingsRenderer); }
-    if (src->settingsWindow != NULL) { SDL_DestroyWindow(src->settingsWindow); }
+    if (src->loadRenderer != NULL) { SDL_DestroyRenderer(src->loadRenderer); }
+    if (src->loadWindow != NULL) { SDL_DestroyWindow(src->loadWindow); }
+
     free(src);
 }
 
 
-void spSettingsWindowDraw(SPSettingsWin *src) {
+void spLoadWindowDraw(SPLoadWin *src) {
     if (src == NULL) {
         return;
     }
-    src->gameModeR = (SDL_Rect){ .x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
-    src->onePlayerR = (SDL_Rect){ .x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
-    src->twoPlayersR = (SDL_Rect){ .x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
+    SDL_Rect oneR = { .x = ONEX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
+    SDL_Rect twoR = { .x = TWOX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
+    SDL_Rect threeR = { .x = THREEX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
+    SDL_Rect fourR = {.x = FOURX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
+    SDL_Rect fiveR = {.x = FIVEX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
 
-    src->userColorR = (SDL_Rect){.x = USERCOLORX, .y = USERCOLORY, .h = LABELS_H, .w = COLOR_W};
-    src->whiteR = (SDL_Rect){.x = WHITEX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-    src->blackR = (SDL_Rect){.x = BLACKX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+    SDL_Rect loadR = {.x = LOADX, .y = LOADY, .h = LOAD_H, .w = LOAD_W};
+    SDL_Rect titleR = {.x = LABALX, .y = LABELY, .h = LABEL_H, .w = LABEL_W};
 
 
-    src->difficultyR = (SDL_Rect){.x = DIFFICULTYX, .y = DIFFICULTYY, .h = LABELS_H, .w = DIFFICULTY_W};
-    src->noobR = (SDL_Rect){.x = NOOBX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->easyR = (SDL_Rect){.x = EASYX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->moderateR = (SDL_Rect){.x = MODERATEX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = MODERATE_W};
-    src->hardR = (SDL_Rect){ .x = HARDX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    SDL_SetRenderDrawColor(src->loadRenderer, 134, 134, 134, 192);
 
-    src->startR = (SDL_Rect){.x = STARTX, .y = START_BACK_Y, .h = BUTTONS_H, .w = START_W};
-    src->backR = (SDL_Rect){.x = BACKX, .y = START_BACK_Y, .h = BUTTONS_H, .w = BACK_W};
+    SDL_RenderClear(src->loadRenderer);
+    SDL_RenderCopy(src->loadRenderer, src->loadGameTitle, NULL, &titleR);
+    SDL_RenderCopy(src->loadRenderer, src->loadGame, NULL, &loadR);
+    SDL_RenderCopy(src->loadRenderer, *src->one, NULL, &oneR);
+    SDL_RenderCopy(src->loadRenderer, *src->two, NULL, &twoR);
+    SDL_RenderCopy(src->loadRenderer, *src->three, NULL, &threeR);
+    SDL_RenderCopy(src->loadRenderer, *src->four, NULL, &fourR);
+    SDL_RenderCopy(src->loadRenderer, *src->five, NULL, &fiveR);
 
-    SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 192);
-
-    SDL_RenderClear(src->settingsRenderer);
-    SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &src->gameModeR);
-    SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &src->difficultyR);
-    SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &src->userColorR);
-    SDL_RenderCopy(src->settingsRenderer, src->whiteUserBoldTexture, NULL, &src->whiteR);
-    SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
-    SDL_RenderCopy(src->settingsRenderer, src->startTexture, NULL, &src->startR);
-    SDL_RenderCopy(src->settingsRenderer, src->backTexture, NULL, &src->backR);
-    SDL_RenderCopy(src->settingsRenderer, src->onePlayerBoldTexture, NULL, &src->onePlayerR);
-    SDL_RenderCopy(src->settingsRenderer, src->twoPlayersTexture, NULL, &src->twoPlayersR);
-    SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
-    SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
-    SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
-    SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
-    SDL_RenderPresent(src->settingsRenderer);
+    SDL_RenderPresent(src->loadRenderer);
 }
 
-SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin *src, SDL_Event *event) {
+
+
+
+
+SP_LOAD_EVENT spSettingsWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
     if (!event) {
-        return SP_SETTINGS_INVALID_ARGUMENT;
+        return SP_LOAD_INVALID_ARGUMENT;
     }
     switch (event->type) {
         case SDL_MOUSEBUTTONUP:
-            if (isClickOnStart(event->button.x, event->button.y)) {
-                return SP_SETTINGS_START;
-            } else if (isClickOnBack(event->button.x, event->button.y)) {
-                return SP_SETTINGS_BACK;
-            } else if (isClickOnNoob(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->noobBoldTexture, NULL, &src->noobR);
-                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
-                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
-                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_NOOB;
-            } else if (isClickOnEasy(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
-                SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
-                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
-                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_EASY;
-            } else if (isClickOnModerate(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
-                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
-                SDL_RenderCopy(src->settingsRenderer, src->moderateBoldTexture, NULL, &src->moderateR);
-                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_MODERATE;
-            } else if (isClickOnHard(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
-                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
-                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
-                SDL_RenderCopy(src->settingsRenderer, src->hardBoldTexture, NULL, &src->hardR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_HARD;
-            } else if (isClickOnOnePlayer(event->button.x, event->button.y)  && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->easyBoldTexture, NULL, &src->easyR);
-                src->numOfPlayers = 1;
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_ONE_PLAYER;
-            } else if (isClickOnTwoPlayers(event->button.x, event->button.y)) {
-                src->numOfPlayers = 2;
-                SDL_RenderCopy(src->settingsRenderer, src->onePlayerTexture, NULL, &src->onePlayerR);
-                SDL_RenderCopy(src->settingsRenderer, src->twoPlayersBoldTexture, NULL, &src->twoPlayersR);
-                SDL_RenderCopy(src->settingsRenderer, src->whiteUserTexture, NULL, &src->whiteR);
-                SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
-                SDL_RenderCopy(src->settingsRenderer, src->noobTexture, NULL, &src->noobR);
-                SDL_RenderCopy(src->settingsRenderer, src->easyTexture, NULL, &src->easyR);
-                SDL_RenderCopy(src->settingsRenderer, src->moderateTexture, NULL, &src->moderateR);
-                SDL_RenderCopy(src->settingsRenderer, src->hardTexture, NULL, &src->hardR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_TWO_PLAYERS;
-            } else if (isClickOnWhite(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->whiteUserBoldTexture, NULL, &src->whiteR);
-                SDL_RenderCopy(src->settingsRenderer, src->blackUserTexture, NULL, &src->blackR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_WHITE_USER;
-            } else if (isClickOnBlack(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                SDL_RenderCopy(src->settingsRenderer, src->whiteUserTexture, NULL, &src->whiteR);
-                SDL_RenderCopy(src->settingsRenderer, src->blackUserBoldTexture, NULL, &src->blackR);
-                SDL_RenderPresent(src->settingsRenderer);
-                return SP_SETTINGS_BLACK_USER;
+            if (isClickOnOne(event->button.x, event->button.y) && src->numOfSlots > 0) {
+                src->one = &src->oneBold;
+                src->two = &src->twoThin;
+                src->three = &src->threeThin;
+                src->four = &src->fourThin;
+                src->five = &src->fiveThin;
+                src->marked = 1;
+                return SP_LOAD_NONE;
+            } else if (isClickOnTwo(event->button.x, event->button.y) && src->numOfSlots > 1) {
+                src->one = &src->oneThin;
+                src->two = &src->twoBold;
+                src->three = &src->threeThin;
+                src->four = &src->fourThin;
+                src->five = &src->fiveThin;
+                src->marked = 2;
+                return SP_LOAD_NONE;
+            } else if (isClickOnThree(event->button.x, event->button.y) && src->numOfSlots > 2) {
+                src->one = &src->oneThin;
+                src->two = &src->twoThin;
+                src->three = &src->threeBold;
+                src->four = &src->fourThin;
+                src->five = &src->fiveThin;
+                src->marked = 3;
+                return SP_LOAD_NONE;
+            } else if (isClickOnFour(event->button.x, event->button.y) && src->numOfSlots > 3) {
+                src->one = &src->oneThin;
+                src->two = &src->twoThin;
+                src->three = &src->threeThin;
+                src->four = &src->fourBold;
+                src->five = &src->fiveThin;
+                src->marked = 4;
+                return SP_LOAD_NONE;
+            } else if (isClickOnFive(event->button.x, event->button.y) && src->numOfSlots > 4) {
+                src->one = &src->oneThin;
+                src->two = &src->twoThin;
+                src->three = &src->threeThin;
+                src->four = &src->fourThin;
+                src->five = &src->fiveBold;
+                src->marked = 5;
+                return SP_LOAD_NONE;
+            } else if (isClickOnLoadGame(event->button.x, event->button.y) && src->marked > 0) {
+                switch (src->marked) {
+                    case 1:
+                        return SP_LOAD_1;
+                    case 2:
+                        return SP_LOAD_2;
+                    case 3:
+                        return SP_LOAD_3;
+                    case 4:
+                        return SP_LOAD_4;
+                    case 5:
+                        return SP_LOAD_5;
+                    default:
+                        return SP_LOAD_NONE;
+                }
+            } else if (isClickOnBack(event->button.x, event->button.y) {
+                return SP_LOAD_BACK;
             }
             break;
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-                return SP_SETTINGS_BACK;
+                return SP_LOAD_INVALID_ARGUMENT;
             }
             break;
         default:
-            return SP_SETTINGS_NONE;
+            return SP_LOAD_NONE;
     }
-    return SP_SETTINGS_NONE;
+    return SP_LOAD_NONE;
 }
 
 
-void spSettingsWindowHide(SPSettingsWin *src) {
-    SDL_HideWindow(src->settingsWindow);
+void spLoadWindowHide(SPLoadWin *src) {
+    SDL_HideWindow(src->loadWindow);
 }
 
-void spSettingsWindowShow(SPSettingsWin *src) {
-    SDL_ShowWindow(src->settingsWindow);
+void spLoadWindowShow(SPLoadWin *src) {
+    SDL_ShowWindow(src->loadWindow);
 }
