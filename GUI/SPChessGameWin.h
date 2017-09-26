@@ -70,10 +70,10 @@ typedef struct{
 	int isTheGameSaved;
 }SPGameWin;
 
-SPGameWin* spGameWindowCreate();
-void spGameWindowDraw(SPGameWin*);
-void spGameWindowDestroy(SPGameWin*);
-SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SDL_Event* event);
+//SPGameWin* spGameWindowCreate();
+//void spGameWindowDraw(SPGameWin*);
+//void spGameWindowDestroy(SPGameWin*);
+//SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SDL_Event* event);
 
 
 #endif
