@@ -12,8 +12,8 @@
 //Definitions
 #define LABEL_H 47
 #define LABEL_W 250
-#define BUTTONS_H 49
-#define BUTTONS_W 78
+#define LOAD_BUTTONS_H 49
+#define LOAD_BUTTONS_W 78
 #define PRESSED_BUTTONS_H 57
 #define PRESSED_BUTTONS_W 86
 #define LOAD_W 78
@@ -27,8 +27,8 @@ typedef enum {
     SP_LOAD_4,
     SP_LOAD_5,
     SP_LOAD_GAME,
-    SP_SETTINGS_INVALID_ARGUMENT,
-    SP_SETTINGS_NONE,
+    SP_LOAD_INVALID_ARGUMENT,
+    SP_LOAD_NONE,
 } SP_LOAD_EVENT;
 
 typedef struct {
@@ -52,7 +52,7 @@ void spLoadWindowDestroy(SPLoadWin* src);
 void spLoadWindowDraw(SPLoadWin* src);
 void spLoadWindowHide(SPLoadWin* src);
 void spLoadWindowShow(SPLoadWin* src);
-//SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin* src, SDL_Event* event);
+SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin* src, SDL_Event* event);
 
 
 #endif //SPFINALPROJECT_SPCHESSLOADWIN_H

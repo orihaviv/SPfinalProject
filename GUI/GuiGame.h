@@ -9,8 +9,7 @@
 #include <SDL.h>
 #include <SDL_video.h>
 #include <stdio.h>
-#include "SPChessSettingsWin.h"
-//#include "SPchessGUIManager.h"
+#include "SPChessGUIManager.h"
 
 
 

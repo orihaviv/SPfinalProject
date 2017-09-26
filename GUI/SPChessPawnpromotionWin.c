@@ -2,7 +2,7 @@
 // Created by אורי חביב on 25/09/2017.
 //
 
-#include <opencl-c.h>
+
 #include "SPChessPawnpromotionWin.h"
 
 
