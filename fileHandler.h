@@ -20,6 +20,16 @@
 #define ROW "row_"
 #define GENERAL "general"
 
+//gui
+#define ALL_GAMES "saved_games"
+#define NUM_OF_SAVED "num_of_saved_games"
+#define SAVED_LIST "games_list"
+#define SLOT_ONE "one"
+#define SLOT_TWO "two"
+#define SLOT_THREE "three"
+#define SLOT_FOUR "four"
+#define SLOT_FIVE "five"
+
 
 
 #ifndef FINALPROJECT_FILEHANDLER_H
@@ -115,6 +125,71 @@ void getLabelInfo(char* info, char* label);
  */
 
 bool loadChessGame(SPChessGame **game, char *filePath);
+
+
+
+// GUI
+
+
+
+/**
+ * Creating  a saved games list into the XML file
+ *
+ * @param first - the first game's path
+ * @param second - the second game's path
+ * @param third - the third game's path
+ * @param forth - the forth game's path
+ * @param fifth - the fifth game's path
+ *
+ * @return
+ * false - Saved games can not be saved
+ * true - Saved Games has been saved
+ *
+ */
+
+bool createSavedGames(char* first, char* second, char* third, char* forth, char* fifth);
+
+
+/**
+ * Extracting the number of the saved games
+ *
+ *
+ * @return
+ * Number of saved games in xml
+ * -1 - Error
+ *
+ */
+
+int extractNumOfSavedGames();
+
+
+/**
+ * Extracting the path of the requiered slot saved game
+ * must be freed! //TODO
+ *
+ * @param slotNum - Trequested slot number
+ *
+ * @return
+ * A string with the path.
+ * Null - Error occurred
+ *
+ */
+
+char* extractPathOfSlot(int slotNum);
+
+/**
+ * loading the requested slot game from the XML file
+ *
+ * @param slot - the slot's number
+ * @param game - the current game
+ *
+ * @return
+ * true - if the game was loaded
+ * false - otherwise
+
+ */
+
+bool guiLoadChessGame(SPChessGame **game, int slot)
 
 
 

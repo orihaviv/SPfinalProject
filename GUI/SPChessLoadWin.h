@@ -34,28 +34,22 @@ typedef enum {
 typedef struct {
     SDL_Window* settingsWindow;
     SDL_Renderer* settingsRenderer;
-    SDL_Texture* numOfPlayersTitle;
-    SDL_Texture* difficultyTitle;
-    SDL_Texture* userColorTitle;
-    SDL_Texture* startTexture;
-    SDL_Texture* backTexture;
-    SDL_Texture* onePlayerTexture;
-    SDL_Texture* onePlayerBoldTexture;
-    SDL_Texture* twoPlayersTexture;
-    SDL_Texture* twoPlayersBoldTexture;
-    SDL_Texture* whiteUserTexture;
-    SDL_Texture* whiteUserBoldTexture;
-    SDL_Texture* blackUserTexture;
-    SDL_Texture* blackUserBoldTexture;
-    SDL_Texture* noobTexture;
-    SDL_Texture* noobBoldTexture;
-    SDL_Texture* easyTexture;
-    SDL_Texture* easyBoldTexture;
-    SDL_Texture* moderateTexture;
-    SDL_Texture* moderateBoldTexture;
-    SDL_Texture* hardTexture;
-    SDL_Texture* hardBoldTexture;
-    int numOfPlayers;
+
+    SDL_Texture* loadGameTitle;
+    SDL_Texture* load;
+    SDL_Texture* back;
+    SDL_Texture* slotOne;
+    SDL_Texture* slotOneBold;
+    SDL_Texture* slotTwo;
+    SDL_Texture* slotTwoBold;
+    SDL_Texture* slotThree;
+    SDL_Texture* slotThreeBold;
+    SDL_Texture* slotFour;
+    SDL_Texture* slotFourBold;
+    SDL_Texture* slotFive;
+    SDL_Texture* slotFiveBold;
+
+    int chosen;
     int diff;
     int color;
 } SPSettingsWin;
@@ -65,7 +59,7 @@ void spSettingsWindowDestroy(SPSettingsWin* src);
 void spSettingsWindowDraw(SPSettingsWin* src);
 void spSettingsWindowHide(SPSettingsWin* src);
 void spSettingsWindowShow(SPSettingsWin* src);
-//SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
+SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
 
 
 #endif //SPFINALPROJECT_SPCHESSLOADWIN_H
