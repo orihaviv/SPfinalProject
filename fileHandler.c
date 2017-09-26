@@ -224,19 +224,19 @@ bool savedGameExists(){
 
 bool createSavedGames(char* first, char* second, char* third, char* forth, char* fifth){
     int num = 5;
-    if (!fifth){
+    if (!fifth || strlen(fifth) == 0){
         fifth = "";
         num--;
-        if (!forth){
+        if (!forth || strlen(forth) == 0){
             forth = "";
             num--;
-            if(!third){
+            if(!third || strlen(third) == 0){
                 third = "";
                 num--;
-                if (!second){
+                if (!second || strlen(second) == 0){
                     second = "";
                     num--;
-                    if (!first){
+                    if (!first || strlen(first) == 0){
                         first = "";
                         num--;
                     }
@@ -351,21 +351,34 @@ int guiSaveGame(SPChessGame *game){
         if (success && gameSaved) { return 1; }
         return 0;
     }
+
     numOfGames = extractNumOfSavedGames();
     char* one = NULL;
-    char* two = NULL;
-    char* three = NULL;
-    char* four = NULL;
-    char* five = NULL;
-    if (numOfGames > 0){
-        two = extractPathOfSlot(1);
-        one = "GUI/saved/game2";
+    char* two = extractPathOfSlot(1);
+    char* three = extractPathOfSlot(2);
+    char* four = extractPathOfSlot(3);
+    char* five = extractPathOfSlot(4);
+
+    switch(numOfGames){
+        case 1:
+            one = "GUI/saved/game2";
+            break;
+        case 2:
+            one = "GUI/saved/game3";
+            break;
+        case 3:
+            one = "GUI/saved/game4";
+            break;
+        case 4:
+            one = "GUI/saved/game5";
+            break;
+        case 5:
+            one = extractPathOfSlot(5);
+            break;
+        default:
+            return 0;
     }
-
-
-
-
-    gameSaved = saveGame("GUI/saved/game2", game);
+    gameSaved = saveGame(one, game);
     success = createSavedGames(one, two, three, four, five);
     if (success && gameSaved) { return 1; }
     return 0;

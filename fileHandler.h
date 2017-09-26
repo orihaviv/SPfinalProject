@@ -189,8 +189,21 @@ char* extractPathOfSlot(int slotNum);
 
  */
 
-bool guiLoadChessGame(SPChessGame **game, int slot)
+bool guiLoadChessGame(SPChessGame **game, int slot);
 
+
+/**
+* Saving a game into the XML file and into the saved games XML
+*
+* @param game - the current game to be saved
+*
+* @return
+* 0 - Game can not be saved
+* 1 - Game has been saved
+*
+*/
+
+int guiSaveGame(SPChessGame *game);
 
 
 

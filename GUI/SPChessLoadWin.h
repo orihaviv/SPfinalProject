@@ -47,7 +47,7 @@ typedef struct {
     SDL_Texture* loadGame;
 } SPLoadWin;
 
-SPSettingsWin* spLoadWindowCreate();
+SPLoadWin* spLoadWindowCreate();
 void spLoadWindowDestroy(SPLoadWin* src);
 void spLoadWindowDraw(SPLoadWin* src);
 void spLoadWindowHide(SPLoadWin* src);
