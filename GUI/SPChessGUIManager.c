@@ -45,9 +45,9 @@ void spManagerDraw(SPGuiManager* src) {
     if (src->activeWin == SP_MAIN_WINDOW_ACTIVE) {
         spMainWindowDraw(src->mainWin);
     } else if (src->activeWin == SP_SETTINGS_WINDOW_ACTIVE){
-        spGameWindowDraw(src->settingsWin);
+        spSettingsWindowDraw(src->settingsWin);
     } else if (src->activeWin == SP_LOAD_WINDOW_ACTIVE){
-        spGameWindowDraw(src->loadWin);
+        spLoadWindowDraw(src->loadWin);
     } else if (src->activeWin == SP_GAME_WINDOW_ACTIVE){
         spGameWindowDraw(src->gameWin);
     }
@@ -97,8 +97,8 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager* src, SP_SETTINGS_
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
             break;
         case SP_SETTINGS_START:
-            spMainWindowHide(src->settingsWin);
-            src->settingsWin = spGameWindowCreate();
+            spSettingsWindowHide(src->settingsWin);
+            src->gameWin = spGameWindowCreate();
             src->game->state = 1;
             if (src->gameWin == NULL ) {
                 printf("Couldn't create settings window\n");
@@ -185,9 +185,9 @@ int askWhetherToSave(SPGuiManager* src){
             &colorScheme /* .colorScheme */
     };
     int buttonID;
-    if (SDL_ShowMessageBox(&messageboxdata, &buttonID) < 0) {
+    if (SDL_ShowMessageBox(&messageBoxData, &buttonID) < 0) {
         SDL_Log("error displaying message box");
-        return;
+        return 0;
     }
     switch (buttonID) {
         case 0:
@@ -200,16 +200,7 @@ int askWhetherToSave(SPGuiManager* src){
         default:
             break;
     }
-}
-
-SP_MANAGER_EVENT handleQuitGame(SPGuiManager* src){
-    int whetherToQuit = 1;
-    if (src->gameWin->isTheGameSaved == 0) {
-        whetherToQuit = askWhetherToSave(src);
-    }
-    if (whetherToQuit == 1){
-        return SP_MANAGER_QUTT;
-    }
+    return 0;
 }
 
 
@@ -290,19 +281,23 @@ SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
     if (src == NULL || event == NULL ) {
         return SP_MANAGER_NONE;
     }
+    SP_MAIN_EVENT mainEvent;
+    SP_SETTINGS_EVENT settingsEvent;
+    SP_GAME_EVENT gameEvent;
+    SP_LOAD_EVENT loadEvent;
     switch (src->activeWin){
         case SP_MAIN_WINDOW_ACTIVE:
-            SP_MAIN_EVENT mainEvent = spMainWindowHandleEvent(src->mainWin, event);
+            mainEvent = spMainWindowHandleEvent(src->mainWin, event);
             return handleManagerDueToMainEvent(src, mainEvent);
         case SP_SETTINGS_WINDOW_ACTIVE:
-            SP_SETTINGS_EVENT settingsEvent = spSettingsWindowHandleEvent(src->settingsWin, event);
+            settingsEvent = spSettingsWindowHandleEvent(src->settingsWin, event);
             return handleManagerDueToSettingsEvent(src, settingsEvent);
-        case SP_SETTINGS_WINDOW_ACTIVE:
-            SP_GAME_EVENT gameEvent = spGameWindowHandleEvent(src->gameWin, event);
+        case SP_GAME_WINDOW_ACTIVE:
+            gameEvent = spGameWindowHandleEvent(src->gameWin, event);
             return handleManagerDueToGameEvent(src, gameEvent);
         case SP_LOAD_WINDOW_ACTIVE:
-            SP_LOAD_EVENT loadEvent = spSettingsWindowHandleEvent(src->loadWin, event);
-            return handleManagerDueToMainEvent(src, loadEvent);
+//            loadEvent = spLoadWindowHandleEvent(src->loadWin, event); //TODO
+//            return handleManagerDueToLoadEvent(src, loadEvent);
         default:
             break;
     }

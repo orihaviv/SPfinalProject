@@ -29,7 +29,7 @@ typedef struct {
 SPMainWin* spMainWindowCreate();
 void spMainWindowDestroy(SPMainWin* src);
 void spMainWindowDraw(SPMainWin* src);
-void spMainWindowHide(SPMainWin* src);
+void spMainWindowHide(SPMainWin *src);
 void spMainWindowShow(SPMainWin* src);
 SP_MAIN_EVENT spMainWindowHandleEvent(SPMainWin* src, SDL_Event* event);
 

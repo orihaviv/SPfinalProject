@@ -271,23 +271,23 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
-    src->gameModeR = {.x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
-    src->onePlayerR = {.x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
-    src->twoPlayersR = {.x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
+    src->gameModeR = (SDL_Rect){ .x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
+    src->onePlayerR = (SDL_Rect){ .x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
+    src->twoPlayersR = (SDL_Rect){ .x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
 
-    src->userColorR = {.x = USERCOLORX, .y = USERCOLORY, .h = LABELS_H, .w = COLOR_W};
-    src->whiteR = {.x = WHITEX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
-    src->blackR = {.x = BLACKX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+    src->userColorR = (SDL_Rect){.x = USERCOLORX, .y = USERCOLORY, .h = LABELS_H, .w = COLOR_W};
+    src->whiteR = (SDL_Rect){.x = WHITEX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
+    src->blackR = (SDL_Rect){.x = BLACKX, .y = USERCOLORY, .h = BUTTONS_H, .w = WHITE_BLACK_W};
 
 
-    src->difficultyR = {.x = DIFFICULTYX, .y = DIFFICULTYY, .h = LABELS_H, .w = DIFFICULTY_W};
-    src->noobR = {.x = NOOBX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->easyR = {.x = EASYX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
-    src->moderateR = {.x = MODERATEX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = MODERATE_W};
-    src->hardR = {.x = HARDX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->difficultyR = (SDL_Rect){.x = DIFFICULTYX, .y = DIFFICULTYY, .h = LABELS_H, .w = DIFFICULTY_W};
+    src->noobR = (SDL_Rect){.x = NOOBX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->easyR = (SDL_Rect){.x = EASYX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    src->moderateR = (SDL_Rect){.x = MODERATEX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = MODERATE_W};
+    src->hardR = (SDL_Rect){ .x = HARDX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
 
-    src->startR = {.x = STARTX, .y = START_BACK_Y, .h = BUTTONS_H, .w = START_W};
-    src->backR = {.x = BACKX, .y = START_BACK_Y, .h = BUTTONS_H, .w = BACK_W};
+    src->startR = (SDL_Rect){.x = STARTX, .y = START_BACK_Y, .h = BUTTONS_H, .w = START_W};
+    src->backR = (SDL_Rect){.x = BACKX, .y = START_BACK_Y, .h = BUTTONS_H, .w = BACK_W};
 
     SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 192);
 
