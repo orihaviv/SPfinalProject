@@ -212,7 +212,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 bool savedGameExists(){
 
-    if (access("GUI/savedGames.xml", F_OK) != -1){
+    if (access("GUI/saved/savedGames.xml", F_OK) != -1){
         return true;
     }
     return false;
@@ -242,7 +242,7 @@ bool createSavedGames(char* first, char* second, char* third, char* forth, char*
         }
     }
     FILE *gameFile;
-    gameFile = fopen("GUI/savedGames.xml", "w");
+    gameFile = fopen("GUI/saved/savedGames.xml", "w");
     if (gameFile == NULL) {         // fopen has failed
         return false;
     }
@@ -273,7 +273,7 @@ int extractNumOfSavedGames(){
     char labelInfo[SP_MAX_LINE_LENGTH];
     char line[SP_MAX_LINE_LENGTH];
 
-    FILE *gameFile = fopen("GUI/savedGames.xml", "r");
+    FILE *gameFile = fopen("GUI/saved/savedGames.xml", "r");
     if (!gameFile) {                                          // File Opening error
         return -1;
     }
@@ -299,7 +299,7 @@ char* extractPathOfSlot(int slotNum){
     char line[SP_MAX_LINE_LENGTH];
     char* requiredSlot;
 
-    FILE *gameFile = fopen("GUI/savedGames.xml", "r");
+    FILE *gameFile = fopen("GUI/saved/savedGames.xml", "r");
     if (!gameFile) {                                          // File Opening error
         return NULL;
     }
@@ -371,6 +371,7 @@ int guiSaveGame(SPChessGame *game){
             break;
         case 5:
             one = extractPathOfSlot(5);
+            break;
         default:
             return 0;
 

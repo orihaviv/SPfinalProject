@@ -70,10 +70,9 @@ SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager* src, SP_MAIN_EVENT ev
             break;
         case SP_MAIN_LOAD_GAME:
             spMainWindowHide(src->mainWin);
-            src->settingsWin = spSettingsWindowCreate();
-            src->game = chessGameCreate();
-            if (src->settingsWin == NULL ) {
-                printf("Couldn't create settings window\n");
+            src->loadWin = spLoadWindowCreate(MAIN_CALLER);
+            if (src->loadWin == NULL ) {
+                printf("Couldn't create load window\n");
                 return SP_MANAGER_QUTT;
             }
             src->activeWin = SP_LOAD_WINDOW_ACTIVE;
@@ -150,9 +149,13 @@ void handleSaveGame(SPGuiManager* src){
     }
 }
 
-void handleLoadGame(SPGuiManager* src){
-    //TODO
-    src->gameWin->isTheGameSaved = 1;
+void handleLoadGame(SPGuiManager* src, int slot){
+    bool loaded = guiLoadChessGame(&src->game, slot);
+    if (loaded) {
+//        if (src->gameWin != NULL){ updateGameBoard(src->gameWin, src->game); }
+        src->gameWin->isTheGameSaved = 1;
+    }
+    else { printf("slot could not be loaded"); }
 }
 
 int askWhetherToSave(SPGuiManager* src){
@@ -164,15 +167,15 @@ int askWhetherToSave(SPGuiManager* src){
     const SDL_MessageBoxColorScheme colorScheme = {
             {
                     /* [SDL_MESSAGEBOX_COLOR_BACKGROUND] */
-                    { 255,   0,   0 },
+                    { 192,   192,   192 },
                     /* [SDL_MESSAGEBOX_COLOR_TEXT] */
-                    {   0, 255,   0 },
+                    {   0, 0,   0 },
                     /* [SDL_MESSAGEBOX_COLOR_BUTTON_BORDER] */
-                    { 255, 255,   0 },
+                    { 0, 0,   0 },
                     /* [SDL_MESSAGEBOX_COLOR_BUTTON_BACKGROUND] */
-                    {   0,   0, 255 },
+                    {   192,   192, 192 },
                     /* [SDL_MESSAGEBOX_COLOR_BUTTON_SELECTED] */
-                    { 255,   0, 255 }
+                    { 90,   139, 199 }
             }
     };
     const SDL_MessageBoxData messageBoxData = {
@@ -234,15 +237,15 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
         return SP_MANAGER_NONE;
     }
     switch(event){
-        case SP_GAME_EVENT_WHITE_WON:
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "White won", NULL);
-            break;
-        case SP_GAME_EVENT_BLACK_WON:
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "Black won", NULL);
-            break;
-        case SP_GAME_EVENT_TIE:
-            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "It's a tie", NULL);
-            break;
+//        case SP_GAME_EVENT_WHITE_WON:
+//            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "White won", NULL);
+//            break;
+//        case SP_GAME_EVENT_BLACK_WON:
+//            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "Black won", NULL);
+//            break;
+//        case SP_GAME_EVENT_TIE:
+//            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Game over", "It's a tie", NULL);
+//            break;
         case SP_GAME_EVENT_RESTART:
             initializeBoard(src->game);
             src->gameWin->isTheGameSaved = 0;
@@ -250,8 +253,14 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_SAVE:
             handleSaveGame(src);
             break;
-        case SP_GAME_EVENT_LOAD: //TODO
-            handleLoadGame(src);
+        case SP_GAME_EVENT_LOAD:
+            spMainWindowHide(src->gameWin);
+            src->loadWin = spLoadWindowCreate(GAME_CALLER);
+            if (src->loadWin == NULL ) {
+                printf("Couldn't create load window\n");
+                return SP_MANAGER_QUTT;
+            }
+            src->activeWin = SP_LOAD_WINDOW_ACTIVE;
             break;
         case SP_GAME_EVENT_UNDO:
             chessGameUndoPrevMove(src->game);
@@ -277,6 +286,55 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
 }
 
 
+
+
+
+
+SP_MANAGER_EVENT handleManagerDueToLoadEvent(SPGuiManager* src, SP_LOAD_EVENT event) {
+    if (src == NULL) {
+        return SP_MANAGER_NONE;
+    }
+    switch (event){
+        case SP_LOAD_BACK_MAIN:
+            spLoadWindowDestroy(src->loadWin);
+            src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_BACK_GAME:
+            spLoadWindowDestroy(src->loadWin);
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_NONE:
+            break;
+        case SP_LOAD_1:
+            handleLoadGame(src, 1);
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_2:
+            handleLoadGame(src, 2);
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_3:
+            handleLoadGame(src, 3;
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_4:
+            handleLoadGame(src, 4);
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        case SP_LOAD_5:
+            handleLoadGame(src, 5);
+            src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            break;
+        default:
+            break;
+    }
+    return SP_MANAGER_NONE;
+}
+
+
+
+
+
 SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
     if (src == NULL || event == NULL ) {
         return SP_MANAGER_NONE;
@@ -296,10 +354,11 @@ SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) {
             gameEvent = spGameWindowHandleEvent(src->gameWin, event);
             return handleManagerDueToGameEvent(src, gameEvent);
         case SP_LOAD_WINDOW_ACTIVE:
-//            loadEvent = spLoadWindowHandleEvent(src->loadWin, event); //TODO
-//            return handleManagerDueToLoadEvent(src, loadEvent);
+            loadEvent = spLoadWindowHandleEvent(src->loadWin, event);
+            return handleManagerDueToLoadEvent(src, loadEvent);
         default:
             break;
     }
+
     return SP_MANAGER_NONE;
 }

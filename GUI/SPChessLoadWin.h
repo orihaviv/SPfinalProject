@@ -26,9 +26,14 @@
 #define FOURX 405
 #define FIVEX 515
 #define LOAD_W 174
-#define LOAD_H 49
-#define LOADX 248
-#define LOADY 325
+#define LOAD_H 48
+#define LOADX 380
+#define LOAD_BACK_Y 325
+
+
+#define BACK_W 235
+#define BACK_H 47
+#define BACKX 100
 
 
 
@@ -38,10 +43,16 @@ typedef enum {
     SP_LOAD_3,
     SP_LOAD_4,
     SP_LOAD_5,
-    SP_LOAD_BACK,
+    SP_LOAD_BACK_MAIN,
+    SP_LOAD_BACK_GAME,
     SP_LOAD_INVALID_ARGUMENT,
     SP_LOAD_NONE,
 } SP_LOAD_EVENT;
+
+typedef enum {
+    GAME_CALLER,
+    MAIN_CALLER,
+} SP_LOAD_CALLER;
 
 typedef struct {
     SDL_Window* loadWindow;
@@ -62,14 +73,16 @@ typedef struct {
     SDL_Texture* fiveThin;
     SDL_Texture* fiveBold;
     SDL_Texture* loadGame;
+    SDL_Texture* back;
     SDL_Texture* loadGameTitle;
 
+    SP_LOAD_CALLER caller;
     int marked;
     int numOfSlots;
 
 } SPLoadWin;
 
-SPLoadWin* spLoadWindowCreate();
+SPLoadWin* spLoadWindowCreate(SP_LOAD_CALLER father);
 void spLoadWindowDestroy(SPLoadWin* src);
 void spLoadWindowDraw(SPLoadWin* src);
 void spLoadWindowHide(SPLoadWin* src);

@@ -1,4 +1,4 @@
- #include "SPChessMainWin.h"
+#include "SPChessMainWin.h"
 
 
 //Inner functions
@@ -76,7 +76,7 @@ SPMainWin *spMainWindowCreate() {
     bool check;
 
 
-    // Creating renderer and checking it's real
+    // Creating rederer and checking it's real
     res->mainRenderer = SDL_CreateRenderer(res->mainWindow, -1,
                                            SDL_RENDERER_ACCELERATED);
     if (res->mainRenderer == NULL) {

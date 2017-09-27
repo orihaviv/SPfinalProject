@@ -7,52 +7,52 @@
 
 
 int isClickOnOne(int x, int y) {
-//    if ((x >= STARTX && x <= START_W + STARTX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= ONEX && x <= ONEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnTwo(int x, int y) {
-//    if ((x >= BACKX && x <= START_W + BACKX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= TWOX && x <= TWOX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnThree(int x, int y) {
-//    if ((x >= ONEPLAYERX && x <= ONEPLAYERX + ONE_PLAYER_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= THREEX && x <= THREEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnFour(int x, int y) {
-//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= FOURX && x <= FOURX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnFive(int x, int y) {
-//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= FIVEX && x <= FIVEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnLoadGame(int x, int y) {
-//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= LOADX && x <= LOADX + LOAD_W) && (y >= LOAD_BACK_Y && y <= LOAD_BACK_Y + LOAD_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 int isClickOnBack(int x, int y) {
-//    if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
-//        return 1;
-//    }
-//    return 0;
+    if ((x >= BACKX && x <= BACKX + BACK_W) && (y >= LOAD_BACK_Y && y <= LOAD_BACK_Y + BACK_H)) {
+        return 1;
+    }
+    return 0;
 }
 
 
@@ -84,7 +84,7 @@ bool loadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
 
 
 
-SPLoadWin *spLoadWindowCreate() {
+SPLoadWin *spLoadWindowCreate(SP_LOAD_CALLER father) {
     SPLoadWin *res = NULL;
     res = (SPLoadWin *) malloc(sizeof(SPLoadWin));
     if (res == NULL) {
@@ -92,7 +92,7 @@ SPLoadWin *spLoadWindowCreate() {
     }
 
     // Create an application window with the following settings:
-    res->loadWindow = SDL_CreateWindow("Chess Game - Settings", // window title
+    res->loadWindow = SDL_CreateWindow("Chess Game - Load Game", // window title
                                            SDL_WINDOWPOS_CENTERED,           // initial x position
                                            SDL_WINDOWPOS_CENTERED,           // initial y position
                                            670,                               // width, in pixels
@@ -117,6 +117,7 @@ SPLoadWin *spLoadWindowCreate() {
         return NULL;
     }
 
+    res->caller = father;
     res->marked = 0;
     res->numOfSlots = (savedGameExists()) ? extractNumOfSavedGames() : 0;
 
@@ -124,6 +125,10 @@ SPLoadWin *spLoadWindowCreate() {
 
     // Load Game button
     check = loadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/loadWindow/load.bmp");
+    if (!check){ return  NULL; }
+
+    // Back button
+    check = loadingSurfaceFunc(res, &(res->back), "../GUI/images/loadWindow/back.bmp");
     if (!check){ return  NULL; }
 
     // Load Game Title button
@@ -196,8 +201,9 @@ void spLoadWindowDestroy(SPLoadWin *src) {
     if (src->fiveThin != NULL) { SDL_DestroyTexture(src->fiveThin); }
     if (src->fiveBold != NULL) { SDL_DestroyTexture(src->fiveBold); }
 
-    if (src->loadGame != NULL) { SDL_DestroyTexture(src->loadGameTitle); }
+    if (src->loadGameTitle != NULL) { SDL_DestroyTexture(src->loadGameTitle); }
     if (src->loadGame != NULL) { SDL_DestroyTexture(src->loadGame); }
+    if (src->back != NULL) { SDL_DestroyTexture(src->back); }
 
     if (src->loadRenderer != NULL) { SDL_DestroyRenderer(src->loadRenderer); }
     if (src->loadWindow != NULL) { SDL_DestroyWindow(src->loadWindow); }
@@ -216,7 +222,8 @@ void spLoadWindowDraw(SPLoadWin *src) {
     SDL_Rect fourR = {.x = FOURX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
     SDL_Rect fiveR = {.x = FIVEX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
 
-    SDL_Rect loadR = {.x = LOADX, .y = LOADY, .h = LOAD_H, .w = LOAD_W};
+    SDL_Rect loadR = {.x = LOADX, .y = LOAD_BACK_Y, .h = LOAD_H, .w = LOAD_W};
+    SDL_Rect backR = {.x = BACKX, .y = LOAD_BACK_Y, .h = BACK_H, .w = BACK_W};
     SDL_Rect titleR = {.x = LABALX, .y = LABELY, .h = LABEL_H, .w = LABEL_W};
 
 
@@ -225,6 +232,7 @@ void spLoadWindowDraw(SPLoadWin *src) {
     SDL_RenderClear(src->loadRenderer);
     SDL_RenderCopy(src->loadRenderer, src->loadGameTitle, NULL, &titleR);
     SDL_RenderCopy(src->loadRenderer, src->loadGame, NULL, &loadR);
+    SDL_RenderCopy(src->loadRenderer, src->back, NULL, &backR);
     SDL_RenderCopy(src->loadRenderer, *(src->one), NULL, &oneR);
     SDL_RenderCopy(src->loadRenderer, *(src->two), NULL, &twoR);
     SDL_RenderCopy(src->loadRenderer, *(src->three), NULL, &threeR);
@@ -300,12 +308,15 @@ SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
                         return SP_LOAD_NONE;
                 }
             } else if (isClickOnBack(event->button.x, event->button.y)) {
-                return SP_LOAD_BACK;
+                if (src->caller == GAME_CALLER){
+                    return SP_LOAD_BACK_GAME;
+                }
+                return SP_LOAD_BACK_MAIN;
             }
             break;
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
-                return SP_LOAD_BACK;
+                return SP_LOAD_BACK_MAIN;
             }
             break;
         default:
