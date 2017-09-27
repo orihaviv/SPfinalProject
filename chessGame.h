@@ -171,7 +171,7 @@ position getKingPosition(SPChessGame *src, int color);
  * false otherwise
  */
 
-bool pawnsThreatKing(SPChessGame *src, int color, position soldier);
+bool pawnsThreatSoldier(SPChessGame *src, int color, position soldier);
 
 /**
  * Checks if the soldier is under threat(Check) by a rival's knight
@@ -421,7 +421,7 @@ void pawnPromotion (SPChessGame* src, action move, int isMini);
  * @param origin - the origin position of the soldier
  * @param dest - the destination position of the soldier
  * @param isMini - indicates if the move is part of the miniMax prediction
- * @param isGui - indicates if we are in gui mode
+ * @param isGui - indicates if the move is in a gui mode game
  * @return
  *   SP_CHESS_GAME_ILLEGAL_MOVE - illegal move with the wanted soldier
  *   SP_CHESS_GAME_SOLDIER_MISMATCH - the origin is not position of a current player's soldier

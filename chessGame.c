@@ -197,9 +197,6 @@ bool kingThreatensSoldier(SPChessGame *src, int color, position soldier) {
 
 
 
-
-
-
 bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, char other){
     int row = soldier.row;
     int col = soldier.column;
@@ -213,9 +210,6 @@ bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, cha
     }
     return false;
 }
-
-
-
 
 
 bool QRBThreatensSoldier(SPChessGame *src, int color, position soldier) {
@@ -562,7 +556,8 @@ void castlingUndo(SPChessGame* src , action lastMove){
 
 int isWhiteLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->whiteLeftCastling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
+    if(src->whiteLeftCastling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK ||
+       src->gameBoard[0][4] != KINGWHITE  || src->gameBoard[0][0] != ROOKWHITE){
         return 0;
     }
     int res = 1;
@@ -579,7 +574,8 @@ int isWhiteLeftCastlingValid(SPChessGame *src){
 
 int isWhiteRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->whiteRightCastling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
+    if(src->whiteRightCastling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK ||
+       src->gameBoard[0][4] != KINGWHITE  || src->gameBoard[0][7] != ROOKWHITE){
         return 0;
     }
 
@@ -597,7 +593,8 @@ int isWhiteRightCastlingValid(SPChessGame *src){
 
 int isBlackLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->blackLeftCastling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
+    if(src->blackLeftCastling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK ||
+       src->gameBoard[7][4] != KINGBLACK  || src->gameBoard[7][0] != ROOKBLACK){
         return 0;
     }
     int res = 1;
@@ -614,7 +611,8 @@ int isBlackLeftCastlingValid(SPChessGame *src){
 
 int isBlackRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->blackRightCastling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
+    if(src->blackRightCastling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK ||
+       src->gameBoard[7][4] != KINGBLACK  || src->gameBoard[7][7] != ROOKBLACK){
         return 0;
     }
     int res = 1;
@@ -627,6 +625,7 @@ int isBlackRightCastlingValid(SPChessGame *src){
     src->blackKing = tmpKingsPos;
     return res;
 }
+
 
 SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     if (!src){
@@ -688,25 +687,49 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
             }
         }
     }
-    if (row == 0 && col == 0 && isWhiteLeftCastlingValid(src)){
+    if (isWhiteLeftCastlingValid(src) && src->gameBoard[0][0] == ROOKWHITE && src->gameBoard[0][4] == KINGWHITE){
         soldierPos.row = 0;
         soldierPos.column = 0;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        tmpDest.row = 0;
+        tmpDest.column = 4;
+        if (row == 0 && col == 0){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        } else if (row == 0 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        }
     }
-    else if (row == 0 && col == 7 && isWhiteRightCastlingValid(src)){
+    else if (isWhiteRightCastlingValid(src) && src->gameBoard[0][7] == ROOKWHITE && src->gameBoard[0][4] == KINGWHITE){
         soldierPos.row = 0;
         soldierPos.column = 7;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        tmpDest.row = 0;
+        tmpDest.column = 4;
+        if (row == 0 && col == 7){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        } else if (row == 0 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        }
     }
-    else if (row == 7 && col == 0 && isBlackLeftCastlingValid(src)){
+    else if (isBlackLeftCastlingValid(src) && src->gameBoard[7][0] == ROOKBLACK && src->gameBoard[7][4] == KINGBLACK){
         soldierPos.row = 7;
         soldierPos.column = 0;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        tmpDest.row = 7;
+        tmpDest.column = 4;
+        if (row == 7 && col == 0){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        } else if (row == 7 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        }
     }
-    else if (row == 7 && col == 7 && isBlackRightCastlingValid(src)){
+    else if (isBlackRightCastlingValid(src) && src->gameBoard[7][7] == ROOKWHITE && src->gameBoard[7][4] == KINGWHITE){
         soldierPos.row = 7;
         soldierPos.column = 7;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        tmpDest.row = 7;
+        tmpDest.column = 4;
+        if (row == 7 && col == 7){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        } else if (row == 7 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        }
     }
     return possibleMoves;
 }

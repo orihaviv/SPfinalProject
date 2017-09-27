@@ -46,9 +46,6 @@
 
 
 typedef enum {
-	SP_GAME_EVENT_WHITE_WON,
-	SP_GAME_EVENT_BLACK_WON,
-	SP_GAME_EVENT_TIE,
 	SP_GAME_EVENT_RESTART,
 	SP_GAME_EVENT_SAVE,
 	SP_GAME_EVENT_LOAD,
@@ -86,6 +83,11 @@ typedef struct{
 	SDL_Texture* mainMenu;
 	SDL_Texture* quitGame;
 
+    SDL_Texture* yellow;
+    SDL_Texture* red;
+    SDL_Texture* green;
+    SDL_Texture* purple;
+
 	SDL_Event* mouseDownEvent;
 
 	position moveOrigin;
@@ -99,6 +101,8 @@ SPGameWin* spGameWindowCreate();
 void spGameWindowDestroy(SPGameWin* src);
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game);
 SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
+void spGameWindowHide(SPGameWin *src);
+void spGameWindowShow(SPGameWin *src);
 
 
 #endif

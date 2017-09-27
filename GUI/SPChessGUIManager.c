@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPChessGUIManager.h"
-#include "SPChessGameWin.h"
+
 
 SPGuiManager *spManagerCreate() {
     SPGuiManager *res = (SPGuiManager *) malloc(sizeof(SPGuiManager));
@@ -235,6 +235,7 @@ int showEndingMessageBox(int winner, SPGuiManager *src) {
         printf("No selection");
         return SP_PROMOTION_PAWN;
     } else if (buttonid == 0) { return 1; }
+    return 0;
 }
 
 void handleSaveGame(SPGuiManager *src) {
@@ -383,19 +384,19 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
         goto moveDone;
     } else if (msg == SP_CHESS_GAME_ILLEGAL_MOVE) {
         if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) && origin.row == 7 && dest.row == 7 &&
-            src->game->gameBoard[7][4] == KINGBLACK && src->game->gameBoard[7][7] == ROOKBLACK && isBlackRightCastlingValid(src->game) == 1) {
+            isBlackRightCastlingValid(src->game) == 1) {
             executeBlackRightCastling(src->game);
             goto moveDone;
         } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) && origin.row == 7 && dest.row == 7 &&
-                   src->game->gameBoard[7][4] == KINGBLACK && src->game->gameBoard[7][0] == ROOKBLACK && isBlackLeftCastlingValid(src->game) == 1) {
+                   isBlackLeftCastlingValid(src->game) == 1) {
             executeBlackLeftCastling(src->game);
             goto moveDone;
         } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) && origin.row == 0 && dest.row == 0 &&
-                   src->game->gameBoard[0][4] == KINGWHITE && src->game->gameBoard[0][0] == ROOKWHITE && isWhiteLeftCastlingValid(src->game) == 1) {
+                   isWhiteLeftCastlingValid(src->game) == 1) {
             executeWhiteLeftCastling(src->game);
             goto moveDone;
         } else if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) && origin.row == 0 && dest.row == 0 &&
-                   src->game->gameBoard[0][4] == KINGWHITE && src->game->gameBoard[0][7] == ROOKWHITE && isWhiteRightCastlingValid(src->game) == 1) {
+                   isWhiteRightCastlingValid(src->game) == 1) {
             executeWhiteRightCastling(src->game);
             goto moveDone;
         }
