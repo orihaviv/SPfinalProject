@@ -249,6 +249,7 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager* src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_RESTART:
             initializeBoard(src->game);
             src->gameWin->isTheGameSaved = 0;
+            updateGameBoard(src->gameWin, src->game);
             break;
         case SP_GAME_EVENT_SAVE:
             handleSaveGame(src);
