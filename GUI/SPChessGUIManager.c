@@ -34,6 +34,9 @@ void spManagerDestroy(SPGuiManager *src) {
     if (src->settingsWin != NULL) {
         spSettingsWindowDestroy(src->settingsWin);
     }
+    if (src->game != NULL){
+        chessGameDestroy(&(src->game));
+    }
     spMainWindowDestroy(src->mainWin);
     free(src);
 }
@@ -67,6 +70,11 @@ SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager *src, SP_MAIN_EVENT ev
                 printf("Couldn't create settings window\n");
                 return SP_MANAGER_QUTT;
             }
+            src->game = chessGameCreate();
+            if (!src->game){
+                printf("Couldn't create manager->game\n");
+                return SP_MANAGER_QUTT;
+            }
             src->activeWin = SP_SETTINGS_WINDOW_ACTIVE;
             break;
         case SP_MAIN_LOAD_GAME:
@@ -93,6 +101,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
     }
     switch (event) {
         case SP_SETTINGS_BACK:
+            chessGameDestroy(&(src->game));
             spSettingsWindowDestroy(src->settingsWin);
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
             break;

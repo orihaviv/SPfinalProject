@@ -28,12 +28,12 @@
 #define LOAD_W 174
 #define LOAD_H 48
 #define LOADX 380
-#define LOAD_BACK_Y 325
+#define LOAD_AND_BACK_Y 325
 
 
-#define BACK_W 235
-#define BACK_H 47
-#define BACKX 100
+#define LOAD_BACK_W 235
+#define LOAD_BACK_H 47
+#define LOAD_BACKX 100
 
 
 

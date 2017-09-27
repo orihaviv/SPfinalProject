@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <SDL.h>
+#include "../SPMainAux.h"
 
 //Definitions
 #define LABELS_H 43
