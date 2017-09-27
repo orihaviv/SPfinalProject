@@ -123,7 +123,7 @@ char* translateToSoldiersName(char soldier) {
 void executeComputerMove(SPChessGame *src) {
     action nextMove = *(spMinimaxSuggestMove(src, src->difficulty));
     char soldier = nextMove.piece;
-    while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
+    while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
     if (name == NULL){
         printf("problem in translateToSoldierName");
@@ -135,7 +135,7 @@ void executeComputerMove(SPChessGame *src) {
 
 
 int executePlayerMove(SPChessGame *src, SPCommand command) {
-    SP_CHESS_GAME_MESSAGE msg = chessGameSetMove(src, command.source, command.destination, 0);
+    SP_CHESS_GAME_MESSAGE msg = chessGameSetMove(src, command.source, command.destination, 0, 0);
     if (msg == SP_CHESS_GAME_INVALID_POSITION_ON_BOARD) {
         printf("Invalid position on the board\n");
     } else if (msg == SP_CHESS_GAME_SOLDIER_MISMATCH) {
@@ -155,6 +155,7 @@ void executeWhiteLeftCastling(SPChessGame *src){
     src->gameBoard[0][0] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][2] = KINGWHITE;
     src->gameBoard[0][3] = ROOKWHITE;
+    src->whiteKing.column = 2;
     action move;
     move.prev.row = 0;
     move.prev.column = 0;
@@ -175,6 +176,7 @@ void executeWhiteRightCastling(SPChessGame *src){
     src->gameBoard[0][7] = src->gameBoard[0][4] = BLANK;
     src->gameBoard[0][6] = KINGWHITE;
     src->gameBoard[0][5] = ROOKWHITE;
+    src->whiteKing.column = 6;
     action move;
     move.prev.row = 0;
     move.prev.column = 7;
@@ -195,6 +197,7 @@ void executeBlackLeftCastling(SPChessGame *src){
     src->gameBoard[7][0] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][2] = KINGBLACK;
     src->gameBoard[7][3] = ROOKBLACK;
+    src->blackKing.column = 2;
     action move;
     move.prev.row = 7;
     move.prev.column = 0;
@@ -215,6 +218,7 @@ void executeBlackRightCastling(SPChessGame *src){
     src->gameBoard[7][7] = src->gameBoard[7][4] = BLANK;
     src->gameBoard[7][6] = KINGBLACK;
     src->gameBoard[7][5] = ROOKBLACK;
+    src->blackKing.column = 6;
     action move;
     move.prev.row = 7;
     move.prev.column = 7;

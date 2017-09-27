@@ -26,7 +26,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
                         score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX);
                         if (bestScore < score) {
                             bestAction = move;
@@ -48,7 +48,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(gameCopy, move.prev, move.current, 1);
+                        chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
                         score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX);
                         if (bestScore > score) {
                             bestAction = move;

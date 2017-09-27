@@ -46,9 +46,6 @@
 
 
 typedef enum {
-	SP_GAME_EVENT_WHITE_WON,
-	SP_GAME_EVENT_BLACK_WON,
-	SP_GAME_EVENT_TIE,
 	SP_GAME_EVENT_RESTART,
 	SP_GAME_EVENT_SAVE,
 	SP_GAME_EVENT_LOAD,
@@ -61,8 +58,8 @@ typedef enum {
 } SP_GAME_EVENT;
 
 typedef struct{
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window* gameWindow;
+	SDL_Renderer* gameRenderer;
 	SDL_Texture* board;
 	SDL_Texture* whiteKing;
 	SDL_Texture* blackKing;
@@ -103,7 +100,9 @@ typedef struct{
 SPGameWin* spGameWindowCreate();
 void spGameWindowDestroy(SPGameWin* src);
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game);
-SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SDL_Event* event);
+SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
+void spGameWindowHide(SPGameWin *src);
+void spGameWindowShow(SPGameWin *src);
 
 
 #endif

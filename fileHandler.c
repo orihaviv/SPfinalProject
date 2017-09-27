@@ -204,7 +204,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 
 
-/****************** GUI ******************/
+/********************* GUI *********************/
 
 
 
@@ -329,13 +329,17 @@ char* extractPathOfSlot(int slotNum){
             else { return path; }
         }
     }
+    return NULL;
 }
 
 
 bool guiLoadChessGame(SPChessGame **game, int slot) {
     if (*game == NULL || slot < 1 || slot > 5) {return false; }
     char* path = extractPathOfSlot(slot);
-    return loadChessGame(game, path);
+    bool res;
+    res = loadChessGame(game, path);
+    free(path);
+    return res;
 }
 
 int guiSaveGame(SPChessGame *game){
@@ -378,6 +382,11 @@ int guiSaveGame(SPChessGame *game){
     }
     gameSaved = saveGame(one, game);
     success = createSavedGames(one, two, three, four, five);
+    free(one);
+    free(two);
+    free(three);
+    free(four);
+    free(five);
     if (success && gameSaved) { return 1; }
     return 0;
 }

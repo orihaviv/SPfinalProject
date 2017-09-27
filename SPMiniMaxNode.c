@@ -79,7 +79,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     possibleActions = getMovesForSoldier(src, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(src, move.prev, move.current, 1);
+                        chessGameSetMove(src, move.prev, move.current, 1, 0);
                         bestScore = maxi(bestScore, nodeScore(src, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(src);
                         alpha = maxi(bestScore, alpha);
@@ -99,7 +99,7 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     possibleActions = getMovesForSoldier(src, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(src, move.prev, move.current, 1);
+                        chessGameSetMove(src, move.prev, move.current, 1, 0);
                         bestScore = mini(bestScore, nodeScore(src, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(src);
                         beta = mini(bestScore, beta);

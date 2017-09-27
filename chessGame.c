@@ -425,7 +425,7 @@ void pawnPromotion (SPChessGame* src, action move, int isMini) {
 
 
 
-SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest, int isMini) {
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest, int isMini, int isGui) {
     SP_CHESS_GAME_MESSAGE msg = isValidMove(src, origin, dest);
     if (msg != SP_CHESS_GAME_SUCCESS){
         return msg;
@@ -467,7 +467,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     move.piece = soldier;
     move.castling = SP_CHESS_NO_CASTLING;
     gameSpArrayListAdd(src->lastMoves, move);
-    if ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7)) {
+    if (isGui == 0 && ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7))) {
         pawnPromotion(src, move, isMini);
     }
     src->currentPlayer = 1 - src->currentPlayer;
@@ -556,7 +556,8 @@ void castlingUndo(SPChessGame* src , action lastMove){
 
 int isWhiteLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->whiteLeftCastling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK){
+    if(src->whiteLeftCastling == 0 || src->gameBoard[0][1] != BLANK || src->gameBoard[0][2] != BLANK || src->gameBoard[0][3] != BLANK ||
+       src->gameBoard[0][4] != KINGWHITE  || src->gameBoard[0][0] != ROOKWHITE){
         return 0;
     }
     int res = 1;
@@ -573,7 +574,8 @@ int isWhiteLeftCastlingValid(SPChessGame *src){
 
 int isWhiteRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->whiteRightCastling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK){
+    if(src->whiteRightCastling == 0 || src->gameBoard[0][5] != BLANK || src->gameBoard[0][6] != BLANK ||
+       src->gameBoard[0][4] != KINGWHITE  || src->gameBoard[0][7] != ROOKWHITE){
         return 0;
     }
 
@@ -591,7 +593,8 @@ int isWhiteRightCastlingValid(SPChessGame *src){
 
 int isBlackLeftCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->blackLeftCastling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK){
+    if(src->blackLeftCastling == 0 || src->gameBoard[7][1] != BLANK || src->gameBoard[7][2] != BLANK || src->gameBoard[7][3] != BLANK ||
+       src->gameBoard[7][4] != KINGBLACK  || src->gameBoard[7][0] != ROOKBLACK){
         return 0;
     }
     int res = 1;
@@ -608,7 +611,8 @@ int isBlackLeftCastlingValid(SPChessGame *src){
 
 int isBlackRightCastlingValid(SPChessGame *src){
     if(!src) { return 0; }
-    if(src->blackRightCastling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK){
+    if(src->blackRightCastling == 0 || src->gameBoard[7][5] != BLANK || src->gameBoard[7][6] != BLANK ||
+       src->gameBoard[7][4] != KINGBLACK  || src->gameBoard[7][7] != ROOKBLACK){
         return 0;
     }
     int res = 1;
@@ -621,6 +625,7 @@ int isBlackRightCastlingValid(SPChessGame *src){
     src->blackKing = tmpKingsPos;
     return res;
 }
+
 
 SP_CHESS_GAME_MESSAGE chessGameUndoPrevMove(SPChessGame* src){
     if (!src){

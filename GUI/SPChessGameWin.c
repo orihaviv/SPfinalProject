@@ -314,34 +314,34 @@ void spGameWindowDestroyBoard(SPGameWin* src){
         SDL_DestroyTexture(src->blackKing);
     }
     if (src->whiteQueen != NULL ) {
-        SDL_DestroyRenderer(src->whiteQueen);
+        SDL_DestroyTexture(src->whiteQueen);
     }
     if (src->blackQueen != NULL ) {
-        SDL_DestroyWindow(src->blackQueen);
+        SDL_DestroyTexture(src->blackQueen);
     }
     if (src->whiteBishop != NULL ) {
-        SDL_DestroyWindow(src->whiteBishop);
+        SDL_DestroyTexture(src->whiteBishop);
     }
     if (src->blackBishop != NULL ) {
-        SDL_DestroyWindow(src->blackBishop);
+        SDL_DestroyTexture(src->blackBishop);
     }
     if (src->whiteKnight != NULL ) {
-        SDL_DestroyWindow(src->whiteKnight);
+        SDL_DestroyTexture(src->whiteKnight);
     }
     if (src->blackKnight != NULL ) {
-        SDL_DestroyWindow(src->blackKnight);
+        SDL_DestroyTexture(src->blackKnight);
     }
     if (src->whiteRook != NULL ) {
-        SDL_DestroyWindow(src->whiteRook);
+        SDL_DestroyTexture(src->whiteRook);
     }
     if (src->blackRook != NULL ) {
-        SDL_DestroyWindow(src->blackRook);
+        SDL_DestroyTexture(src->blackRook);
     }
     if (src->whitePawn != NULL ) {
-        SDL_DestroyWindow(src->whitePawn);
+        SDL_DestroyTexture(src->whitePawn);
     }
     if (src->blackPawn != NULL ) {
-        SDL_DestroyWindow(src->blackPawn);
+        SDL_DestroyTexture(src->blackPawn);
     }
 }
 
@@ -374,10 +374,10 @@ void spGameWindowDestroy(SPGameWin* src) {
 		return;
 	}
     if (src->gameWindow != NULL ) {
-        SDL_DestroyTexture(src->gameWindow);
+        SDL_DestroyWindow(src->gameWindow);
     }
     if (src->gameRenderer != NULL ) {
-        SDL_DestroyTexture(src->gameRenderer);
+        SDL_DestroyRenderer(src->gameRenderer);
     }
     spGameWindowDestroyBoard(src);
     spGameWindowDestroyButtons(src);
@@ -443,7 +443,7 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 	if(src == NULL || game == NULL){
 		return;
 	}
-	SDL_Rect rec = { .x = 42, .y = 42, .w = BOARD_W, .h = BOARD_W };
+	SDL_Rect rec = { .x = BOARD_X, .y = BOARD_Y, .w = BOARD_W, .h = BOARD_H };
 	SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
 	SDL_RenderClear(src->gameRenderer);
 	SDL_RenderCopy(src->gameRenderer, src->board, NULL, &rec);
@@ -502,7 +502,7 @@ void resetGetMoves(SPGameWin* src, SPChessGame* game){
             rec.y = 18 + (GAMESIZE - 1 - i) * PIECE_SIZE;
             rec.w = PIECE_SIZE;
             rec.h = PIECE_SIZE;
-            SDL_RenderCopy(src->gameRenderer, NULL, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, NULL, NULL, &rec);
         }
     }
     updateGameBoard(src, game);
@@ -532,7 +532,7 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
     SDL_Rect rec;
 
     for (i = 0 ; i < possibleMoves->actualSize ; i++){
-        move = *(spArrayListGetAt(possibleActions, i));
+        move = *(spArrayListGetAt(possibleMoves, i));
         row = move.current.row;
         col = move.current.column;
         rec.x = 59 + (col) * PIECE_SIZE;
@@ -540,14 +540,14 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
         rec.w = PIECE_SIZE;
         rec.h = PIECE_SIZE;
         if (move.castling == SP_CHESS_NO_CASTLING){
-            SDL_RenderCopy(src->gameRenderer, src->yellow, NULL, rec);
-            if (move.captured != BLANK) { SDL_RenderCopy(src->gameRenderer, src->green, NULL, rec); }
+            SDL_RenderCopy(src->gameRenderer, src->yellow, NULL, &rec);
+            if (move.captured != BLANK) { SDL_RenderCopy(src->gameRenderer, src->green, NULL, &rec); }
             if (isTheSoldierThreatened(game, game->currentPlayer, move.current)){
-                SDL_RenderCopy(src->gameRenderer, src->red, NULL, rec);
+                SDL_RenderCopy(src->gameRenderer, src->red, NULL, &rec);
             }
         }
         else{
-            SDL_RenderCopy(src->gameRenderer, src->purple, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->purple, NULL, &rec);
         }
     }
     return 1;
@@ -660,4 +660,13 @@ SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Eve
             return SP_GAME_EVENT_NONE;
     }
     return SP_GAME_EVENT_NONE;
+}
+
+
+void spGameWindowHide(SPGameWin *src) {
+    SDL_HideWindow(src->gameWindow);
+}
+
+void spGameWindowShow(SPGameWin *src) {
+    SDL_ShowWindow(src->gameWindow);
 }
