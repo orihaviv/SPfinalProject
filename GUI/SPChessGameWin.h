@@ -86,6 +86,11 @@ typedef struct{
 	SDL_Texture* mainMenu;
 	SDL_Texture* quitGame;
 
+    SDL_Texture* yellow;
+    SDL_Texture* red;
+    SDL_Texture* green;
+    SDL_Texture* purple;
+
 	SDL_Event* mouseDownEvent;
 
 	position moveOrigin;

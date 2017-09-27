@@ -197,9 +197,6 @@ bool kingThreatensSoldier(SPChessGame *src, int color, position soldier) {
 
 
 
-
-
-
 bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, char other){
     int row = soldier.row;
     int col = soldier.column;
@@ -213,9 +210,6 @@ bool checkLane(SPChessGame *src, int x, int y, position soldier, char queen, cha
     }
     return false;
 }
-
-
-
 
 
 bool QRBThreatensSoldier(SPChessGame *src, int color, position soldier) {
@@ -688,25 +682,49 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
             }
         }
     }
-    if (row == 0 && col == 0 && isWhiteLeftCastlingValid(src)){
+    if (isWhiteLeftCastlingValid(src) && src->gameBoard[0][0] == ROOKWHITE && src->gameBoard[0][4] == KINGWHITE){
         soldierPos.row = 0;
         soldierPos.column = 0;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        tmpDest.row = 0;
+        tmpDest.column = 4;
+        if (row == 0 && col == 0){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        } else if (row == 0 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGWHITE, SP_CHESS_WHITE_LEFT_CASTLING));
+        }
     }
-    else if (row == 0 && col == 7 && isWhiteRightCastlingValid(src)){
+    else if (isWhiteRightCastlingValid(src) && src->gameBoard[0][7] == ROOKWHITE && src->gameBoard[0][4] == KINGWHITE){
         soldierPos.row = 0;
         soldierPos.column = 7;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        tmpDest.row = 0;
+        tmpDest.column = 4;
+        if (row == 0 && col == 7){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        } else if (row == 0 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGWHITE, SP_CHESS_WHITE_RIGHT_CASTLING));
+        }
     }
-    else if (row == 7 && col == 0 && isBlackLeftCastlingValid(src)){
+    else if (isBlackLeftCastlingValid(src) && src->gameBoard[7][0] == ROOKBLACK && src->gameBoard[7][4] == KINGBLACK){
         soldierPos.row = 7;
         soldierPos.column = 0;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        tmpDest.row = 7;
+        tmpDest.column = 4;
+        if (row == 7 && col == 0){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        } else if (row == 7 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGBLACK, SP_CHESS_BLACK_LEFT_CASTLING));
+        }
     }
-    else if (row == 7 && col == 7 && isBlackRightCastlingValid(src)){
+    else if (isBlackRightCastlingValid(src) && src->gameBoard[7][7] == ROOKWHITE && src->gameBoard[7][4] == KINGWHITE){
         soldierPos.row = 7;
         soldierPos.column = 7;
-        spArrayListAddLast(possibleMoves,generateAction(soldierPos, soldierPos, BLANK, ROOKBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        tmpDest.row = 7;
+        tmpDest.column = 4;
+        if (row == 7 && col == 7){
+            spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, BLANK, ROOKBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        } else if (row == 7 && col == 4) {
+            spArrayListAddLast(possibleMoves, generateAction(tmpDest, soldierPos, BLANK, KINGBLACK, SP_CHESS_BLACK_RIGHT_CASTLING));
+        }
     }
     return possibleMoves;
 }
