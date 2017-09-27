@@ -10,31 +10,38 @@
 #include "../SPMainAux.h"
 
 //Definitions
+#define HEIGHT_SETTINGS 700
+#define WIDTH_SETTINGS 900
+#define TITLE_SETTINGS_H 53
+#define TITLE_SETTINGS_W 173
+#define TITLE_SETTINGS_X 363
+#define TITLE_SETTINGS_Y 50
+
 #define LABELS_H 43
 #define BUTTONS_H 49
-//#define PRESSED_BUTTONS_H 55
+
 #define GAME_MODE_W 194
 #define COLOR_W 86
 #define DIFFICULTY_W 210
+
 #define ONE_PLAYER_W 242
-//#define ONE_PLAYER_PRESSED_W 248
 #define TWO_PLAYERS_W 254
-//#define TWO_PLAYERS_PRESSED_W 260
+
 #define WHITE_BLACK_W 222
-//#define WHITE_BLACKR_PRESSED_W 228
+
 #define NOOB_EASY_HARD_W 210
-//#define NOOB_EASY_HARD_PRESSED_W 216
+
 #define MODERATE_W 228
-//#define MODERATE_PRESSED_W 236
+
 #define START_W 246
 #define BACK_W 234
 
 #define GAMEMODEX 20
-#define GAMEMODEY 50
+#define GAMEMODEY 100
 #define ONEPLAYERX 170
 #define TWOPLAYERSX 390
 
-#define USERCOLORX 20
+#define USERCOLORX 30
 #define USERCOLORY 155
 #define WHITEX 175
 #define BLACKX 395
@@ -72,6 +79,7 @@ typedef enum {
 typedef struct {
     SDL_Window* settingsWindow;
     SDL_Renderer* settingsRenderer;
+    SDL_Texture* settingsTitle;
     SDL_Texture* numOfPlayersTitle;
     SDL_Texture* difficultyTitle;
     SDL_Texture* userColorTitle;

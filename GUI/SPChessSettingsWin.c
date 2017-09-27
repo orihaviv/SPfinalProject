@@ -114,8 +114,8 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->settingsWindow = SDL_CreateWindow("Chess Game - Settings", // window title
                                        SDL_WINDOWPOS_CENTERED,           // initial x position
                                        SDL_WINDOWPOS_CENTERED,           // initial y position
-                                       800,                               // width, in pixels
-                                       600,                               // height, in pixels
+                                       WIDTH_SETTINGS,                               // width, in pixels
+                                       HEIGHT_SETTINGS,                               // height, in pixels
                                        SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -140,6 +140,10 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->diff = 2;
     res->numOfPlayers = 1;
     bool check;
+
+    // Settings title
+    check = settingsLoadingSurfaceFunc(res, &(res->settingsTitle), "../GUI/images/settingsWindow/settingsTitle.bmp");
+    if (!check){ return  NULL; }
 
     // Start button
     check = settingsLoadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
@@ -245,6 +249,7 @@ void spSettingsWindowDestroy(SPSettingsWin *src) {
 
     if (!src) { return; }
 
+    if (src->settingsTitle != NULL) { SDL_DestroyTexture(src->settingsTitle); }
     if (src->startTexture != NULL) { SDL_DestroyTexture(src->startTexture); }
     if (src->backTexture != NULL) { SDL_DestroyTexture(src->backTexture); }
     if (src->whiteUserTexture != NULL) { SDL_DestroyTexture(src->whiteUserThinTexture); }
@@ -278,6 +283,8 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
+    SDL_Rect titleR = (SDL_Rect){.x = TITLE_SETTINGS_X, .y = TITLE_SETTINGS_Y, .h = TITLE_SETTINGS_H, .w = TITLE_SETTINGS_W};
+
     SDL_Rect gameModeR = { .x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
     SDL_Rect onePlayerR = (SDL_Rect){ .x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
     SDL_Rect twoPlayersR = (SDL_Rect){ .x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
@@ -299,6 +306,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 192);
 
     SDL_RenderClear(src->settingsRenderer);
+    SDL_RenderCopy(src->settingsRenderer, src->settingsTitle, NULL, &titleR);
     SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &gameModeR);
     SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &difficultyR);
     SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &userColorR);
