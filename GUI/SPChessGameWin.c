@@ -1,4 +1,4 @@
-#include <assert.h>
+
 #include <stdio.h>
 #include "SPChessGameWin.h"
 
@@ -25,6 +25,7 @@ int getClickColumn(int x) {
     } else if (x >= SEVEN_X && x <= RIGHT_X) {
         return 7;
     }
+    return -1;
 }
 
 int getClickRow(int y) {
@@ -45,9 +46,10 @@ int getClickRow(int y) {
         return 5;
     } else if (y <= SIX_Y && y > SEVEN_Y){
         return 6;
-    } else if (y <= SEVEN_Y && x >= BOTTOM_Y) {
+    } else if (y <= SEVEN_Y && y >= BOTTOM_Y) {
         return 7;
     }
+    return -1;
 }
 
 int isClickOnRestart(int x, int y) {
@@ -105,10 +107,10 @@ bool loadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
         SDL_FreeSurface(loadingSurface);
         return false;
     }
-    *texture = SDL_CreateTextureFromSurface(src->mainRenderer, loadingSurface);
+    *texture = SDL_CreateTextureFromSurface(src->gameRenderer, loadingSurface);
     if (*texture == NULL) {
         SDL_FreeSurface(loadingSurface);
-        spMainWindowDestroy(src);
+        spGameWindowDestroy(src);
         printf("couldn't create %s texture\n", path);
         SDL_FreeSurface(loadingSurface);
         return false;
@@ -216,24 +218,26 @@ int createButtonsTextures(SPGameWin* res){
 
 
 SPGameWin* spGameWindowCreate() {
-	SPGameWin* res = (SPGameWin*) calloc(sizeof(SPGameWin), sizeof(char));
+	SPGameWin* res =NULL;
+    res = (SPGameWin*) malloc(sizeof(SPGameWin));
+    if (res == NULL ) {
+        printf("Couldn't create SPGameWin struct\n");
+        return NULL ;
+    }
 
     res->isTheGameSaved = 0;
     res->getMovesOn = 0;
 
 	SDL_Surface* loadingSurface = NULL; //Used as temp surface
-	if (res == NULL ) {
-		printf("Couldn't create SPGameWin struct\n");
-		return NULL ;
-	}
-	res->game = spTicTacToeCreate();
-	if (res->game == NULL ) {
-		printf("Couldn't create game\n");
-		spGameWindowDestroy(res);
-		return NULL ;
-	}
+
+//	res->game = chessGameCreate();
+//	if (res->game == NULL ) {
+//		printf("Couldn't create game\n");
+//		spGameWindowDestroy(res);
+//		return NULL ;
+//	}
 	// Create an application window with the following settings:
-	res->window = SDL_CreateWindow("Chess Game", // window title
+	res->gameWindow = SDL_CreateWindow("Chess Game", // window title
 			SDL_WINDOWPOS_CENTERED,           // initial x position
 			SDL_WINDOWPOS_CENTERED,           // initial y position
 			900,                               // width, in pixels
@@ -242,14 +246,14 @@ SPGameWin* spGameWindowCreate() {
 			);
 
 	// Check that the window was successfully created
-	if (res->window == NULL ) {
+	if (res->gameWindow == NULL ) {
 		// In the case that the window could not be made...
 		printf("Could not create window: %s\n", SDL_GetError());
 		spGameWindowDestroy(res);
 		return NULL ;
 	}
-	res->renderer = SDL_CreateRenderer(res->window, -1, SDL_RENDERER_ACCELERATED);
-	if (res->renderer == NULL ) {
+	res->gameRenderer = SDL_CreateRenderer(res->gameWindow, -1, SDL_RENDERER_ACCELERATED);
+	if (res->gameRenderer == NULL ) {
 		printf("Could not create a renderer: %s\n", SDL_GetError());
 		spGameWindowDestroy(res);
 		return NULL ;
@@ -333,11 +337,11 @@ void spGameWindowDestroy(SPGameWin* src) {
 	if (!src) {
 		return;
 	}
-    if (src->window != NULL ) {
-        SDL_DestroyTexture(src->window);
+    if (src->gameWindow != NULL ) {
+        SDL_DestroyTexture(src->gameWindow);
     }
-    if (src->renderer != NULL ) {
-        SDL_DestroyTexture(src->renderer);
+    if (src->gameRenderer != NULL ) {
+        SDL_DestroyTexture(src->gameRenderer);
     }
     spGameWindowDestroyBoard(src);
     spGameWindowDestroyButtons(src);
@@ -346,33 +350,33 @@ void spGameWindowDestroy(SPGameWin* src) {
 
 
 void putTextureInRec(SPGameWin* src, SPChessGame* game, int i, int j, SDL_Rect* rec) {
-    switch (game->board[i][j]){
+    switch (game->gameBoard[i][j]){
         case BLANK:
             return;
         case KINGWHITE:
-            SDL_RenderCopy(src->renderer, src->whiteKing, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whiteKing, NULL, rec);
         case KINGBLACK:
-            SDL_RenderCopy(src->renderer, src->blackKing, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackKing, NULL, rec);
         case QUEENWHITE:
-            SDL_RenderCopy(src->renderer, src->whiteQueen, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whiteQueen, NULL, rec);
         case QUEENBLACK:
-            SDL_RenderCopy(src->renderer, src->blackQueen, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackQueen, NULL, rec);
         case BISHOPWHITE:
-            SDL_RenderCopy(src->renderer, src->whiteBishop, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whiteBishop, NULL, rec);
         case BISHOPBLACK:
-            SDL_RenderCopy(src->renderer, src->blackBishop, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackBishop, NULL, rec);
         case KNIGHTWHITE:
-            SDL_RenderCopy(src->renderer, src->whiteKnight, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whiteKnight, NULL, rec);
         case KNIGHTBLACK:
-            SDL_RenderCopy(src->renderer, src->blackKnight, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackKnight, NULL, rec);
         case ROOKWHITE:
-            SDL_RenderCopy(src->renderer, src->whiteRook, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whiteRook, NULL, rec);
         case ROOKBLACK:
-            SDL_RenderCopy(src->renderer, src->blackRook, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackRook, NULL, rec);
         case PAWNWHITE:
-            SDL_RenderCopy(src->renderer, src->whitePawn, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->whitePawn, NULL, rec);
         case PAWNBLACK:
-            SDL_RenderCopy(src->renderer, src->blackPawn, NULL, rec);
+            SDL_RenderCopy(src->gameRenderer, src->blackPawn, NULL, rec);
         default:
             return;
     }
@@ -397,13 +401,13 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 		return;
 	}
 	SDL_Rect rec = { .x = 42, .y = 42, .w = BOARD_W, .h = BOARD_W };
-	SDL_SetRenderDrawColor(src->renderer, 134, 134, 134, 192);
-	SDL_RenderClear(src->renderer);
-	SDL_RenderCopy(src->renderer, src->board, NULL, &rec);
+	SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
+	SDL_RenderClear(src->gameRenderer);
+	SDL_RenderCopy(src->gameRenderer, src->board, NULL, &rec);
 
-	updateGameBoard(src, game, &rec);
+	updateGameBoard(src, game);
 
-	SDL_RenderPresent(src->renderer);
+	SDL_RenderPresent(src->gameRenderer);
 }
 
 
@@ -411,29 +415,29 @@ void spGameWindowDrawButtons(SPGameWin* src, SPChessGame* game){
     if(src == NULL || game == NULL){
         return;
     }
-    SDL_SetRenderDrawColor(src->renderer, 134, 134, 134, 192);
-    SDL_RenderClear(src->renderer);
+    SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
+    SDL_RenderClear(src->gameRenderer);
 
-    SDL_Rect restartRec = { .x = MAIN_BUTTONS_X, .y = RESTART_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    SDL_RenderCopy(src->renderer, src->restartGame, NULL, &restartRec);
+    SDL_Rect restartRec = { .x = GAME_BUTTONS_X, .y = RESTART_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    SDL_RenderCopy(src->gameRenderer, src->restartGame, NULL, &restartRec);
 
-    SDL_Rect loadRec = { .x = MAIN_BUTTONS_X, .y = LOAD_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    SDL_RenderCopy(src->renderer, src->loadGame, NULL, &loadRec);
+    SDL_Rect loadRec = { .x = GAME_BUTTONS_X, .y = LOAD_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    SDL_RenderCopy(src->gameRenderer, src->loadGame, NULL, &loadRec);
 
-    SDL_Rect saveRec = { .x = MAIN_BUTTONS_X, .y = SAVE_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    if (src->isTheGameSaved == 0) { SDL_RenderCopy(src->renderer, src->saveGame, NULL, &saveRec); }
-    else{ SDL_RenderCopy(src->renderer, src->saveGameEnabled, NULL, &saveRec);}
+    SDL_Rect saveRec = { .x = GAME_BUTTONS_X, .y = SAVE_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    if (src->isTheGameSaved == 0) { SDL_RenderCopy(src->gameRenderer, src->saveGame, NULL, &saveRec); }
+    else{ SDL_RenderCopy(src->gameRenderer, src->saveGameEnabled, NULL, &saveRec);}
 
-    SDL_Rect undoRec = { .x = MAIN_BUTTONS_X, .y = UNDO_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    if (spArrayListIsEmpty(game->lastMoves)) { SDL_RenderCopy(src->renderer, src->undoMoveEnabled, NULL, &undoRec); }
-    else { SDL_RenderCopy(src->renderer, src->undoMove, NULL, &undoRec); }
+    SDL_Rect undoRec = { .x = GAME_BUTTONS_X, .y = UNDO_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    if (spArrayListIsEmpty(game->lastMoves)) { SDL_RenderCopy(src->gameRenderer, src->undoMoveEnabled, NULL, &undoRec); }
+    else { SDL_RenderCopy(src->gameRenderer, src->undoMove, NULL, &undoRec); }
 
 
-    SDL_Rect mainMenuRec = { .x = MAIN_BUTTONS_X, .y = MAIN_MENU_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    SDL_RenderCopy(src->renderer, src->mainMenu, NULL, &mainMenuRec);
+    SDL_Rect mainMenuRec = { .x = GAME_BUTTONS_X, .y = MAIN_MENU_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    SDL_RenderCopy(src->gameRenderer, src->mainMenu, NULL, &mainMenuRec);
 
-    SDL_Rect quitRec = { .x = MAIN_BUTTONS_X, .y = QUIT_BUTTON_Y, .w = MAIN_BUTTONS_W, .h = MAIN_BUTTONS_H };
-    SDL_RenderCopy(src->renderer, src->quitGame, NULL, &quitRec);
+    SDL_Rect quitRec = { .x = GAME_BUTTONS_X, .y = QUIT_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
+    SDL_RenderCopy(src->gameRenderer, src->quitGame, NULL, &quitRec);
 }
 
 
@@ -491,7 +495,7 @@ SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Eve
             }
             else { return SP_GAME_EVENT_NONE; }
             break;
-        case SDL_MouseMotionEvent:
+        case SDL_MOUSEMOTION:
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
                 return SP_GAME_EVENT_QUIT;

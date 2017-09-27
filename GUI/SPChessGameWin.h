@@ -61,8 +61,8 @@ typedef enum {
 } SP_GAME_EVENT;
 
 typedef struct{
-	SDL_Window* window;
-	SDL_Renderer* renderer;
+	SDL_Window* gameWindow;
+	SDL_Renderer* gameRenderer;
 	SDL_Texture* board;
 	SDL_Texture* whiteKing;
 	SDL_Texture* blackKing;
@@ -98,7 +98,7 @@ typedef struct{
 SPGameWin* spGameWindowCreate();
 void spGameWindowDestroy(SPGameWin* src);
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game);
-SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SDL_Event* event);
+SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
 
 
 #endif
