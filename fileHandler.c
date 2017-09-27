@@ -204,7 +204,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 
 
-/****************** GUI ******************/
+/********************* GUI *********************/
 
 
 

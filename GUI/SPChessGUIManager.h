@@ -27,6 +27,18 @@ typedef struct {
 	SPChessGame* game;
 } SPGuiManager;
 
+
+
+typedef enum {
+	SP_PROMOTION_PAWN,
+	SP_PROMOTION_ROOK,
+	SP_PROMOTION_KNIGHT,
+	SP_PROMOTION_BISHOP,
+	SP_PROMOTION_QUEEN,
+	SP_PROMOTION_INVALID
+} SP_PROMOTION_EVENT;
+
+
 SPGuiManager* spManagerCreate();
 
 void spManagerDestroy(SPGuiManager* src);

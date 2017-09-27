@@ -431,7 +431,7 @@ void pawnPromotion (SPChessGame* src, action move, int isMini) {
 
 
 
-SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest, int isMini) {
+SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , position dest, int isMini, int isGui) {
     SP_CHESS_GAME_MESSAGE msg = isValidMove(src, origin, dest);
     if (msg != SP_CHESS_GAME_SUCCESS){
         return msg;
@@ -473,7 +473,7 @@ SP_CHESS_GAME_MESSAGE chessGameSetMove(SPChessGame* src, position origin , posit
     move.piece = soldier;
     move.castling = SP_CHESS_NO_CASTLING;
     gameSpArrayListAdd(src->lastMoves, move);
-    if ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7)) {
+    if (isGui == 0 && ((soldier == PAWNBLACK && move.current.row == 0) || (soldier == PAWNWHITE && move.current.row == 7))) {
         pawnPromotion(src, move, isMini);
     }
     src->currentPlayer = 1 - src->currentPlayer;
