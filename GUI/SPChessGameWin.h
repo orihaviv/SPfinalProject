@@ -33,7 +33,7 @@
 
 #define BOARD_X 42
 #define BOARD_Y 42
-#define PIECE_DISTANCE_UPDATE 35
+#define PIECE_DISTANCE_UPDATE 25
 
 
 //Buttons Definitions
@@ -86,6 +86,7 @@ typedef struct{
 	SDL_Texture* undoMoveEnabled;
 	SDL_Texture* mainMenu;
 	SDL_Texture* quitGame;
+    SDL_Texture* boardTiles[GAMESIZE][GAMESIZE];
 
     SDL_Texture* yellow;
     SDL_Texture* red;

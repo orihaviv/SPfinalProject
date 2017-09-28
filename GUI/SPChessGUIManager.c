@@ -114,7 +114,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             spMainWindowShow(src->mainWin);
             break;
         case SP_SETTINGS_START:
-            spSettingsWindowHide(src->settingsWin);
+            spSettingsWindowDestroy(src->settingsWin);
             src->gameWin = spGameWindowCreate();
             src->game->state = 1;
             if (src->gameWin == NULL) {
@@ -266,6 +266,7 @@ void handleSaveGame(SPGuiManager *src) {
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to save the game", NULL);
         } else {
             src->gameWin->isTheGameSaved = 1;
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "saved!", "Game saved", NULL);
         }
     }
 }
@@ -337,7 +338,6 @@ void handleMainMenu(SPGuiManager *src) {
     if (whetherToQuit == 1) {
         spGameWindowDestroy(src->gameWin);
         src->gameWin = NULL;
-//        spSettingsWindowDestroy(src->settingsWin);
         src->activeWin = SP_MAIN_WINDOW_ACTIVE;
     }
 }
@@ -404,7 +404,6 @@ void showCheckMessage(int player) {
 
 
 SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
-
     char soldier;
     position origin = src->gameWin->moveOrigin;
     position dest = src->gameWin->moveDestination;
@@ -442,8 +441,8 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     goto anyway;
 
     moveDone:
+    src->gameWin->isTheGameSaved = 0;
     winner = chessCheckWinner(src->game, 0, 1);
-
 
     if (src->game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER) {
         if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
@@ -507,7 +506,6 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_QUIT:
             return handleQuitGame(src);
         case SP_GAME_EVENT_MOVE:
-            src->gameWin->isTheGameSaved = 0;
             handleMove(src);
             break;
         default:
