@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPChessGUIManager.h"
-#include "SPChessGameWin.h"
-#include "SPChessLoadWin.h"
-#include "SPChessSettingsWin.h"
+
 
 
 SPGuiManager *spManagerCreate() {
@@ -269,7 +267,6 @@ void handleSaveGame(SPGuiManager *src) {
 void handleLoadGame(SPGuiManager *src, int slot) {
     bool loaded = guiLoadChessGame(&src->game, slot);
     if (loaded) {
-//        if (src->gameWin != NULL){ updateGameBoard(src->gameWin, src->game); }
         src->gameWin->isTheGameSaved = 1;
     } else { printf("Slot could not be loaded"); }
 }
@@ -478,7 +475,6 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_RESTART:
             initializeBoard(src->game);
             src->gameWin->isTheGameSaved = 0;
-//            updateGameBoard(src->gameWin, src->game);
             break;
         case SP_GAME_EVENT_SAVE:
             handleSaveGame(src);

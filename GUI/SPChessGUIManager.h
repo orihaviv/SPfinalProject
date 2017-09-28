@@ -6,6 +6,7 @@
 #include "SPChessLoadWin.h"
 #include "SPChessGameWin.h"
 
+
 typedef enum{
 	SP_MAIN_WINDOW_ACTIVE,
 	SP_GAME_WINDOW_ACTIVE,

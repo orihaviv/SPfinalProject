@@ -11,20 +11,21 @@
 
 //Definitions
 #define HEIGHT_SETTINGS 700
-#define WIDTH_SETTINGS 900
-#define TITLE_SETTINGS_H 53
-#define TITLE_SETTINGS_W 173
-#define TITLE_SETTINGS_X 363
+#define WIDTH_SETTINGS 1000
+
+#define TITLE_SETTINGS_H 80
+#define TITLE_SETTINGS_W 250
+#define TITLE_SETTINGS_X 325
 #define TITLE_SETTINGS_Y 50
 
-#define LABELS_H 43
-#define BUTTONS_H 49
+#define LABELS_H 50
+#define BUTTONS_H 50
 
-#define GAME_MODE_W 194
-#define COLOR_W 86
-#define DIFFICULTY_W 210
+#define GAME_MODE_W 250
+#define COLOR_W 135
+#define DIFFICULTY_W 200
 
-#define ONE_PLAYER_W 242
+#define ONE_PLAYER_W 245
 #define TWO_PLAYERS_W 254
 
 #define WHITE_BLACK_W 222
@@ -37,26 +38,26 @@
 #define BACK_W 234
 
 #define GAMEMODEX 20
-#define GAMEMODEY 100
-#define ONEPLAYERX 170
-#define TWOPLAYERSX 390
+#define GAMEMODEY 170
+#define ONEPLAYERX 280
+#define TWOPLAYERSX 600
 
-#define USERCOLORX 30
-#define USERCOLORY 155
-#define WHITEX 175
-#define BLACKX 395
+#define USERCOLORX 20
+#define USERCOLORY 270
+#define WHITEX 290
+#define BLACKX 610
 
-#define STARTX 350
-#define START_BACK_Y 430
+#define STARTX 600
+#define START_BACK_Y 600
 #define BACKX 100
 
 #define DIFFICULTYX 20
-#define DIFFICULTYY 260
-#define NOOB_EASY_MODERATE_HARD_Y 350
+#define DIFFICULTYY 370
+#define NOOB_EASY_MODERATE_HARD_Y 470
 #define NOOBX 30
-#define EASYX 170
-#define MODERATEX 310
-#define HARDX 450
+#define EASYX 250
+#define MODERATEX 470
+#define HARDX 710
 
 
 
