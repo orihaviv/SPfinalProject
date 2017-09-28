@@ -332,7 +332,7 @@ char* extractPathOfSlot(int slotNum){
 
 
 bool guiLoadChessGame(SPChessGame **game, int slot) {
-    if (*game == NULL || slot < 1 || slot > NUM_OF_SLOTS) {return false; }
+    if (game == NULL || slot < 1 || slot > NUM_OF_SLOTS) {return false; }
     char* path = extractPathOfSlot(slot);
     bool res;
     res = loadChessGame(game, path);

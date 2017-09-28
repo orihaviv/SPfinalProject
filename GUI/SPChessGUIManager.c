@@ -17,6 +17,7 @@ SPGuiManager *spManagerCreate() {
     res->loadWin = NULL;
     res->settingsWin = NULL;
     res->gameWin = NULL;
+    res->game = NULL;
     res->activeWin = SP_MAIN_WINDOW_ACTIVE;
     return res;
 }
@@ -119,6 +120,11 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             if (src->gameWin == NULL) {
                 printf("Couldn't create settings window\n");
                 return SP_MANAGER_QUTT;
+            }
+            if (src->game->userColor == 0){
+                action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
+                while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
+                       SP_CHESS_GAME_SUCCESS) { continue; }
             }
             src->activeWin = SP_GAME_WINDOW_ACTIVE;
             break;
@@ -265,10 +271,13 @@ void handleSaveGame(SPGuiManager *src) {
 }
 
 void handleLoadGame(SPGuiManager *src, int slot) {
-    bool loaded = guiLoadChessGame(&src->game, slot);
-    if (loaded) {
+    bool loaded = guiLoadChessGame(&(src->game), slot);
+    if (loaded || src->game == NULL) {
+        src->gameWin = spGameWindowCreate();
+        if (src->gameWin == NULL) { SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to load the game", NULL); }
+        src->game->state = 1;
         src->gameWin->isTheGameSaved = 1;
-    } else { printf("Slot could not be loaded"); }
+    } else { SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to load the game", NULL); }
 }
 
 int askWhetherToSave(SPGuiManager *src) {

@@ -113,7 +113,9 @@ SPChessGame *chessGameCopy(SPChessGame *src) {
 
 void chessGameDestroy(SPChessGame** src) {
     if (*src != NULL) {
-        spArrayListDestroy(&((*src)->lastMoves));
+        if ((*src)->lastMoves != NULL){
+            spArrayListDestroy(&((*src)->lastMoves));
+        }
         free(*src);
         *src = NULL;
     }
