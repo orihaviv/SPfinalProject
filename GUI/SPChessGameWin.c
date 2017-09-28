@@ -649,7 +649,7 @@ void spGameWindowDrag(SPGameWin* src, SDL_Event* event){
     /* Drags the piece across the board.
      * The method is called <=> (src->isPieceDragged == 1 && the cursor is between board borders */
 
-    int mouseSourceX = src->dragRec.x + (int)0.5*PIECE_SIZE , mouseSourceY = src->dragRec.y + (int)0.5*PIECE_SIZE;
+    int mouseSourceX = src->dragRec.x + 2*PIECE_SIZE , mouseSourceY = src->dragRec.y + 2*PIECE_SIZE;
     double dist = getDist(mouseSourceX, mouseSourceY ,event->button.x , event->button.y);
     if (dist > PIECE_DISTANCE_UPDATE){
         src->dragRec.x = event->button.x - PIECE_SIZE/2;
