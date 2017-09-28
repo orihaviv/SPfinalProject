@@ -85,11 +85,56 @@ typedef struct {
 
 } SPLoadWin;
 
+
+/**
+ * Creates a new load window
+ *
+ * @return
+ * NULL if either a memory allocation failure occurs.
+ * Otherwise, a new load window instant is returned.
+ */
 SPLoadWin* spLoadWindowCreate(SP_LOAD_CALLER father);
+
+
+/**
+ * Frees all memory allocation associated with a given window.
+ * If src==NULL - the function does nothing.
+ *
+ * @param src - the source window
+ */
 void spLoadWindowDestroy(SPLoadWin* src);
+
+
+/**
+ * Draws the window according to the specified fields
+ *
+ * @param src - the source window
+ */
 void spLoadWindowDraw(SPLoadWin* src);
+
+
+/**
+ * Hides the specified window
+ *
+ * @param src - the source window
+ */
 void spLoadWindowHide(SPLoadWin* src);
+
+
+/**
+ * Shows the specified window
+ *
+ * @param src - the source window
+ */
 void spLoadWindowShow(SPLoadWin* src);
+
+
+/**
+ * Handles events occured in the specified window
+ *
+ * @param src - the source window
+ * @param event - the event to be handled
+ */
 SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin* src, SDL_Event* event);
 
 

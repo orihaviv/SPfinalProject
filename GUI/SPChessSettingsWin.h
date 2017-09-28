@@ -121,11 +121,56 @@ typedef struct {
     int color;
 } SPSettingsWin;
 
+
+/**
+ * Creates a new settings window
+ *
+ * @return
+ * NULL if either a memory allocation failure occurs.
+ * Otherwise, a new settings window instant is returned.
+ */
 SPSettingsWin* spSettingsWindowCreate();
+
+
+/**
+ * Frees all memory allocation associated with a given window.
+ * If src==NULL - the function does nothing.
+ *
+ * @param src - the source window
+ */
 void spSettingsWindowDestroy(SPSettingsWin* src);
+
+
+/**
+ * Draws the window according to the specified fields
+ *
+ * @param src - the source window
+ */
 void spSettingsWindowDraw(SPSettingsWin* src);
+
+
+/**
+ * Hides the specified window
+ *
+ * @param src - the source window
+ */
 void spSettingsWindowHide(SPSettingsWin* src);
+
+
+/**
+ * Shows the specified window
+ *
+ * @param src - the source window
+ */
 void spSettingsWindowShow(SPSettingsWin* src);
+
+
+/**
+ * Handles events occured in the specified window
+ *
+ * @param src - the source window
+ * @param event - the event to be handled
+ */
 SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin* src, SDL_Event* event);
 
 #endif //FINALPROJECT_SPCHESSSETTINGSWIN_H

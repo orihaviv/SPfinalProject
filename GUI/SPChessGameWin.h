@@ -105,17 +105,58 @@ typedef struct{
 	int isPieceDragged;
 }SPGameWin;
 
+
+/**
+ * Creates a new game window
+ *
+ * @return
+ * NULL if either a memory allocation failure occurs.
+ * Otherwise, a new game window instant is returned.
+ */
 SPGameWin* spGameWindowCreate();
 
+
+/**
+ * Frees all memory allocation associated with a given window.
+ * If src==NULL - the function does nothing.
+ *
+ * @param src - the source window
+ */
 void spGameWindowDestroy(SPGameWin* src);
 
+
+/**
+ * Draws the window according to the specified fields
+ *
+ * @param src - the source window
+ */
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game);
 
-SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
 
+/**
+ * Hides the specified window
+ *
+ * @param src - the source window
+ */
 void spGameWindowHide(SPGameWin *src);
 
+
+/**
+ * Shows the specified window
+ *
+ * @param src - the source window
+ */
 void spGameWindowShow(SPGameWin *src);
+
+
+/**
+ * Handles events occured in the specified window
+ *
+ * @param src - the source window
+ * @param game - the current game
+ * @param event - the event to be handled
+ */
+SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
 
 
 #endif
