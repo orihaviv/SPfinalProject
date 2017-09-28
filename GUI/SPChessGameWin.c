@@ -114,7 +114,7 @@ int isClickOnQuit(int x, int y) {
 }
 
 
-bool loadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
+bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -139,71 +139,71 @@ int createBoardTextures(SPGameWin* res){
     bool check;
 
     // board
-    check = loadingSurfaceFunc(res, &(res->board), "../GUI/images/gameWindow/board.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->board), "../GUI/images/gameWindow/board.bmp");
     if (!check){ return 0; }
 
     // white king
-    check = loadingSurfaceFunc(res, &(res->whiteKing), "../GUI/images/gameWindow/whiteKing.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whiteKing), "../GUI/images/gameWindow/whiteKing.bmp");
     if (!check){ return 0; }
 
     // black king
-    check = loadingSurfaceFunc(res, &(res->blackKing), "../GUI/images/gameWindow/blackKing.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackKing), "../GUI/images/gameWindow/blackKing.bmp");
     if (!check){ return 0; }
 
     // white queen
-    check = loadingSurfaceFunc(res, &(res->whiteQueen), "../GUI/images/gameWindow/whiteQueen.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whiteQueen), "../GUI/images/gameWindow/whiteQueen.bmp");
     if (!check){ return 0; }
 
     // black queen
-    check = loadingSurfaceFunc(res, &(res->blackQueen), "../GUI/images/gameWindow/blackQueen.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackQueen), "../GUI/images/gameWindow/blackQueen.bmp");
     if (!check){ return 0; }
 
     // white bishop
-    check = loadingSurfaceFunc(res, &(res->whiteBishop), "../GUI/images/gameWindow/whiteBishop.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whiteBishop), "../GUI/images/gameWindow/whiteBishop.bmp");
     if (!check){ return 0; }
 
     // black bishop
-    check = loadingSurfaceFunc(res, &(res->blackBishop), "../GUI/images/gameWindow/blackBishop.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackBishop), "../GUI/images/gameWindow/blackBishop.bmp");
     if (!check){ return 0; }
 
     // white knight
-    check = loadingSurfaceFunc(res, &(res->whiteKnight), "../GUI/images/gameWindow/whiteKnight.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whiteKnight), "../GUI/images/gameWindow/whiteKnight.bmp");
     if (!check){ return 0; }
 
     // black knight
-    check = loadingSurfaceFunc(res, &(res->blackKnight), "../GUI/images/gameWindow/blackKnight.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackKnight), "../GUI/images/gameWindow/blackKnight.bmp");
     if (!check){ return 0; }
 
     // white rook
-    check = loadingSurfaceFunc(res, &(res->whiteRook), "../GUI/images/gameWindow/whiteRook.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whiteRook), "../GUI/images/gameWindow/whiteRook.bmp");
     if (!check){ return 0; }
 
     // black rook
-    check = loadingSurfaceFunc(res, &(res->blackRook), "../GUI/images/gameWindow/blackRook.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackRook), "../GUI/images/gameWindow/blackRook.bmp");
     if (!check){ return 0; }
 
     // white pawn
-    check = loadingSurfaceFunc(res, &(res->whitePawn), "../GUI/images/gameWindow/whitePawn.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->whitePawn), "../GUI/images/gameWindow/whitePawn.bmp");
     if (!check){ return 0; }
 
     // black pawn
-    check = loadingSurfaceFunc(res, &(res->blackPawn), "../GUI/images/gameWindow/blackPawn.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->blackPawn), "../GUI/images/gameWindow/blackPawn.bmp");
     if (!check){ return 0; }
 
     // yellow square
-    check =loadingSurfaceFunc(res , &(res->yellow), "../GUI/images/gameWindow/yellow.bmp");
+    check =GameLoadingSurfaceFunc(res , &(res->yellow), "../GUI/images/gameWindow/yellow.bmp");
     if (!check){ return 0; }
 
     // red square
-    check =loadingSurfaceFunc(res , &(res->red), "../GUI/images/gameWindow/red.bmp");
+    check =GameLoadingSurfaceFunc(res , &(res->red), "../GUI/images/gameWindow/red.bmp");
     if (!check){ return 0; }
 
     // green square
-    check =loadingSurfaceFunc(res , &(res->green), "../GUI/images/gameWindow/green.bmp");
+    check =GameLoadingSurfaceFunc(res , &(res->green), "../GUI/images/gameWindow/green.bmp");
     if (!check){ return 0; }
 
     // purple square
-    check =loadingSurfaceFunc(res , &(res->purple), "../GUI/images/gameWindow/purple.bmp");
+    check =GameLoadingSurfaceFunc(res , &(res->purple), "../GUI/images/gameWindow/purple.bmp");
     if (!check){ return 0; }
 
     return 1;
@@ -214,35 +214,35 @@ int createButtonsTextures(SPGameWin* res){
     bool check;
 
     // restart game
-    check = loadingSurfaceFunc(res, &(res->restartGame), "../GUI/images/gameWindow/restartGame.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->restartGame), "../GUI/images/gameWindow/restartGame.bmp");
     if (!check){ return 0; }
 
     // save game
-    check = loadingSurfaceFunc(res, &(res->saveGame), "../GUI/images/gameWindow/saveGame.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->saveGame), "../GUI/images/gameWindow/saveGame.bmp");
     if (!check){ return 0; }
 
     // save game - enabled
-    check = loadingSurfaceFunc(res, &(res->saveGameEnabled), "../GUI/images/gameWindow/saveGameEnabled.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->saveGameEnabled), "../GUI/images/gameWindow/saveGameEnabled.bmp");
     if (!check){ return 0; }
 
     // load game
-    check = loadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/gameWindow/loadGame.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/gameWindow/loadGame.bmp");
     if (!check){ return 0; }
 
     // undo move
-    check = loadingSurfaceFunc(res, &(res->undoMove), "../GUI/images/gameWindow/undoMove.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->undoMove), "../GUI/images/gameWindow/undoMove.bmp");
     if (!check){ return 0; }
 
     // undo move - enabled
-    check = loadingSurfaceFunc(res, &(res->undoMoveEnabled), "../GUI/images/gameWindow/undoMoveEnabled.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->undoMoveEnabled), "../GUI/images/gameWindow/undoMoveEnabled.bmp");
     if (!check){ return 0; }
 
     // main menu
-    check = loadingSurfaceFunc(res, &(res->mainMenu), "../GUI/images/gameWindow/mainMenu.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->mainMenu), "../GUI/images/gameWindow/mainMenu.bmp");
     if (!check){ return 0; }
 
     // quit game
-    check = loadingSurfaceFunc(res, &(res->quitGame), "../GUI/images/gameWindow/quitGame.bmp");
+    check = GameLoadingSurfaceFunc(res, &(res->quitGame), "../GUI/images/gameWindow/quitGame.bmp");
     if (!check){ return 0; }
 
     return 1;
@@ -393,31 +393,44 @@ void putTextureInRec(SPGameWin* src, SPChessGame* game, int i, int j, SDL_Rect* 
             return;
         case KINGWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whiteKing, NULL, rec);
+            break;
         case KINGBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackKing, NULL, rec);
+            break;
         case QUEENWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whiteQueen, NULL, rec);
+            break;
         case QUEENBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackQueen, NULL, rec);
+            break;
         case BISHOPWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whiteBishop, NULL, rec);
+            break;
         case BISHOPBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackBishop, NULL, rec);
+            break;
         case KNIGHTWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whiteKnight, NULL, rec);
+            break;
         case KNIGHTBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackKnight, NULL, rec);
+            break;
         case ROOKWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whiteRook, NULL, rec);
+            break;
         case ROOKBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackRook, NULL, rec);
+            break;
         case PAWNWHITE:
             SDL_RenderCopy(src->gameRenderer, src->whitePawn, NULL, rec);
+            break;
         case PAWNBLACK:
             SDL_RenderCopy(src->gameRenderer, src->blackPawn, NULL, rec);
+            break;
         default:
-            return;
+            break;
     }
+    return;
 }
 
 void updateGameBoard(SPGameWin* src, SPChessGame* game){
@@ -444,13 +457,11 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 		return;
 	}
 	SDL_Rect rec = { .x = BOARD_X, .y = BOARD_Y, .w = BOARD_W, .h = BOARD_H };
-	SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
-	SDL_RenderClear(src->gameRenderer);
 	SDL_RenderCopy(src->gameRenderer, src->board, NULL, &rec);
 
 	updateGameBoard(src, game);
 
-	SDL_RenderPresent(src->gameRenderer);
+
 }
 
 
@@ -460,8 +471,7 @@ void spGameWindowDrawButtons(SPGameWin* src, SPChessGame* game){
     if(src == NULL || game == NULL){
         return;
     }
-    SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
-    SDL_RenderClear(src->gameRenderer);
+
 
     SDL_Rect restartRec = { .x = GAME_BUTTONS_X, .y = RESTART_BUTTON_Y, .w = GAME_BUTTON_W, .h = GAME_BUTTON_H };
     SDL_RenderCopy(src->gameRenderer, src->restartGame, NULL, &restartRec);
@@ -487,8 +497,11 @@ void spGameWindowDrawButtons(SPGameWin* src, SPChessGame* game){
 
 
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game){
+    SDL_RenderClear(src->gameRenderer);
     spGameWindowDrawBoard(src, game);
     spGameWindowDrawButtons(src, game);
+    SDL_SetRenderDrawColor(src->gameRenderer, 134, 134, 134, 192);
+    SDL_RenderPresent(src->gameRenderer);
 }
 
 void resetGetMoves(SPGameWin* src, SPChessGame* game){

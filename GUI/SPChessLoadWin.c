@@ -42,14 +42,14 @@ int isClickOnFive(int x, int y) {
 }
 
 int isClickOnLoadGame(int x, int y) {
-    if ((x >= LOADX && x <= LOADX + LOAD_W) && (y >= LOAD_BACK_Y && y <= LOAD_BACK_Y + LOAD_H)) {
+    if ((x >= LOADX && x <= LOADX + LOAD_W) && (y >= LOAD_AND_BACK_Y && y <= LOAD_AND_BACK_Y + LOAD_H)) {
         return 1;
     }
     return 0;
 }
 
-int isClickOnBack(int x, int y) {
-    if ((x >= BACKX && x <= BACKX + BACK_W) && (y >= LOAD_BACK_Y && y <= LOAD_BACK_Y + BACK_H)) {
+int isClickOnBackInLoad(int x, int y) {
+    if ((x >= LOAD_BACKX && x <= LOAD_BACKX + LOAD_AND_BACK_Y) && (y >= LOAD_AND_BACK_Y && y <= LOAD_AND_BACK_Y + LOAD_BACK_H)) {
         return 1;
     }
     return 0;
@@ -59,7 +59,7 @@ int isClickOnBack(int x, int y) {
 
 
 
-bool loadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
+bool loadLoadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -124,56 +124,56 @@ SPLoadWin *spLoadWindowCreate(SP_LOAD_CALLER father) {
     bool check;
 
     // Load Game button
-    check = loadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/loadWindow/load.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->loadGame), "../GUI/images/loadWindow/load.bmp");
     if (!check){ return  NULL; }
 
     // Back button
-    check = loadingSurfaceFunc(res, &(res->back), "../GUI/images/loadWindow/back.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->back), "../GUI/images/loadWindow/back.bmp");
     if (!check){ return  NULL; }
 
     // Load Game Title button
-    check = loadingSurfaceFunc(res, &(res->loadGameTitle), "../GUI/images/loadWindow/loadGame.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->loadGameTitle), "../GUI/images/loadWindow/loadGame.bmp");
     if (!check){ return  NULL; }
 
     // 1 button
-    check = loadingSurfaceFunc(res, &(res->oneThin), "../GUI/images/loadWindow/one.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->oneThin), "../GUI/images/loadWindow/one.bmp");
     if (!check){ return  NULL; }
 
     // 2 button
-    check = loadingSurfaceFunc(res, &(res->twoThin), "../GUI/images/loadWindow/two.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->twoThin), "../GUI/images/loadWindow/two.bmp");
     if (!check){ return  NULL; }
 
     // 3 button
-    check = loadingSurfaceFunc(res, &(res->threeThin), "../GUI/images/loadWindow/three.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->threeThin), "../GUI/images/loadWindow/three.bmp");
     if (!check){ return  NULL; }
 
     // 4 button
-    check = loadingSurfaceFunc(res, &(res->fourThin), "../GUI/images/loadWindow/four.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->fourThin), "../GUI/images/loadWindow/four.bmp");
     if (!check){ return  NULL; }
 
     // 5 button
-    check = loadingSurfaceFunc(res, &(res->fiveThin), "../GUI/images/loadWindow/five.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->fiveThin), "../GUI/images/loadWindow/five.bmp");
     if (!check){ return  NULL; }
 
     // 1 Bold button
-    check = loadingSurfaceFunc(res, &(res->oneBold), "../GUI/images/loadWindow/oneBold.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->oneBold), "../GUI/images/loadWindow/oneBold.bmp");
     if (!check){ return  NULL; }
 
     // 2 Bold button
-    check = loadingSurfaceFunc(res, &(res->twoBold), "../GUI/images/loadWindow/twoBold.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->twoBold), "../GUI/images/loadWindow/twoBold.bmp");
     if (!check){ return  NULL; }
 
     // 3 Bold button
-    check = loadingSurfaceFunc(res, &(res->threeBold), "../GUI/images/loadWindow/threeBold.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->threeBold), "../GUI/images/loadWindow/threeBold.bmp");
     if (!check){ return  NULL; }
 
 
     // 4 Bold button
-    check = loadingSurfaceFunc(res, &(res->fourBold), "../GUI/images/loadWindow/fourBold.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->fourBold), "../GUI/images/loadWindow/fourBold.bmp");
     if (!check){ return  NULL; }
 
     // 5 Bold  button
-    check = loadingSurfaceFunc(res, &(res->fiveBold), "../GUI/images/loadWindow/fiveBold.bmp");
+    check = loadLoadingSurfaceFunc(res, &(res->fiveBold), "../GUI/images/loadWindow/fiveBold.bmp");
     if (!check){ return  NULL; }
 
     res->one = &(res->oneThin);
@@ -222,8 +222,8 @@ void spLoadWindowDraw(SPLoadWin *src) {
     SDL_Rect fourR = {.x = FOURX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
     SDL_Rect fiveR = {.x = FIVEX, .y = NUMY, .h = NUM_BUTTONS_H, .w = NUM_BUTTONS_W};
 
-    SDL_Rect loadR = {.x = LOADX, .y = LOAD_BACK_Y, .h = LOAD_H, .w = LOAD_W};
-    SDL_Rect backR = {.x = BACKX, .y = LOAD_BACK_Y, .h = BACK_H, .w = BACK_W};
+    SDL_Rect loadR = {.x = LOADX, .y = LOAD_AND_BACK_Y, .h = LOAD_H, .w = LOAD_W};
+    SDL_Rect backR = {.x = LOAD_BACKX, .y = LOAD_AND_BACK_Y, .h = LOAD_BACK_H, .w = LOAD_BACK_W};
     SDL_Rect titleR = {.x = LABALX, .y = LABELY, .h = LABEL_H, .w = LABEL_W};
 
 
@@ -307,7 +307,7 @@ SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
                     default:
                         return SP_LOAD_NONE;
                 }
-            } else if (isClickOnBack(event->button.x, event->button.y)) {
+            } else if (isClickOnBackInLoad(event->button.x, event->button.y)) {
                 if (src->caller == GAME_CALLER){
                     return SP_LOAD_BACK_GAME;
                 }

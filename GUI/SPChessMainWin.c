@@ -9,14 +9,14 @@ int isClickOnNew(int x, int y) {
     return 0;
 }
 
-int isClickOnLoad(int x, int y) {
+int isClickOnLoadInMain(int x, int y) {
     if ((x >= 75 && x <= 325) && (y >= 245 && y <= 295)) {
         return 1;
     }
     return 0;
 }
 
-int isClickOnQuit(int x, int y) {
+int isClickOnQuitInMain(int x, int y) {
     if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
         return 1;
     }
@@ -25,7 +25,7 @@ int isClickOnQuit(int x, int y) {
 
 
 
-bool loadingSurfaceFunc(SPMainWin *src, SDL_Texture** texture, char* path) {
+bool mainLoadingSurfaceFunc(SPMainWin *src, SDL_Texture** texture, char* path) {
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -87,21 +87,21 @@ SPMainWin *spMainWindowCreate() {
     }
 
     // picture
-    check = loadingSurfaceFunc(res, &(res->pictureTexture), "../GUI/images/mainWindow/dragon.bmp");
+    check = mainLoadingSurfaceFunc(res, &(res->pictureTexture), "../GUI/images/mainWindow/dragon.bmp");
     if (!check){ return  NULL; }
 
     // New Game button
-    check = loadingSurfaceFunc(res, &(res->newGameTexture), "../GUI/images/mainWindow/newGame.bmp");
+    check = mainLoadingSurfaceFunc(res, &(res->newGameTexture), "../GUI/images/mainWindow/newGame.bmp");
     if (!check){ return  NULL; }
 
 
     // Load Game button
-    check = loadingSurfaceFunc(res, &(res->loadGameTexture), "../GUI/images/mainWindow/loadGame.bmp");
+    check = mainLoadingSurfaceFunc(res, &(res->loadGameTexture), "../GUI/images/mainWindow/loadGame.bmp");
     if (!check){ return  NULL; }
 
 
     // Quit Game button
-    check = loadingSurfaceFunc(res, &(res->quitGameTexture), "../GUI/images/mainWindow/quitGame.bmp");
+    check = mainLoadingSurfaceFunc(res, &(res->quitGameTexture), "../GUI/images/mainWindow/quitGame.bmp");
     if (!check){ return  NULL; }
 
 
@@ -158,9 +158,9 @@ SP_MAIN_EVENT spMainWindowHandleEvent(SPMainWin *src, SDL_Event *event) {
         case SDL_MOUSEBUTTONUP:
             if (isClickOnNew(event->button.x, event->button.y)) {
                 return SP_MAIN_NEW_GAME;
-            } else if (isClickOnQuit(event->button.x, event->button.y)) {
+            } else if (isClickOnQuitInMain(event->button.x, event->button.y)) {
                 return SP_MAIN_QUIT_GAME;
-            } else if (isClickOnLoad(event->button.x, event->button.y)) {
+            } else if (isClickOnLoadInMain(event->button.x, event->button.y)) {
                 return SP_MAIN_LOAD_GAME;
             }
             break;

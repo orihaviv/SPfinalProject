@@ -78,7 +78,7 @@ int isClickOnBlack(int x, int y) {
     return 0;
 }
 
-bool loadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
+bool settingsLoadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -114,8 +114,8 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->settingsWindow = SDL_CreateWindow("Chess Game - Settings", // window title
                                        SDL_WINDOWPOS_CENTERED,           // initial x position
                                        SDL_WINDOWPOS_CENTERED,           // initial y position
-                                       800,                               // width, in pixels
-                                       600,                               // height, in pixels
+                                       WIDTH_SETTINGS,                               // width, in pixels
+                                       HEIGHT_SETTINGS,                               // height, in pixels
                                        SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -141,89 +141,93 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->numOfPlayers = 1;
     bool check;
 
+    // Settings title
+    check = settingsLoadingSurfaceFunc(res, &(res->settingsTitle), "../GUI/images/settingsWindow/settingsTitle.bmp");
+    if (!check){ return  NULL; }
+
     // Start button
-    check = loadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
     if (!check){ return  NULL; }
 
     // Back button
-    check = loadingSurfaceFunc(res, &(res->backTexture), "../GUI/images/settingsWindow/back.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->backTexture), "../GUI/images/settingsWindow/back.bmp");
     if (!check){ return  NULL; }
 
     // Noob button
-    check = loadingSurfaceFunc(res, &(res->noobThinTexture), "../GUI/images/settingsWindow/noob.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->noobThinTexture), "../GUI/images/settingsWindow/noob.bmp");
     if (!check){ return  NULL; }
 
     // Easy button
-    check = loadingSurfaceFunc(res, &(res->easyThinTexture), "../GUI/images/settingsWindow/easy.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->easyThinTexture), "../GUI/images/settingsWindow/easy.bmp");
     if (!check){ return  NULL; }
 
     // moderate button
-    check = loadingSurfaceFunc(res, &(res->moderateThinTexture), "../GUI/images/settingsWindow/moderate.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->moderateThinTexture), "../GUI/images/settingsWindow/moderate.bmp");
     if (!check){ return  NULL; }
 
     // Hard button
-    check = loadingSurfaceFunc(res, &(res->hardThinTexture), "../GUI/images/settingsWindow/hard.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->hardThinTexture), "../GUI/images/settingsWindow/hard.bmp");
     if (!check){ return  NULL; }
 
     // White button
-    check = loadingSurfaceFunc(res, &(res->whiteUserThinTexture), "../GUI/images/settingsWindow/white.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->whiteUserThinTexture), "../GUI/images/settingsWindow/white.bmp");
     if (!check){ return  NULL; }
 
     // Black button
-    check = loadingSurfaceFunc(res, &(res->blackUserThinTexture), "../GUI/images/settingsWindow/black.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->blackUserThinTexture), "../GUI/images/settingsWindow/black.bmp");
     if (!check){ return  NULL; }
 
     // onePlayer button
-    check = loadingSurfaceFunc(res, &(res->onePlayerThinTexture), "../GUI/images/settingsWindow/onePlayer.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->onePlayerThinTexture), "../GUI/images/settingsWindow/onePlayer.bmp");
     if (!check){ return  NULL; }
 
     // twoPlayers button
-    check = loadingSurfaceFunc(res, &(res->twoPlayersThinTexture), "../GUI/images/settingsWindow/twoPlayers.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->twoPlayersThinTexture), "../GUI/images/settingsWindow/twoPlayers.bmp");
     if (!check){ return  NULL; }
 
 
     // Bold Noob button
-    check = loadingSurfaceFunc(res, &(res->noobBoldTexture), "../GUI/images/settingsWindow/noobBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->noobBoldTexture), "../GUI/images/settingsWindow/noobBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold Easy button
-    check = loadingSurfaceFunc(res, &(res->easyBoldTexture), "../GUI/images/settingsWindow/easyBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->easyBoldTexture), "../GUI/images/settingsWindow/easyBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold moderate button
-    check = loadingSurfaceFunc(res, &(res->moderateBoldTexture), "../GUI/images/settingsWindow/moderateBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->moderateBoldTexture), "../GUI/images/settingsWindow/moderateBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold Hard button
-    check = loadingSurfaceFunc(res, &(res->hardBoldTexture), "../GUI/images/settingsWindow/hardBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->hardBoldTexture), "../GUI/images/settingsWindow/hardBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold White button
-    check = loadingSurfaceFunc(res, &(res->whiteUserBoldTexture), "../GUI/images/settingsWindow/whiteBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->whiteUserBoldTexture), "../GUI/images/settingsWindow/whiteBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold Black button
-    check = loadingSurfaceFunc(res, &(res->blackUserBoldTexture), "../GUI/images/settingsWindow/blackBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->blackUserBoldTexture), "../GUI/images/settingsWindow/blackBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold onePlayer button
-    check = loadingSurfaceFunc(res, &(res->onePlayerBoldTexture), "../GUI/images/settingsWindow/onePlayerBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->onePlayerBoldTexture), "../GUI/images/settingsWindow/onePlayerBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold twoPlayers button
-    check = loadingSurfaceFunc(res, &(res->twoPlayersBoldTexture), "../GUI/images/settingsWindow/twoPlayersBold.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->twoPlayersBoldTexture), "../GUI/images/settingsWindow/twoPlayersBold.bmp");
     if (!check){ return  NULL; }
 
     // Num of players title
-    check = loadingSurfaceFunc(res, &(res->numOfPlayersTitle), "../GUI/images/settingsWindow/gameMode.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->numOfPlayersTitle), "../GUI/images/settingsWindow/gameMode.bmp");
     if (!check){ return  NULL; }
 
     // Difficulty title
-    check = loadingSurfaceFunc(res, &(res->difficultyTitle), "../GUI/images/settingsWindow/difficulty.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->difficultyTitle), "../GUI/images/settingsWindow/difficulty.bmp");
     if (!check){ return  NULL; }
 
     // User color title
-    check = loadingSurfaceFunc(res, &(res->userColorTitle), "../GUI/images/settingsWindow/userColor.bmp");
+    check = settingsLoadingSurfaceFunc(res, &(res->userColorTitle), "../GUI/images/settingsWindow/color.bmp");
     if (!check){ return  NULL; }
 
     res->whiteUserTexture = &(res->whiteUserBoldTexture);
@@ -245,6 +249,7 @@ void spSettingsWindowDestroy(SPSettingsWin *src) {
 
     if (!src) { return; }
 
+    if (src->settingsTitle != NULL) { SDL_DestroyTexture(src->settingsTitle); }
     if (src->startTexture != NULL) { SDL_DestroyTexture(src->startTexture); }
     if (src->backTexture != NULL) { SDL_DestroyTexture(src->backTexture); }
     if (src->whiteUserTexture != NULL) { SDL_DestroyTexture(src->whiteUserThinTexture); }
@@ -278,6 +283,8 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     if (src == NULL) {
         return;
     }
+    SDL_Rect titleR = (SDL_Rect){.x = TITLE_SETTINGS_X, .y = TITLE_SETTINGS_Y, .h = TITLE_SETTINGS_H, .w = TITLE_SETTINGS_W};
+
     SDL_Rect gameModeR = { .x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
     SDL_Rect onePlayerR = (SDL_Rect){ .x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
     SDL_Rect twoPlayersR = (SDL_Rect){ .x = TWOPLAYERSX, .y = GAMEMODEY, .h = BUTTONS_H, .w = TWO_PLAYERS_W};
@@ -299,6 +306,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     SDL_SetRenderDrawColor(src->settingsRenderer, 134, 134, 134, 192);
 
     SDL_RenderClear(src->settingsRenderer);
+    SDL_RenderCopy(src->settingsRenderer, src->settingsTitle, NULL, &titleR);
     SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &gameModeR);
     SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &difficultyR);
     SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &userColorR);
@@ -322,6 +330,7 @@ SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin *src, SDL_Event *eve
     switch (event->type) {
         case SDL_MOUSEBUTTONUP:
             if (isClickOnStart(event->button.x, event->button.y)) {
+
                 return SP_SETTINGS_START;
             } else if (isClickOnBack(event->button.x, event->button.y)) {
                 return SP_SETTINGS_BACK;

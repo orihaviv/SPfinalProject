@@ -67,13 +67,11 @@ int saveGame(char *filePath, SPChessGame *game) {
     }
     fprintf(gameFile, XML_HEADLINE);
     startLabel(GAME, 0, gameFile);
-    char *player = (game->currentPlayer == 1) ? "WHITE" : "BLACK";
-    startAndEndLabel(CURRENT_TURN, player, -1, 1, gameFile);
+    startAndEndLabel(CURRENT_TURN, NULL, game->currentPlayer, 1, gameFile);
     startAndEndLabel(MODE, NULL, game->gameMode, 1, gameFile);
     if (game->gameMode == 1) {
         startAndEndLabel(LEVEL, NULL, game->difficulty, 1, gameFile);
-        char *user = (game->userColor == 1) ? "WHITE" : "BLACK";
-        startAndEndLabel(COLOR, user, -1, 1, gameFile);
+        startAndEndLabel(COLOR, NULL, game->userColor, 1, gameFile);
     } else {
         startAndEndLabel(LEVEL, NULL, -1, 1, gameFile);
         startAndEndLabel(COLOR, NULL, -1, 1, gameFile);
@@ -131,7 +129,8 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
     while (fgets(line, sizeof(line), gameFile) != NULL && !success) {
         if (strstr(line, CURRENT_TURN) != NULL) {            // Fill currentPlayer
             getLabelInfo(labelInfo, line);
-            outputGame->currentPlayer = (!strcmp(labelInfo, "BLACK")) ? 0 : 1;
+            tmp = labelInfo[0];
+            if (spParserIsInt(labelInfo)) { outputGame->currentPlayer = tmp - '0'; }
         } else if (strstr(line, MODE) != NULL) {             // Fill gameMode
             getLabelInfo(labelInfo, line);
             tmp = labelInfo[0];
@@ -140,14 +139,12 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
             if (outputGame->gameMode == 1) {
                 getLabelInfo(labelInfo, line);
                 tmp = labelInfo[0];
-                if (spParserIsInt(labelInfo)) {
-                    outputGame->difficulty = tmp - '0';
-                }
+                if (spParserIsInt(labelInfo)) { outputGame->difficulty = tmp - '0'; }
             }
         } else if (strstr(line, COLOR) != NULL) {           // Fill userColor
             if (outputGame->gameMode == 1) {
                 getLabelInfo(labelInfo, line);
-                outputGame->userColor = (!strcmp(labelInfo, "WHITE")) ? 1 : 0;
+                if (spParserIsInt(labelInfo)) { outputGame->userColor = tmp - '0'; }
             }
         } else if (strstr(line, BOARD) != NULL && (strchr(line, '/') == NULL)) { // Fill board
             for (int j = GAMESIZE - 1; j >= 0; j--) {
@@ -212,7 +209,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
 
 bool savedGameExists(){
 
-    if (access("GUI/saved/savedGames.xml", F_OK) != -1){
+    if (access("../GUI/saved/savedGames", F_OK) != -1){
         return true;
     }
     return false;
@@ -242,7 +239,7 @@ bool createSavedGames(char* first, char* second, char* third, char* forth, char*
         }
     }
     FILE *gameFile;
-    gameFile = fopen("GUI/saved/savedGames.xml", "w");
+    gameFile = fopen("../GUI/saved/savedGames", "w");
     if (gameFile == NULL) {         // fopen has failed
         return false;
     }
@@ -273,7 +270,7 @@ int extractNumOfSavedGames(){
     char labelInfo[SP_MAX_LINE_LENGTH];
     char line[SP_MAX_LINE_LENGTH];
 
-    FILE *gameFile = fopen("GUI/saved/savedGames.xml", "r");
+    FILE *gameFile = fopen("../GUI/saved/savedGames", "r");
     if (!gameFile) {                                          // File Opening error
         return -1;
     }
@@ -299,7 +296,7 @@ char* extractPathOfSlot(int slotNum){
     char line[SP_MAX_LINE_LENGTH];
     char* requiredSlot;
 
-    FILE *gameFile = fopen("GUI/saved/savedGames.xml", "r");
+    FILE *gameFile = fopen("../GUI/saved/savedGames", "r");
     if (!gameFile) {                                          // File Opening error
         return NULL;
     }
@@ -347,8 +344,8 @@ int guiSaveGame(SPChessGame *game){
     int gameSaved;
     int numOfGames;
     if (!savedGameExists()){
-        gameSaved = saveGame("GUI/saved/game1", game);
-        success = createSavedGames("GUI/saved/game1", NULL, NULL, NULL, NULL);
+        gameSaved = saveGame("../GUI/saved/game1", game);
+        success = createSavedGames("../GUI/saved/game1", NULL, NULL, NULL, NULL);
         if (success && gameSaved) { return 1; }
         return 0;
     }
@@ -362,16 +359,16 @@ int guiSaveGame(SPChessGame *game){
 
     switch(numOfGames){
         case 1:
-            one = "GUI/saved/game2";
+            one = "../GUI/saved/game2";
             break;
         case 2:
-            one = "GUI/saved/game3";
+            one = "../GUI/saved/game3";
             break;
         case 3:
-            one = "GUI/saved/game4";
+            one = "../GUI/saved/game4";
             break;
         case 4:
-            one = "GUI/saved/game5";
+            one = "../GUI/saved/game5";
             break;
         case 5:
             one = extractPathOfSlot(5);

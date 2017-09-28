@@ -176,7 +176,7 @@ int extractNumOfSavedGames();
 
 /**
  * Extracting the path of the requiered slot saved game
- * must be freed! //TODO
+ * Result must be freed
  *
  * @param slotNum - Trequested slot number
  *

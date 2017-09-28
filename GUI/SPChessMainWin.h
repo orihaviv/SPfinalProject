@@ -6,6 +6,7 @@
 #define SPCHESSMAINWIN_H_
 
 #include <stdbool.h>
+#include "../SPMainAux.h"
 #include <SDL.h>
 
 //Definitions
