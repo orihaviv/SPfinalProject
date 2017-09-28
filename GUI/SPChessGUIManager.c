@@ -517,11 +517,13 @@ SP_MANAGER_EVENT handleManagerDueToLoadEvent(SPGuiManager *src, SP_LOAD_EVENT ev
             spLoadWindowDestroy(src->loadWin);
             src->loadWin = NULL;
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+            spMainWindowShow(src->mainWin);
             break;
         case SP_LOAD_BACK_GAME:
             spLoadWindowDestroy(src->loadWin);
             src->loadWin = NULL;
             src->activeWin = SP_GAME_WINDOW_ACTIVE;
+            spGameWindowShow(src->gameWin);
             break;
         case SP_LOAD_NONE:
             break;
@@ -562,7 +564,7 @@ SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager *src, SDL_Event *event) {
     SP_LOAD_EVENT loadEvent;
     switch (src->activeWin) {
         case SP_MAIN_WINDOW_ACTIVE:
-            mainEvent = spMainWindowHandleEvent(src->mainWin, event);
+            mainEvent = spMainWindowHandleEvent(event);
             return handleManagerDueToMainEvent(src, mainEvent);
         case SP_SETTINGS_WINDOW_ACTIVE:
             settingsEvent = spSettingsWindowHandleEvent(src->settingsWin, event);

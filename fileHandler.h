@@ -20,6 +20,7 @@
 #define BOARD "board"
 #define ROW "row_"
 #define GENERAL "general"
+#define NUM_OF_SLOTS 5
 
 //gui
 #define ALL_GAMES "saved_games"

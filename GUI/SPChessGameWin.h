@@ -31,6 +31,9 @@
 #define BOARD_X 42
 #define BOARD_Y 42
 
+#define GAME_WINDOW_W 900
+#define GAME_WINDOW_H 600
+
 
 //Buttons Definitions
 #define GAME_BUTTON_H 50

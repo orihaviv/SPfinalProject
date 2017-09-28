@@ -285,8 +285,8 @@ SPGameWin* spGameWindowCreate() {
 	res->gameWindow = SDL_CreateWindow("Chess Game", // window title
 			SDL_WINDOWPOS_CENTERED,           // initial x position
 			SDL_WINDOWPOS_CENTERED,           // initial y position
-			900,                               // width, in pixels
-			600,                               // height, in pixels
+            GAME_WINDOW_W,                               // width, in pixels
+            GAME_WINDOW_H,                               // height, in pixels
 			SDL_WINDOW_OPENGL                  // flags - see below
 			);
 

@@ -95,8 +95,8 @@ SPLoadWin *spLoadWindowCreate(SP_LOAD_CALLER father) {
     res->loadWindow = SDL_CreateWindow("Chess Game - Load Game", // window title
                                            SDL_WINDOWPOS_CENTERED,           // initial x position
                                            SDL_WINDOWPOS_CENTERED,           // initial y position
-                                           670,                               // width, in pixels
-                                           450,                               // height, in pixels
+                                           LOAD_WINDOW_W,                               // width, in pixels
+                                           LOAD_WINDOW_H,                               // height, in pixels
                                            SDL_WINDOW_OPENGL                  // flags - see below
     );
 

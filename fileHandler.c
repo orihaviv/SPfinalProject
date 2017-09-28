@@ -144,6 +144,7 @@ bool loadChessGame(SPChessGame **game, char *filePath) {
         } else if (strstr(line, COLOR) != NULL) {           // Fill userColor
             if (outputGame->gameMode == 1) {
                 getLabelInfo(labelInfo, line);
+                tmp = labelInfo[0];
                 if (spParserIsInt(labelInfo)) { outputGame->userColor = tmp - '0'; }
             }
         } else if (strstr(line, BOARD) != NULL && (strchr(line, '/') == NULL)) { // Fill board
@@ -217,7 +218,7 @@ bool savedGameExists(){
 
 
 bool createSavedGames(char* first, char* second, char* third, char* forth, char* fifth){
-    int num = 5;
+    int num = NUM_OF_SLOTS;
     if (!fifth || strlen(fifth) == 0){
         fifth = "";
         num--;
@@ -331,7 +332,7 @@ char* extractPathOfSlot(int slotNum){
 
 
 bool guiLoadChessGame(SPChessGame **game, int slot) {
-    if (*game == NULL || slot < 1 || slot > 5) {return false; }
+    if (*game == NULL || slot < 1 || slot > NUM_OF_SLOTS) {return false; }
     char* path = extractPathOfSlot(slot);
     bool res;
     res = loadChessGame(game, path);

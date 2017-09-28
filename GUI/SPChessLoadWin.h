@@ -13,6 +13,9 @@
 
 //Definitions
 
+#define LOAD_WINDOW_H 450
+#define LOAD_WINDOW_W 670
+
 #define LABEL_H 47
 #define LABEL_W 250
 #define LABALX 210

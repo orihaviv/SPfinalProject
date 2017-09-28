@@ -3,21 +3,21 @@
 
 //Inner functions
 int isClickOnNew(int x, int y) {
-    if ((x >= 75 && x <= 325) && (y >= 180 && y <= 230)) {
+    if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= NEW_Y && y <= NEW_Y + BUTTONS_H)) {
         return 1;
     }
     return 0;
 }
 
 int isClickOnLoadInMain(int x, int y) {
-    if ((x >= 75 && x <= 325) && (y >= 245 && y <= 295)) {
+    if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= LOAD_Y && y <= LOAD_Y + BUTTONS_H)) {
         return 1;
     }
     return 0;
 }
 
 int isClickOnQuitInMain(int x, int y) {
-    if ((x >= 75 && x <= 325) && (y >= 310 && y <= 360)) {
+    if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= QUIT_Y && y <= QUIT_Y + BUTTONS_H)) {
         return 1;
     }
     return 0;
@@ -61,8 +61,8 @@ SPMainWin *spMainWindowCreate() {
     res->mainWindow = SDL_CreateWindow("Chess Game - Main Menu", // window title
                                        SDL_WINDOWPOS_CENTERED,           // initial x position
                                        SDL_WINDOWPOS_CENTERED,           // initial y position
-                                       400,                               // width, in pixels
-                                       400,                               // height, in pixels
+                                       MAIN_WINDOW_W,                               // width, in pixels
+                                       MAIN_WINDOW_H,                               // height, in pixels
                                        SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -137,11 +137,11 @@ void spMainWindowDraw(SPMainWin *src) {
     if (src == NULL) {
         return;
     }
-    SDL_Rect pictureR = {.x = 75, .y = 10, .h = 200, .w = 200};
-    SDL_Rect newR = {.x = 75, .y = 180, .h = 50, .w = 250};
-    SDL_Rect loadR = {.x = 75, .y = 245, .h = 50, .w = 250};
-    SDL_Rect quitR = {.x = 75, .y = 310, .h = 50, .w = 250};
-    SDL_SetRenderDrawColor(src->mainRenderer, 134, 134, 134, 192);
+    SDL_Rect pictureR = {.x = OBJECTS_X, .y = PIC_Y, .h = PICTURE_W_H, .w = PICTURE_W_H};
+    SDL_Rect newR = {.x = OBJECTS_X, .y = NEW_Y, .h = BUTTONS_H, .w = BUTTONS_W};
+    SDL_Rect loadR = {.x = OBJECTS_X, .y = LOAD_Y, .h = BUTTONS_H, .w = BUTTONS_W};
+    SDL_Rect quitR = {.x = OBJECTS_X, .y = QUIT_Y, .h = BUTTONS_H, .w = BUTTONS_W};
+    SDL_SetRenderDrawColor(src->mainRenderer, 134, 134, 134, BUTTONS_W);
     SDL_RenderClear(src->mainRenderer);
     SDL_RenderCopy(src->mainRenderer, src->pictureTexture, NULL, &pictureR);
     SDL_RenderCopy(src->mainRenderer, src->newGameTexture, NULL, &newR);
@@ -150,7 +150,7 @@ void spMainWindowDraw(SPMainWin *src) {
     SDL_RenderPresent(src->mainRenderer);
 }
 
-SP_MAIN_EVENT spMainWindowHandleEvent(SPMainWin *src, SDL_Event *event) {
+SP_MAIN_EVENT spMainWindowHandleEvent(SDL_Event *event) {
     if (!event) {
         return SP_MAIN_INVALID_ARGUMENT;
     }
