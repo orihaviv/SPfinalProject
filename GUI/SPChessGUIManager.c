@@ -115,6 +115,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             break;
         case SP_SETTINGS_START:
             spSettingsWindowDestroy(src->settingsWin);
+            src->settingsWin = NULL;
             src->gameWin = spGameWindowCreate();
             src->game->state = 1;
             if (src->gameWin == NULL) {

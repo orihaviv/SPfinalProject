@@ -316,6 +316,9 @@ SP_LOAD_EVENT spLoadWindowHandleEvent(SPLoadWin *src, SDL_Event *event) {
             break;
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
+                if (src->caller == GAME_CALLER){
+                    return SP_LOAD_BACK_GAME;
+                }
                 return SP_LOAD_BACK_MAIN;
             }
             break;
