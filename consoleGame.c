@@ -38,10 +38,10 @@ int executeConsoleGame(){
             goto beginning;
         }
         if (lastCommand.cmd == MOVE || lastCommand.cmd == CASTLE){
-            winner = chessCheckWinner(game, 0);
+            winner = chessCheckWinner(game, 0, 0);
             if (game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER){
                 executeComputerMove(game);
-                winner = chessCheckWinner(game, 0);
+                winner = chessCheckWinner(game, 0, 0);
             }
         }
         if (lastCommand.cmd == INVALID || lastCommand.cmd == IGNORE || lastCommand.cmd == SAVE) {toPrint = false; }

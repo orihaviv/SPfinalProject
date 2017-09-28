@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPChessGUIManager.h"
+#include "SPChessGameWin.h"
+#include "SPChessLoadWin.h"
+#include "SPChessSettingsWin.h"
 
 
 SPGuiManager *spManagerCreate() {
@@ -27,17 +30,21 @@ void spManagerDestroy(SPGuiManager *src) {
     }
     if (src->gameWin != NULL) {
         spGameWindowDestroy(src->gameWin);
+        src->gameWin = NULL;
     }
     if (src->loadWin != NULL) {
         spLoadWindowDestroy(src->loadWin);
+        src->loadWin = NULL;
     }
     if (src->settingsWin != NULL) {
         spSettingsWindowDestroy(src->settingsWin);
+        src->settingsWin = NULL;
     }
-    if (src->game != NULL){
+    if (src->game != NULL) {
         chessGameDestroy(&(src->game));
     }
     spMainWindowDestroy(src->mainWin);
+    src->mainWin = NULL;
     free(src);
 }
 
@@ -71,7 +78,7 @@ SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager *src, SP_MAIN_EVENT ev
                 return SP_MANAGER_QUTT;
             }
             src->game = chessGameCreate();
-            if (!src->game){
+            if (!src->game) {
                 printf("Couldn't create manager->game\n");
                 return SP_MANAGER_QUTT;
             }
@@ -103,7 +110,9 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
         case SP_SETTINGS_BACK:
             chessGameDestroy(&(src->game));
             spSettingsWindowDestroy(src->settingsWin);
+            src->settingsWin = NULL;
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+            spMainWindowShow(src->mainWin);
             break;
         case SP_SETTINGS_START:
             spSettingsWindowHide(src->settingsWin);
@@ -321,7 +330,8 @@ void handleMainMenu(SPGuiManager *src) {
     }
     if (whetherToQuit == 1) {
         spGameWindowDestroy(src->gameWin);
-        spSettingsWindowDestroy(src->settingsWin);
+        src->gameWin = NULL;
+//        spSettingsWindowDestroy(src->settingsWin);
         src->activeWin = SP_MAIN_WINDOW_ACTIVE;
     }
 }
@@ -339,20 +349,19 @@ SP_MANAGER_EVENT handleQuitGame(SPGuiManager *src) {
 }
 
 
-
-void guiPawnPromotionHandler (SPGuiManager *src, position dest, int isMini) {
+void guiPawnPromotionHandler(SPGuiManager *src, position dest, int isMini) {
     if (!src) { return; }
     char piece = BLANK;
     SP_PROMOTION_EVENT msg;
-    if ((src->game->gameMode == 1 && src->game->currentPlayer == src->game->userColor) || isMini == 1){
+    if ((src->game->gameMode == 1 && src->game->currentPlayer == src->game->userColor) || isMini == 1) {
         piece = QUEENWHITE;
         if (isMini == 0) {
-            // TODO show message the computer promoted
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Pawn Promotion",
+                                     "Computer promoted his Pawn to a Queen", NULL);
         }
-    }
-    else { // user's turn
+    } else { // user's turn
         msg = showPromotionMessageBox(src);
-        switch (msg){
+        switch (msg) {
             case SP_PROMOTION_ROOK:
                 piece = ROOKWHITE;
                 break;
@@ -369,17 +378,27 @@ void guiPawnPromotionHandler (SPGuiManager *src, position dest, int isMini) {
                 break;
         }
     }
-    if (src->game->gameBoard[dest.row][dest.column] == PAWNBLACK){
-        src->game->gameBoard[dest.row][dest.column] = (char)(toupper(piece));
-    }
-    else if (src->game->gameBoard[dest.row][dest.column] == PAWNWHITE){
+    if (src->game->gameBoard[dest.row][dest.column] == PAWNBLACK) {
+        src->game->gameBoard[dest.row][dest.column] = (char) (toupper(piece));
+    } else if (src->game->gameBoard[dest.row][dest.column] == PAWNWHITE) {
         src->game->gameBoard[dest.row][dest.column] = piece;
     }
 }
 
 
 
+void showCheckMessage(int player) {
+    // Showing message box for check
+    if (player == 0) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check!", "Black King is threatened!", NULL);
+    } else if (player == 1) {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check!", "White King is threatened!", NULL);
+    }
+}
+
+
 SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
+
     char soldier;
     position origin = src->gameWin->moveOrigin;
     position dest = src->gameWin->moveDestination;
@@ -387,24 +406,28 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     SP_CHESS_GAME_STATE winner;
     if (msg == SP_CHESS_GAME_SUCCESS) {
         soldier = src->game->gameBoard[dest.row][dest.column];
-        if ((soldier == PAWNBLACK && dest.row == 0) || (soldier == PAWNWHITE && dest.row == 7)){
+        if ((soldier == PAWNBLACK && dest.row == 0) || (soldier == PAWNWHITE && dest.row == 7)) {
             guiPawnPromotionHandler(src, dest, 0);
         }
         goto moveDone;
     } else if (msg == SP_CHESS_GAME_ILLEGAL_MOVE) {
-        if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) && origin.row == 7 && dest.row == 7 &&
+        if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) && origin.row == 7 &&
+            dest.row == 7 &&
             isBlackRightCastlingValid(src->game) == 1) {
             executeBlackRightCastling(src->game);
             goto moveDone;
-        } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) && origin.row == 7 && dest.row == 7 &&
+        } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) &&
+                   origin.row == 7 && dest.row == 7 &&
                    isBlackLeftCastlingValid(src->game) == 1) {
             executeBlackLeftCastling(src->game);
             goto moveDone;
-        } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) && origin.row == 0 && dest.row == 0 &&
+        } else if (((origin.column == 0 && dest.column == 4) || (dest.column == 0 && origin.column == 4)) &&
+                   origin.row == 0 && dest.row == 0 &&
                    isWhiteLeftCastlingValid(src->game) == 1) {
             executeWhiteLeftCastling(src->game);
             goto moveDone;
-        } else if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) && origin.row == 0 && dest.row == 0 &&
+        } else if (((origin.column == 7 && dest.column == 4) || (dest.column == 7 && origin.column == 4)) &&
+                   origin.row == 0 && dest.row == 0 &&
                    isWhiteRightCastlingValid(src->game) == 1) {
             executeWhiteRightCastling(src->game);
             goto moveDone;
@@ -413,16 +436,20 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     goto anyway;
 
     moveDone:
-    winner = chessCheckWinner(src->game, 0);
+    winner = chessCheckWinner(src->game, 0, 1);
+
+
     if (src->game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER) {
+        if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
         action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
         while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
                SP_CHESS_GAME_SUCCESS) { continue; }
         soldier = src->game->gameBoard[nextMove.current.row][nextMove.current.column];
-        if ((soldier == PAWNBLACK && nextMove.current.row == 0) || (soldier == PAWNWHITE && nextMove.current.row == 7)){
+        if ((soldier == PAWNBLACK && nextMove.current.row == 0) ||
+            (soldier == PAWNWHITE && nextMove.current.row == 7)) {
             guiPawnPromotionHandler(src, dest, 0);
         }
-        winner = chessCheckWinner(src->game, 0);
+        winner = chessCheckWinner(src->game, 0, 1);
     }
     switch (winner) {
         case SP_CHESS_GAME_TIE:
@@ -434,14 +461,14 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
         case SP_CHESS_GAME_BLACK_WINNER:
             showEndingMessageBox(0, src);
             return SP_MANAGER_QUTT;
+        case SP_CHESS_GAME_NO_WINNER:
+            if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
         default:
             break;
     }
     anyway:
     return SP_MANAGER_NONE;
-
 }
-
 
 SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT event) {
     if (event == SP_GAME_EVENT_NONE || src == NULL) {
@@ -451,6 +478,7 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_RESTART:
             initializeBoard(src->game);
             src->gameWin->isTheGameSaved = 0;
+//            updateGameBoard(src->gameWin, src->game);
             break;
         case SP_GAME_EVENT_SAVE:
             handleSaveGame(src);
@@ -491,10 +519,12 @@ SP_MANAGER_EVENT handleManagerDueToLoadEvent(SPGuiManager *src, SP_LOAD_EVENT ev
     switch (event) {
         case SP_LOAD_BACK_MAIN:
             spLoadWindowDestroy(src->loadWin);
+            src->loadWin = NULL;
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
             break;
         case SP_LOAD_BACK_GAME:
             spLoadWindowDestroy(src->loadWin);
+            src->loadWin = NULL;
             src->activeWin = SP_GAME_WINDOW_ACTIVE;
             break;
         case SP_LOAD_NONE:
@@ -542,7 +572,7 @@ SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager *src, SDL_Event *event) {
             settingsEvent = spSettingsWindowHandleEvent(src->settingsWin, event);
             return handleManagerDueToSettingsEvent(src, settingsEvent);
         case SP_GAME_WINDOW_ACTIVE:
-            gameEvent = spGameWindowHandleEvent(src->gameWin,src->game, event);
+            gameEvent = spGameWindowHandleEvent(src->gameWin, src->game, event);
             return handleManagerDueToGameEvent(src, gameEvent);
         case SP_LOAD_WINDOW_ACTIVE:
             loadEvent = spLoadWindowHandleEvent(src->loadWin, event);

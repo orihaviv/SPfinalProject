@@ -95,6 +95,7 @@ typedef struct{
 
 	int isTheGameSaved;
 	int getMovesOn;
+	int isPieceDragged;
 }SPGameWin;
 
 SPGameWin* spGameWindowCreate();

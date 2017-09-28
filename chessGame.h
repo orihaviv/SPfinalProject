@@ -541,11 +541,12 @@ SPArrayList *getMovesForSoldier(SPChessGame *src, int row, int col);
 /**
 * Checks if there's a winner in the specified game status. The function the correct message
 * @param src - the source game
-* @param isMini - inicates if part of the miniMan proccess
+* @param isMini - indicates if part of the miniMax proccess
+* @param isGui - indicates if in GUI mode
 * @return
 * SP_CHESS_GAME_STATE message tells what is the winning state
 */
-SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src, int isMini);
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame *src, int isMini, int isGui);
 
 
 #endif//SPFINAL_CHESSGAME_H

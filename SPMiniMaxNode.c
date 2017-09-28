@@ -38,7 +38,7 @@ int soldierScore(char soldier) {
 }
 
 int scoreOfLeafNode(SPChessGame *currentGame) {
-    SP_CHESS_GAME_STATE msg = chessCheckWinner(currentGame, 1);
+    SP_CHESS_GAME_STATE msg = chessCheckWinner(currentGame, 1, 0);
     if (msg == SP_CHESS_GAME_WHITE_WINNER) {         // white player won
         return INT_MAX;
     } else if (msg == SP_CHESS_GAME_BLACK_WINNER) {    // black player won

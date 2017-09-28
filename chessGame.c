@@ -32,6 +32,16 @@ void initializeBoard(SPChessGame* game){
     game->gameBoard[7][5] = BISHOPBLACK;
     game->gameBoard[7][6] = KNIGHTBLACK;
     game->gameBoard[7][7] = ROOKBLACK;
+
+    game->whiteKing.column = 4;
+    game->whiteKing.row = 0;
+    game->blackKing.column = 4;
+    game->blackKing.row = 7;
+
+    game->whiteLeftCastling = 1;
+    game->whiteRightCastling = 1;
+    game->blackLeftCastling = 1;
+    game->blackRightCastling = 1;
 }
 
 
@@ -45,14 +55,6 @@ SPChessGame *chessGameCreate() {
             game->difficulty = 2;
             game->state = 0;
             game->gameMode = 1;
-            game->whiteKing.column = 4;
-            game->whiteKing.row = 0;
-            game->blackKing.column = 4;
-            game->blackKing.row = 7;
-            game->whiteLeftCastling = 1;
-            game->whiteRightCastling = 1;
-            game->blackLeftCastling = 1;
-            game->blackRightCastling = 1;
 
             initializeBoard(game);
 
@@ -747,7 +749,7 @@ void printCheckMessage(SPChessGame* src, int current){
 }
 
 
-SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
+SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini, int isGui){
     bool flag = true;
     if (!src){ return SP_CHESS_GAME_INVALID_GAME;}
     char tmp;
@@ -773,7 +775,9 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the white king threatened?
             if (flag){ return SP_CHESS_GAME_BLACK_WINNER; }      // no possible moves at all for the white && check
             else{                                                // just check
-                if (isMini == 0){printCheckMessage(src, src->currentPlayer); }
+                if (isMini == 0){
+                    if (isGui == 0){ printCheckMessage(src, src->currentPlayer); }
+                }
                 return SP_CHESS_GAME_NO_WINNER;
             }
         }
@@ -799,7 +803,9 @@ SP_CHESS_GAME_STATE chessCheckWinner(SPChessGame* src, int isMini){
         if (isTheKingThreatened(src, src->currentPlayer)){       // is the black king threatened?
             if (flag){ return SP_CHESS_GAME_WHITE_WINNER; }      // no possible moves at all for the black && check
             else {                                               // just check
-                if (isMini == 0){printCheckMessage(src, src->currentPlayer); }
+                if (isMini == 0){
+                    if (isGui == 0){ printCheckMessage(src, src->currentPlayer); }
+                }
                 return SP_CHESS_GAME_NO_WINNER;
             }
         }

@@ -99,8 +99,6 @@ action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_
 SPArrayList* spArrayListCreate(int maxSize);
 
 
-
-
 /**
  *	Creates an exact copy of the src array list. Elements in the new copy will
  *	be in the same order as they appeared in the source list.
@@ -111,12 +109,14 @@ SPArrayList* spArrayListCreate(int maxSize);
  */
 SPArrayList* spArrayListCopy(SPArrayList* src);
 
+
 /**
  * Frees all memory resources associated with the source array list. If the
  * source array is NULL, then the function does nothing.
  * @param src - the source array list
  */
 void spArrayListDestroy(SPArrayList** src);
+
 
 /**
  * Clears all elements from the source array list. After invoking this function,
@@ -306,5 +306,18 @@ bool spArrayListIsFull(SPArrayList* src);
  * Otherwise, true is returned.
  */
 bool spArrayListIsEmpty(SPArrayList* src);
+
+
+/**
+ * A comparator between two actions.
+ *
+ * @param action1 - the first action
+ * @param action2 - the second action
+ * @return
+ * <0 The element pointed by p1 goes before the element pointed by p2
+ * 0  The element pointed by p1 is equivalent to the element pointed by p2
+ * >0 The element pointed by p1 goes after the element pointed by p2
+ */
+int actionCompare(const void *action1, const void *action2);
 
 #endif
