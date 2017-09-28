@@ -186,3 +186,13 @@ bool spArrayListIsEmpty(SPArrayList* src){
     }
     return ((src->actualSize) == 0);
 }
+
+
+int actionCompare(const void *action1, const void *action2) {
+    action* a1 = (action*) action1;
+    action* a2 = (action*) action2;
+    if (a1->current.row == a2->current.row)
+        return (a1->current.column  - a2->current.column);
+    else
+        return a1->current.row - a2->current.row;
+}

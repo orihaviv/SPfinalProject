@@ -309,6 +309,7 @@ void executeGetMoves(SPChessGame *game, SPCommand command) {
         printf("The specified position does not contain black player piece\n");
     } else {
         possibleActions = getMovesForSoldier(game, command.source.row, command.source.column);
+        qsort((void*)possibleActions, possibleActions->actualSize, sizeof(action), actionCompare);
         for (int index = 0; index < possibleActions->actualSize; index++) {
             move = *(spArrayListGetAt(possibleActions, index));
             if (move.castling == SP_CHESS_NO_CASTLING){
@@ -317,9 +318,11 @@ void executeGetMoves(SPChessGame *game, SPCommand command) {
             else{
                 printf("castle <%d,%c>", toRowNum(move.prev.row), toColChar(move.prev.column));
             }
-            if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) { printf("*"); }
-            if (move.captured != BLANK) { printf("^"); }
-            printf("\n");
+            if (game->difficulty <= 2) {
+                if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) { printf("*"); }
+                if (move.captured != BLANK) { printf("^"); }
+                printf("\n");
+            }
         }
         spArrayListDestroy(&possibleActions);
     }

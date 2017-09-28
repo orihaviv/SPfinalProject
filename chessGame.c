@@ -32,6 +32,16 @@ void initializeBoard(SPChessGame* game){
     game->gameBoard[7][5] = BISHOPBLACK;
     game->gameBoard[7][6] = KNIGHTBLACK;
     game->gameBoard[7][7] = ROOKBLACK;
+
+    game->whiteKing.column = 4;
+    game->whiteKing.row = 0;
+    game->blackKing.column = 4;
+    game->blackKing.row = 7;
+
+    game->whiteLeftCastling = 1;
+    game->whiteRightCastling = 1;
+    game->blackLeftCastling = 1;
+    game->blackRightCastling = 1;
 }
 
 
@@ -45,14 +55,6 @@ SPChessGame *chessGameCreate() {
             game->difficulty = 2;
             game->state = 0;
             game->gameMode = 1;
-            game->whiteKing.column = 4;
-            game->whiteKing.row = 0;
-            game->blackKing.column = 4;
-            game->blackKing.row = 7;
-            game->whiteLeftCastling = 1;
-            game->whiteRightCastling = 1;
-            game->blackLeftCastling = 1;
-            game->blackRightCastling = 1;
 
             initializeBoard(game);
 

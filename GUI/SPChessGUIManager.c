@@ -104,6 +104,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             chessGameDestroy(&(src->game));
             spSettingsWindowDestroy(src->settingsWin);
             src->activeWin = SP_MAIN_WINDOW_ACTIVE;
+            spMainWindowShow(src->activeWin);
             break;
         case SP_SETTINGS_START:
             spSettingsWindowHide(src->settingsWin);
