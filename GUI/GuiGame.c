@@ -3,8 +3,7 @@
 //
 
 #include "GuiGame.h"
-
-
+#include "SPChessGUIManager.h"
 
 
 int executeGuiGame() {
@@ -13,18 +12,38 @@ int executeGuiGame() {
         return 1;
     }
 
-    SPGuiManager* manager = spManagerCreate();
-    if (manager == NULL ) {
+    SPGuiManager *manager = spManagerCreate();
+    if (manager == NULL) {
         SDL_Quit();
         return 0;
     }
     SDL_Event event;
     while (1) {
         SDL_WaitEvent(&event);
-        if (spManagerHandleEvent(manager, &event) == SP_MANAGER_QUTT) {
+        SP_MANAGER_EVENT status;
+        status = spManagerHandleEvent(manager, &event);
+        if (status == SP_MANAGER_QUTT) {
             break;
+        } else {
+
+            spManagerDraw(manager);
+
+            if (status == SP_MANAGER_TIE) {
+                showEndingMessageBox(2, manager);
+                break;
+            } else if (status == SP_MANAGER_WHITE_WON) {
+                showEndingMessageBox(1, manager);
+                break;
+            } else if (status == SP_MANAGER_BLACK_WON) {
+                showEndingMessageBox(0, manager);
+                break;
+            }
+
+            if (manager->game != NULL && isTheKingThreatened(manager->game, manager->game->currentPlayer) && manager->checked == 1) {
+                showCheckMessage(manager->game->currentPlayer);
+                manager->checked = 0;
+            }
         }
-        spManagerDraw(manager);
     }
     spManagerDestroy(manager);
     SDL_Quit();

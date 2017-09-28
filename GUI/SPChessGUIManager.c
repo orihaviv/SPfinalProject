@@ -19,6 +19,7 @@ SPGuiManager *spManagerCreate() {
     res->gameWin = NULL;
     res->game = NULL;
     res->activeWin = SP_MAIN_WINDOW_ACTIVE;
+    res->checked = 0;
     return res;
 }
 
@@ -459,16 +460,16 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     }
     switch (winner) {
         case SP_CHESS_GAME_TIE:
-            showEndingMessageBox(2, src);
-            return SP_MANAGER_QUTT;
+            return SP_MANAGER_TIE;
         case SP_CHESS_GAME_WHITE_WINNER:
-            showEndingMessageBox(1, src);
-            return SP_MANAGER_QUTT;
+            return SP_MANAGER_WHITE_WON;
         case SP_CHESS_GAME_BLACK_WINNER:
-            showEndingMessageBox(0, src);
-            return SP_MANAGER_QUTT;
+            return SP_MANAGER_BLACK_WON;
         case SP_CHESS_GAME_NO_WINNER:
-            if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
+            if (isTheKingThreatened(src->game, src->game->currentPlayer)) {
+                src->checked = 1;
+                return SP_MANAGER_CHECK;
+            }
         default:
             break;
     }
@@ -507,8 +508,7 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT ev
         case SP_GAME_EVENT_QUIT:
             return handleQuitGame(src);
         case SP_GAME_EVENT_MOVE:
-            handleMove(src);
-            break;
+            return handleMove(src);
         default:
             break;
     }

@@ -16,6 +16,10 @@ typedef enum{
 
 typedef enum{
 	SP_MANAGER_QUTT,
+	SP_MANAGER_WHITE_WON,
+	SP_MANAGER_BLACK_WON,
+	SP_MANAGER_TIE,
+	SP_MANAGER_CHECK,
 	SP_MANAGER_NONE,
 }SP_MANAGER_EVENT;
 
@@ -26,6 +30,7 @@ typedef struct {
 	SPGameWin* gameWin;
 	ACTIVE_WINDOW activeWin;
 	SPChessGame* game;
+	int checked;
 } SPGuiManager;
 
 
@@ -46,7 +51,26 @@ void spManagerDestroy(SPGuiManager* src);
 
 void spManagerDraw(SPGuiManager* src);
 
-SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event) ;
+/**
+ * Showing an ending relevant winner message box
+ * @param winner  - 1 = white, 2 = tie, 0 = black
+ * @param src - the gui manager
+ * @return
+ */
+
+int showEndingMessageBox(int winner, SPGuiManager *src);
+
+
+/**
+ * Showing an check message box
+ * @param player - the player that his king is threatened
+ * @return
+ */
+
+void showCheckMessage(int player);
+
+
+SP_MANAGER_EVENT spManagerHandleEvent(SPGuiManager* src, SDL_Event* event);
 
 
 #endif
