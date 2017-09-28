@@ -6,11 +6,11 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 
 //specify the maximum line length
 #define SP_MAX_LINE_LENGTH 1024
 //converting char to int
-#define rowToInt(a) (a - 49)
 #define colToInt(a) (a - 65)
 
 

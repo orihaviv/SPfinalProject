@@ -15,8 +15,8 @@
 
 #define TITLE_SETTINGS_H 80
 #define TITLE_SETTINGS_W 250
-#define TITLE_SETTINGS_X 325
-#define TITLE_SETTINGS_Y 50
+#define TITLE_SETTINGS_X 230
+#define TITLE_SETTINGS_Y 90
 
 #define LABELS_H 50
 #define BUTTONS_H 50
@@ -24,6 +24,11 @@
 #define GAME_MODE_W 250
 #define COLOR_W 135
 #define DIFFICULTY_W 200
+
+#define PIC_W 170
+#define PIC_H 250
+#define PIC_X 470
+#define PIC_Y 10
 
 #define ONE_PLAYER_W 245
 #define TWO_PLAYERS_W 254
@@ -38,12 +43,12 @@
 #define BACK_W 234
 
 #define GAMEMODEX 20
-#define GAMEMODEY 170
+#define GAMEMODEY 270
 #define ONEPLAYERX 280
 #define TWOPLAYERSX 600
 
 #define USERCOLORX 20
-#define USERCOLORY 270
+#define USERCOLORY 350
 #define WHITEX 290
 #define BLACKX 610
 
@@ -52,8 +57,8 @@
 #define BACKX 100
 
 #define DIFFICULTYX 20
-#define DIFFICULTYY 370
-#define NOOB_EASY_MODERATE_HARD_Y 470
+#define DIFFICULTYY 410
+#define NOOB_EASY_MODERATE_HARD_Y 490
 #define NOOBX 30
 #define EASYX 250
 #define MODERATEX 470
@@ -81,6 +86,7 @@ typedef struct {
     SDL_Window* settingsWindow;
     SDL_Renderer* settingsRenderer;
     SDL_Texture* settingsTitle;
+    SDL_Texture* settingsPicture;
     SDL_Texture* numOfPlayersTitle;
     SDL_Texture* difficultyTitle;
     SDL_Texture* userColorTitle;

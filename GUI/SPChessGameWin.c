@@ -272,6 +272,10 @@ SPGameWin* spGameWindowCreate() {
     res->isTheGameSaved = 0;
     res->getMovesOn = 0;
     res->isPieceDragged = 0;
+    res->moveOrigin.row = -1;
+    res->moveOrigin.column = -1;
+    res->moveDestination.row = -1;
+    res->moveDestination.column = -1;
 
     SDL_Surface* loadingSurface = NULL; //Used as temp surface
 
@@ -446,10 +450,10 @@ void putTextureInRec(SPGameWin* src, SPChessGame* game, int i, int j, SDL_Rect* 
     return;
 }
 
-void updateGameBoard(SPGameWin* src, SPChessGame* game){
+void updateGameBoard(SPGameWin* src, SPChessGame* game) {
     /* Draws the relevant pieces over the board */
 
-    SDL_Rect rec = { .x = 59, .y = 60, .w = BOARD_W, .h = BOARD_W };
+    SDL_Rect rec = {.x = 59, .y = 60, .w = BOARD_W, .h = BOARD_W};
     int i = 0, j = 0;
     for (i = 0; i < GAMESIZE; i++) {
         for (j = 0; j < GAMESIZE; j++) {
@@ -457,6 +461,10 @@ void updateGameBoard(SPGameWin* src, SPChessGame* game){
             rec.y = 60 + (GAMESIZE - 1 - i) * PIECE_SIZE;
             rec.w = PIECE_SIZE;
             rec.h = PIECE_SIZE;
+            if (src->moveOrigin.row == i && src->moveOrigin.column == j) {
+                rec.x = src->dragRec.x;
+                rec.x = src->dragRec.y;
+            }
             putTextureInRec(src, game, i, j, &rec);
         }
     }
@@ -548,12 +556,12 @@ void spGameWindowDeactivateGetMoves(SPGameWin* src, SPChessGame* game){
 int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* event){
     /* Handles "get_moves" events */
 
-    int eventX = getClickColumn(event->button.x) , eventY = getClickRow(event->button.y) , i , row , col;
-    if (eventX < 0 || eventY < 0){ return 0; }
-    if (game->userColor == 0 && !isBlack(game->gameBoard[eventY][eventX])){ return 0; }
-    if (game->userColor == 1 && !isWhite(game->gameBoard[eventY][eventX])){ return 0; }
+    int eventCol = getClickColumn(event->button.x) , eventRow = getClickRow(event->button.y) , i , row , col;
+    if (eventCol < 0 || eventRow < 0){ return 0; }
+    if (game->userColor == 0 && !isBlack(game->gameBoard[eventRow][eventCol])){ return 0; }
+    if (game->userColor == 1 && !isWhite(game->gameBoard[eventRow][eventCol])){ return 0; }
 
-    SPArrayList *possibleMoves = getMovesForSoldier(game, eventY, eventX);
+    SPArrayList *possibleMoves = getMovesForSoldier(game, eventRow, eventCol);
     action move;
     SDL_Rect rec;
 
@@ -582,24 +590,24 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
 }
 
 
-SP_GAME_EVENT spGameWindowHandleBoardEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
-    /* Handles events on the board's side */
-
-    int originCol = getClickColumn(src->mouseDownEvent->button.x) , originRow = getClickRow(src->mouseDownEvent->button.y);
-    src->mouseDownEvent = NULL;
-    int destCol = getClickColumn(event->button.x) , destRow = getClickRow(event->button.y);
-
-    if (originCol < 0 || originRow < 0 || destCol < 0 || originRow < 0) { return SP_GAME_EVENT_NONE; }
-    if (game->userColor == 0 && !isBlack(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
-    if (game->userColor == 1 && !isWhite(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
-
-    src->moveOrigin.row = originRow;
-    src->moveOrigin.column = originCol;
-    src->moveDestination.row = destRow;
-    src->moveDestination.column = destCol;
-
-    return SP_GAME_EVENT_MOVE;
-}
+//SP_GAME_EVENT spGameWindowHandleBoardEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
+//    /* Handles events on the board's side */
+//
+//    int originCol = getClickColumn(src->mouseDownEvent->button.x) , originRow = getClickRow(src->mouseDownEvent->button.y);
+//    src->mouseDownEvent = NULL;
+//    int destCol = getClickColumn(event->button.x) , destRow = getClickRow(event->button.y);
+//
+//    if (originCol < 0 || originRow < 0 || destCol < 0 || originRow < 0) { return SP_GAME_EVENT_NONE; }
+//    if (game->userColor == 0 && !isBlack(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
+//    if (game->userColor == 1 && !isWhite(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
+//
+//    src->moveOrigin.row = originRow;
+//    src->moveOrigin.column = originCol;
+//    src->moveDestination.row = destRow;
+//    src->moveDestination.column = destCol;
+//
+//    return SP_GAME_EVENT_MOVE;
+//}
 
 
 SP_GAME_EVENT spGameWindowHandleButtonsEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
@@ -627,14 +635,92 @@ SP_GAME_EVENT spGameWindowHandleButtonsEvent(SPGameWin* src, SPChessGame* game, 
 }
 
 
-void spGameWindowDrag(SPGameWin* src, SPChessGame* game, SDL_Event* event){             // TODO
-    /* drags the piece across the board */
+double getDist(int x1, int y1, int x2, int y2){
+    /* Computes the distance between two points on grid */
 
+    int dx = x1 - x2, dy = y1 - y2;
+    double res = pow(dx,2) + pow(dy,2);
+    res = pow(res,0.5);
+    return res;
 }
 
-void spGameWindowDrop(SPGameWin* src, SPChessGame* game, SDL_Event* event){             // TODO
-    /* drop the piece to the right position on the board */
 
+void spGameWindowDrag(SPGameWin* src, SDL_Event* event){
+    /* Drags the piece across the board.
+     * The method is called <=> (src->isPieceDragged == 1 && the cursor is between board borders */
+
+    int mouseSourceX = src->dragRec.x + (int)0.5*PIECE_SIZE , mouseSourceY = src->dragRec.y + (int)0.5*PIECE_SIZE;
+    double dist = getDist(mouseSourceX, mouseSourceY ,event->button.x , event->button.y);
+    if (dist > PIECE_DISTANCE_UPDATE){
+        src->dragRec.x = event->button.x - PIECE_SIZE/2;
+        src->dragRec.y = event->button.y - PIECE_SIZE/2;
+    }
+}
+
+SP_GAME_EVENT spGameWindowDrop(SPGameWin* src, SDL_Event* event){
+    /* Drops the piece to the right position on the board */
+
+    src->isPieceDragged = 0;
+
+    src->moveDestination.column = getClickColumn(event->button.x);
+    src->moveDestination.row = getClickRow(event->button.y);
+
+    return SP_GAME_EVENT_MOVE;
+}
+
+
+SP_GAME_EVENT spGameWindowHandleButtonDownEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
+    /* Handles a "button-down" event */
+
+    if (event->button.button == SDL_BUTTON_LEFT){ spGameWindowDeactivateGetMoves(src,game); }
+    if (!isClickOnBoard(event)){
+        src->mouseDownEvent = NULL;
+        src->isPieceDragged = 0;
+    }
+    else if (isClickOnBoard(event) && event->button.button == SDL_BUTTON_LEFT) {
+        src->mouseDownEvent = event;
+        int eventCol = getClickColumn(event->button.x) , eventRow = getClickRow(event->button.y);
+        if (game->userColor == 0 && !isBlack(game->gameBoard[eventRow][eventCol])) { return SP_GAME_EVENT_NONE; }
+        if (game->userColor == 1 && !isWhite(game->gameBoard[eventRow][eventCol])) { return SP_GAME_EVENT_NONE; }
+        src->moveOrigin.row = eventRow;
+        src->moveOrigin.column = eventCol;
+        src->dragRec.x = event->button.x - PIECE_SIZE/2;
+        src->dragRec.y = event->button.y - PIECE_SIZE/2;
+        src->isPieceDragged = 1;
+    }
+    return SP_GAME_EVENT_NONE;
+}
+
+
+SP_GAME_EVENT spGameWindowHandleButtonUpEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
+    /* Handles a "button-up" event */
+
+    if (event->button.button == SDL_BUTTON_LEFT) {
+        spGameWindowDeactivateGetMoves(src, game);
+        // support button event
+        if (!isClickOnBoard(event) && src->isPieceDragged == 0) {
+            return spGameWindowHandleButtonsEvent(src, game, event);
+        }
+            //support game event
+        else if (isClickOnBoard(event) && src->isPieceDragged == 1) {
+            return spGameWindowDrop(src, event);
+        }
+        else { return SP_GAME_EVENT_NONE; }
+    }
+        // support "get-moves"
+    else if (event->button.button == SDL_BUTTON_RIGHT && isClickOnBoard(event)
+             && game->difficulty <= 2 && game->gameMode == 1) {
+        if (src->getMovesOn == 1) {
+            resetGetMoves(src, game);
+            src->getMovesOn = 0;
+        }
+        else {
+            if (spGameWindowActivateGetMoves(src, game, event) == 1) {
+                src->getMovesOn = 1;
+            }
+        }
+    }
+    return SP_GAME_EVENT_NONE;
 }
 
 
@@ -645,44 +731,19 @@ SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Eve
     switch (event->type) {
 
         case SDL_MOUSEBUTTONDOWN:
-            if (event->button.button == SDL_BUTTON_LEFT){ spGameWindowDeactivateGetMoves(src,game); }
-            if (!isClickOnBoard(event)){
-                src->mouseDownEvent = NULL;
-                src->isPieceDragged = 0;
-            }
-            else if (isClickOnBoard(event) && event->button.button == SDL_BUTTON_LEFT) {
-                src->mouseDownEvent = event;
-                src->isPieceDragged = 1;
-            }
-            return SP_GAME_EVENT_NONE;
+            return spGameWindowHandleButtonDownEvent(src, game, event);
 
         case SDL_MOUSEBUTTONUP:
-            if (event->button.button == SDL_BUTTON_LEFT) {
-                spGameWindowDeactivateGetMoves(src, game);
-                if (!isClickOnBoard(event) && src->mouseDownEvent == NULL) {
-                    return spGameWindowHandleButtonsEvent(src, game, event);
-                } else if (isClickOnBoard(event) && src->mouseDownEvent != NULL) {
-                    return spGameWindowHandleBoardEvent(src, game, event);
-                }
-                else { return SP_GAME_EVENT_NONE; }
-            }
-            else if (event->button.button == SDL_BUTTON_RIGHT && isClickOnBoard(event)
-                     && game->difficulty <= 2 && game->gameMode == 1) {
-                if (src->getMovesOn == 1) {
-                    resetGetMoves(src, game);
-                    src->getMovesOn = 0;
-                }
-                else {
-                    if (spGameWindowActivateGetMoves(src, game, event) == 1) {
-                        src->getMovesOn = 1;
-                    }
-                }
-            }
-            return SP_GAME_EVENT_NONE;
+            return spGameWindowHandleButtonUpEvent(src, game, event);
 
         case SDL_MOUSEMOTION:
-            if (src->isPieceDragged) {
-                spGameWindowDrag(src, game, event);
+            if (src->isPieceDragged && isClickOnBoard(event)) {
+                spGameWindowDrag(src, event);
+            }
+            else{
+                src->isPieceDragged = 0;
+                src->moveOrigin.row = -1;
+                src->moveOrigin.column = -1;
             }
 
         case SDL_WINDOWEVENT:

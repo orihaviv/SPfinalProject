@@ -28,11 +28,12 @@
 #define BOARD_H 516
 #define BOARD_W 514
 
+#define GAME_WINDOW_H 600
+#define GAME_WINDOW_W 900
+
 #define BOARD_X 42
 #define BOARD_Y 42
-
-#define GAME_WINDOW_W 900
-#define GAME_WINDOW_H 600
+#define PIECE_DISTANCE_UPDATE 35
 
 
 //Buttons Definitions
@@ -93,6 +94,7 @@ typedef struct{
 
 	SDL_Event* mouseDownEvent;
 
+	SDL_Rect dragRec;
 	position moveOrigin;
 	position moveDestination;
 
@@ -102,10 +104,15 @@ typedef struct{
 }SPGameWin;
 
 SPGameWin* spGameWindowCreate();
+
 void spGameWindowDestroy(SPGameWin* src);
+
 void spGameWindowDraw(SPGameWin* src, SPChessGame* game);
+
 SP_GAME_EVENT spGameWindowHandleEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event);
+
 void spGameWindowHide(SPGameWin *src);
+
 void spGameWindowShow(SPGameWin *src);
 
 

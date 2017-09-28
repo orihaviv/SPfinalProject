@@ -145,6 +145,10 @@ SPSettingsWin *spSettingsWindowCreate() {
     check = settingsLoadingSurfaceFunc(res, &(res->settingsTitle), "../GUI/images/settingsWindow/settingsTitle.bmp");
     if (!check){ return  NULL; }
 
+    // Settings picture
+    check = settingsLoadingSurfaceFunc(res, &(res->settingsPicture), "../GUI/images/settingsWindow/settingsPic.bmp");
+    if (!check){ return  NULL; }
+
     // Start button
     check = settingsLoadingSurfaceFunc(res, &(res->startTexture), "../GUI/images/settingsWindow/start.bmp");
     if (!check){ return  NULL; }
@@ -250,6 +254,7 @@ void spSettingsWindowDestroy(SPSettingsWin *src) {
     if (!src) { return; }
 
     if (src->settingsTitle != NULL) { SDL_DestroyTexture(src->settingsTitle); }
+    if (src->settingsPicture != NULL) { SDL_DestroyTexture(src->settingsPicture); }
     if (src->startTexture != NULL) { SDL_DestroyTexture(src->startTexture); }
     if (src->backTexture != NULL) { SDL_DestroyTexture(src->backTexture); }
     if (src->whiteUserTexture != NULL) { SDL_DestroyTexture(src->whiteUserThinTexture); }
@@ -284,6 +289,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
         return;
     }
     SDL_Rect titleR = (SDL_Rect){.x = TITLE_SETTINGS_X, .y = TITLE_SETTINGS_Y, .h = TITLE_SETTINGS_H, .w = TITLE_SETTINGS_W};
+    SDL_Rect pictureR = (SDL_Rect){.x = PIC_X, .y = PIC_Y, .h = PIC_H, .w = PIC_W};
 
     SDL_Rect gameModeR = { .x = GAMEMODEX, .y = GAMEMODEY, .h = LABELS_H, .w = GAME_MODE_W};
     SDL_Rect onePlayerR = (SDL_Rect){ .x = ONEPLAYERX, .y = GAMEMODEY, .h = BUTTONS_H, .w = ONE_PLAYER_W};
@@ -307,6 +313,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
 
     SDL_RenderClear(src->settingsRenderer);
     SDL_RenderCopy(src->settingsRenderer, src->settingsTitle, NULL, &titleR);
+    SDL_RenderCopy(src->settingsRenderer, src->settingsPicture, NULL, &pictureR);
     SDL_RenderCopy(src->settingsRenderer, src->numOfPlayersTitle, NULL, &gameModeR);
     SDL_RenderCopy(src->settingsRenderer, src->difficultyTitle, NULL, &difficultyR);
     SDL_RenderCopy(src->settingsRenderer, src->userColorTitle, NULL, &userColorR);

@@ -342,6 +342,7 @@ bool guiLoadChessGame(SPChessGame **game, int slot) {
 
 int guiSaveGame(SPChessGame *game){
     bool success;
+    bool oneAlloc = false;
     int gameSaved;
     int numOfGames;
     if (!savedGameExists()){
@@ -372,6 +373,7 @@ int guiSaveGame(SPChessGame *game){
             one = "../GUI/saved/game5";
             break;
         case 5:
+            oneAlloc = true;
             one = extractPathOfSlot(5);
             break;
         default:
@@ -380,7 +382,7 @@ int guiSaveGame(SPChessGame *game){
     }
     gameSaved = saveGame(one, game);
     success = createSavedGames(one, two, three, four, five);
-    free(one);
+    if (oneAlloc) { free(one); }
     free(two);
     free(three);
     free(four);
