@@ -1,11 +1,9 @@
 FLAGS = -c -std=c99 -pedantic-errors -Wall -Werror -g $(CFLAGS) $(SDL_FLAGS) -lm -D_REENTRANT
 SDL_FLAGS = -I/usr/local/lib/sdl_2.0.5/include/SDL2
 
-HFILES = chessGame.h chessParser.h consoleGame.h fileHandler.h SPArrayList.h SPMainAux.h SPMiniMax.h SPMiniMaxNode.h GUI/GuiGame.h
-         GUI/SPChessGameWin.h GUI/SPChessGUIManager.h GUI/SPChessLoadWin.h SPChessMainWin.h SPChessSettingsWin.h
+HFILES = chessGame.h chessParser.h consoleGame.h fileHandler.h SPArrayList.h SPMainAux.h SPMiniMax.h SPMiniMaxNode.h GUI/GuiGame.h GUI/SPChessGameWin.h GUI/SPChessGUIManager.h GUI/SPChessLoadWin.h SPChessMainWin.h SPChessSettingsWin.h
 
-OBJECTS = chessGame.o chessParser.o consoleGame.o fileHandler.o SPArrayList.o SPMainAux.o SPMiniMax.o SPMiniMaxNode.o GUI/GuiGame.o
-          GUI/SPChessGameWin.o GUI/SPChessGUIManager.o GUI/SPChessLoadWin.o SPChessMainWin.o SPChessSettingsWin.o
+OBJECTS = chessGame.o chessParser.o consoleGame.o fileHandler.o SPArrayList.o SPMainAux.o SPMiniMax.o SPMiniMaxNode.o GUI/GuiGame.o GUI/SPChessGameWin.o GUI/SPChessGUIManager.o GUI/SPChessLoadWin.o SPChessMainWin.o SPChessSettingsWin.o
 
 all: chessprog
 
