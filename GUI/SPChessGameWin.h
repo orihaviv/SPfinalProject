@@ -86,7 +86,8 @@ typedef struct{
 	SDL_Texture* undoMoveEnabled;
 	SDL_Texture* mainMenu;
 	SDL_Texture* quitGame;
-    SDL_Texture* boardTiles[GAMESIZE][GAMESIZE];
+    SDL_Texture** boardTiles;
+//    SDL_Rect boardRects[GAMESIZE][GAMESIZE];
 
     SDL_Texture* yellow;
     SDL_Texture* red;

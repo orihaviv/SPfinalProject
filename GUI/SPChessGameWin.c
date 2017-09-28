@@ -313,6 +313,8 @@ SPGameWin* spGameWindowCreate() {
     check = createButtonsTextures(res);
     if (check == 0) { return NULL;}
 
+    res->boardTiles = (SDL_Texture**) calloc(GAMESIZE*GAMESIZE, sizeof(SDL_Texture*));
+
     SDL_FreeSurface(loadingSurface);
     return res;
 }
@@ -360,6 +362,7 @@ void spGameWindowDestroyBoard(SPGameWin* src){
     if (src->blackPawn != NULL ) {
         SDL_DestroyTexture(src->blackPawn);
     }
+
 }
 
 void spGameWindowDestroyButtons(SPGameWin* src){
@@ -395,6 +398,9 @@ void spGameWindowDestroy(SPGameWin* src) {
     }
     if (src->gameRenderer != NULL ) {
         SDL_DestroyRenderer(src->gameRenderer);
+    }
+    if (src->boardTiles != NULL ) {
+        free(src->boardTiles);
     }
     spGameWindowDestroyBoard(src);
     spGameWindowDestroyButtons(src);
@@ -471,26 +477,26 @@ void updateGameBoard(SPGameWin* src, SPChessGame* game) {
 }
 
 
-//void updateSpecialTiles(SPGameWin* src, SPChessGame* game){
-//    /* Draws special tiles for get-moves */
-//
-//    SDL_Rect rec;
-//    int i , j;
-//    for (i = 0 ; i < GAMESIZE ; i++){
-//        for (j = 0 ; j < GAMESIZE ; j++){
-//            rec.x = 59 + j * PIECE_SIZE;
-//            rec.y = 60 + (GAMESIZE - 1 - i) * PIECE_SIZE;
-//            rec.w = PIECE_SIZE;
-//            rec.h = PIECE_SIZE;
-//            if (src->getMovesOn == 1){
-//                SDL_RenderCopy(src->gameRenderer, (src->boardTiles[i][j]), NULL, &rec);
-//            }
-//            else {
-//                SDL_RenderCopy(src->gameRenderer, NULL, NULL, &rec);
-//            }
-//        }
-//    }
-//}
+void updateSpecialTiles(SPGameWin* src, SPChessGame* game){
+    /* Draws special tiles for get-moves */
+
+    SDL_Rect rec;
+    int i , j;
+    for (i = 0 ; i < GAMESIZE ; i++){
+        for (j = 0 ; j < GAMESIZE ; j++){
+            rec.x = 59 + j * PIECE_SIZE;
+            rec.y = 60 + (GAMESIZE - 1 - i) * PIECE_SIZE;
+            rec.w = PIECE_SIZE;
+            rec.h = PIECE_SIZE;
+            if (src->getMovesOn == 1){
+                SDL_RenderCopy(src->gameRenderer, (src->boardTiles[i* sizeof(SDL_Texture*) + j]), NULL, &rec);
+            }
+            else {
+                src->boardTiles[i* sizeof(SDL_Texture*) + j] = NULL;
+            }
+        }
+    }
+}
 
 
 void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
@@ -504,7 +510,7 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 
 	updateGameBoard(src, game);
 
-//    updateSpecialTiles(src, game);
+    updateSpecialTiles(src, game);
 }
 
 
@@ -585,28 +591,28 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
 
     SPArrayList *possibleMoves = getMovesForSoldier(game, eventRow, eventCol);
     action move;
-    SDL_Rect rec;
+//    SDL_Rect rec;
 
     for (i = 0 ; i < possibleMoves->actualSize ; i++){
         move = *(spArrayListGetAt(possibleMoves, i));
         row = move.current.row;
         col = move.current.column;
-        rec.x = 59 + (col) * PIECE_SIZE;
-        rec.y = 60 + (GAMESIZE - 1 - row) * PIECE_SIZE;
-        rec.w = PIECE_SIZE;
-        rec.h = PIECE_SIZE;
+//        rec.x = 59 + (col) * PIECE_SIZE;
+//        rec.y = 60 + (GAMESIZE - 1 - row) * PIECE_SIZE;
+//        rec.w = PIECE_SIZE;
+//        rec.h = PIECE_SIZE;
         if (move.castling == SP_CHESS_NO_CASTLING){
-            src->boardTiles[row][col] = src->yellow;
+            (src->boardTiles[row* sizeof(SDL_Texture*) + col]) = src->yellow;
 //            SDL_RenderCopy(src->gameRenderer, src->yellow, NULL, &rec);
             if (game->difficulty <= 2) {
-                if (move.captured != BLANK) { src->boardTiles[row][col] = src->yellow; }
+                if (move.captured != BLANK) { src->boardTiles[row* sizeof(SDL_Texture*) + col] = src->green; }
                 if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) {
-                    src->boardTiles[row][col] = src->yellow;
+                    src->boardTiles[row* sizeof(SDL_Texture*) + col] = src->red;
                 }
             }
         }
         else{
-            SDL_RenderCopy(src->gameRenderer, src->purple, NULL, &rec);
+            src->boardTiles[row* sizeof(SDL_Texture*) + col] = (src->purple);
         }
     }
     return 1;
