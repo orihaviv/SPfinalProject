@@ -686,7 +686,7 @@ SPArrayList* getMovesForSoldier(SPChessGame* src, int row, int col){
         for (int j = 0; j < GAMESIZE; j++){
             tmpDest.row = i;
             tmpDest.column = j;
-            if (isValidMove(src, soldierPos, tmpDest)){
+            if (isValidMove(src, soldierPos, tmpDest) == SP_CHESS_GAME_SUCCESS){
                 spArrayListAddLast(possibleMoves,generateAction(soldierPos, tmpDest, whosThere(src, i, j), src->gameBoard[row][col], SP_CHESS_NO_CASTLING));
             }
         }
