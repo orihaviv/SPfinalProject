@@ -7,6 +7,7 @@
 
 
 int isClickOnOne(int x, int y) {
+    /* Indicates whether a click was on the "1" button */
     if ((x >= ONEX && x <= ONEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
         return 1;
     }
@@ -14,6 +15,7 @@ int isClickOnOne(int x, int y) {
 }
 
 int isClickOnTwo(int x, int y) {
+    /* Indicates whether a click was on the "2" button */
     if ((x >= TWOX && x <= TWOX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
         return 1;
     }
@@ -21,6 +23,7 @@ int isClickOnTwo(int x, int y) {
 }
 
 int isClickOnThree(int x, int y) {
+    /* Indicates whether a click was on the "3" button */
     if ((x >= THREEX && x <= THREEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
         return 1;
     }
@@ -28,6 +31,7 @@ int isClickOnThree(int x, int y) {
 }
 
 int isClickOnFour(int x, int y) {
+    /* Indicates whether a click was on the "4" button */
     if ((x >= FOURX && x <= FOURX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
         return 1;
     }
@@ -35,6 +39,7 @@ int isClickOnFour(int x, int y) {
 }
 
 int isClickOnFive(int x, int y) {
+    /* Indicates whether a click was on the "5" button */
     if ((x >= FIVEX && x <= FIVEX + NUM_BUTTONS_W) && (y >= NUMY && y <= NUMY + NUM_BUTTONS_H)) {
         return 1;
     }
@@ -42,6 +47,7 @@ int isClickOnFive(int x, int y) {
 }
 
 int isClickOnLoadGame(int x, int y) {
+    /* Indicates whether a click was on the "Load" button */
     if ((x >= LOADX && x <= LOADX + LOAD_W) && (y >= LOAD_AND_BACK_Y && y <= LOAD_AND_BACK_Y + LOAD_H)) {
         return 1;
     }
@@ -49,6 +55,7 @@ int isClickOnLoadGame(int x, int y) {
 }
 
 int isClickOnBackInLoad(int x, int y) {
+    /* Indicates whether a click was on the "Back" button */
     if ((x >= LOAD_BACKX && x <= LOAD_BACKX + LOAD_AND_BACK_Y) && (y >= LOAD_AND_BACK_Y && y <= LOAD_AND_BACK_Y + LOAD_BACK_H)) {
         return 1;
     }
@@ -60,6 +67,7 @@ int isClickOnBackInLoad(int x, int y) {
 
 
 bool loadLoadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
+    // Loading a surface into the given texture from the given path
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -85,6 +93,7 @@ bool loadLoadingSurfaceFunc(SPLoadWin *src, SDL_Texture** texture, char* path) {
 
 
 SPLoadWin *spLoadWindowCreate(SP_LOAD_CALLER father) {
+    //
     SPLoadWin *res = NULL;
     res = (SPLoadWin *) malloc(sizeof(SPLoadWin));
     if (res == NULL) {

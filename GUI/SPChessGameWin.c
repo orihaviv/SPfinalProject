@@ -127,6 +127,7 @@ int isClickOnQuit(int x, int y) {
 
 
 bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
+    // Loading a surface into the given texture from the given path
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -477,7 +478,7 @@ void updateGameBoard(SPGameWin* src, SPChessGame* game) {
 }
 
 
-void updateSpecialTiles(SPGameWin* src, SPChessGame* game){
+void updateSpecialTiles(SPGameWin* src){
     /* Draws special tiles for get-moves */
 
     SDL_Rect rec;
@@ -510,7 +511,7 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 
 	updateGameBoard(src, game);
 
-    updateSpecialTiles(src, game);
+    updateSpecialTiles(src);
 }
 
 
