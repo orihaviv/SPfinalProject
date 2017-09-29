@@ -450,7 +450,9 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
         if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
         action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
         while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
-               SP_CHESS_GAME_SUCCESS) { continue; }
+               SP_CHESS_GAME_SUCCESS) {
+            nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
+        }
         soldier = src->game->gameBoard[nextMove.current.row][nextMove.current.column];
         if ((soldier == PAWNBLACK && nextMove.current.row == 0) ||
             (soldier == PAWNWHITE && nextMove.current.row == 7)) {
