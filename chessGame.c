@@ -777,9 +777,12 @@ int executeCastling(SPChessGame *src, SPCommand command, int isMini, int isGui){
     }
     if (src->gameBoard[command.source.row][command.source.column] != ROOKWHITE &&
         src->gameBoard[command.source.row][command.source.column]!= ROOKBLACK){
-        if (isMini == 0) printf("Wrong position for a rook\n");
+        if (isGui == 1 && (src->gameBoard[command.source.row][command.source.column] == KINGWHITE ||
+                src->gameBoard[command.source.row][command.source.column] == KINGBLACK)) { goto moveOn; }
+        if (isMini == 0 && isGui == 0) printf("Wrong position for a rook\n");
         return 0;
     }
+    moveOn:
     if (command.source.row == 0 && command.source.column == 0){
         if (isWhiteLeftCastlingValid(src)){
             executeWhiteLeftCastling(src);
