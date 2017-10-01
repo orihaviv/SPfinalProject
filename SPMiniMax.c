@@ -1,11 +1,12 @@
 //
-// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 10/06/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
+
 #include "SPMiniMax.h"
 
 
 action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
-    if (currentGame == NULL || depth <= 0 || depth > 4){ //TODO change >4 to >5 if needed
+    if (currentGame == NULL || depth <= 0 || depth > 5){
         return NULL;
     }
     SPChessGame* gameCopy = (chessGameCopy(currentGame));
@@ -13,6 +14,9 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
     int bestScore, score;
     SPArrayList* possibleActions;
     char currentSoldier;
+    int isExpert;
+    if (depth == 5) { isExpert = 1; }
+    else { isExpert = 0; }
 
     action move;
     action bestAction;
@@ -26,8 +30,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui);
+                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
                         if (bestScore < score) {
                             bestAction = move;
                             bestScore = score;
@@ -49,8 +52,7 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui);
+                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
                         if (bestScore > score) {
                             bestAction = move;
                             bestScore = score;

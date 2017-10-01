@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 24/09/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 #include "consoleGame.h"

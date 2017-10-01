@@ -1,6 +1,7 @@
 //
-// Created by אורי חביב on 10/06/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
+
 #include "SPMainAux.h"
 
 
@@ -198,6 +199,7 @@ void executeGetMoves(SPChessGame *game, SPCommand command) {
     return;
 }
 
+
 void executeUndo(SPChessGame *game) {
     if (game->gameMode == 2) {
         printf("Undo command not available in two players mode\n");
@@ -222,7 +224,7 @@ void executeUndo(SPChessGame *game) {
         printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
                toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
         lastMove = *(spArrayListGetFirst(game->lastMoves));
-        SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
+        msg = chessGameUndoPrevMove(game);
         if (msg == SP_CHESS_GAME_SUCCESS) {
             player = game->currentPlayer == 1 ? "white" : "black";
             printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),

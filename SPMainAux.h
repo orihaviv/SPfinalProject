@@ -1,3 +1,7 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
 #ifndef SPMAINAUX_H_
 #define SPMAINAUX_H_
 

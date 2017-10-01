@@ -1,3 +1,7 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
 #ifndef SPMINIMAX_H_
 #define SPMINIMAX_H_
 
@@ -14,6 +18,7 @@
  * @param currentGame - The current game state
  * @param depth - The maximum depth of the miniMax algorithm
  * @param isGui - indicates if is in GUI mode
+
  * @return
  * NULL if either currentGame is NULL or maxDepth <= 0.
  * On success the function returns an optimized action.

@@ -1,5 +1,7 @@
 
-
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
 
 
 #ifndef SPCHESSMAINWIN_H_

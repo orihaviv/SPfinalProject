@@ -1,5 +1,5 @@
 //
-// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 05/09/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 #ifndef SPFINAL_CHESSGAME_H

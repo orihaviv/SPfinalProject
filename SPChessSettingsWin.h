@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 24/09/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 #ifndef FINALPROJECT_SPCHESSSETTINGSWIN_H
@@ -7,10 +7,10 @@
 
 #include <stdbool.h>
 #include <SDL.h>
-#include "../SPMainAux.h"
+#include "SPMainAux.h"
 
 //Definitions
-#define HEIGHT_SETTINGS 700
+#define HEIGHT_SETTINGS 750
 #define WIDTH_SETTINGS 1000
 
 #define TITLE_SETTINGS_H 80
@@ -53,7 +53,7 @@
 #define BLACKX 610
 
 #define STARTX 600
-#define START_BACK_Y 600
+#define START_BACK_Y 670
 #define BACKX 100
 
 #define DIFFICULTYX 20
@@ -64,6 +64,10 @@
 #define MODERATEX 470
 #define HARDX 710
 
+#define EXPERTX 380
+#define EXPERTY 570
+#define EXPERTW 164
+#define EXPERTH 49
 
 
 
@@ -78,6 +82,7 @@ typedef enum {
     SP_SETTINGS_EASY,
     SP_SETTINGS_MODERATE,
     SP_SETTINGS_HARD,
+    SP_SETTINGS_EXPERT,
     SP_SETTINGS_INVALID_ARGUMENT,
     SP_SETTINGS_NONE,
 } SP_SETTINGS_EVENT;
@@ -116,6 +121,9 @@ typedef struct {
     SDL_Texture** hardTexture;
     SDL_Texture* hardThinTexture;
     SDL_Texture* hardBoldTexture;
+    SDL_Texture** expertTexture;
+    SDL_Texture* expertThinTexture;
+    SDL_Texture* expertBoldTexture;
     int numOfPlayers;
     int diff;
     int color;

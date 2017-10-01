@@ -1,8 +1,13 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
+
 #ifndef SPCHESSGAMEWIN_H_
 #define SPCHESSGAMEWIN_H_
 #include <SDL.h>
 #include <SDL_video.h>
-#include "../SPMainAux.h"
+#include "SPMainAux.h"
 
 //Board Definitions
 #define ZERO_X 59

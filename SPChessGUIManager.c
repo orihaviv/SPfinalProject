@@ -1,3 +1,8 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "SPChessGUIManager.h"
@@ -162,6 +167,9 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             break;
         case SP_SETTINGS_HARD:
             src->game->difficulty = 4;
+            break;
+        case SP_SETTINGS_EXPERT:
+            src->game->difficulty = 5;
             break;
         default:
             break;

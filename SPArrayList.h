@@ -1,3 +1,8 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
+
 #ifndef SPARRAYLIST_H_
 #define SPARRAYLIST_H_
 

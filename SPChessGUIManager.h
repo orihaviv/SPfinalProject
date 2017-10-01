@@ -1,3 +1,8 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
+
 #ifndef SPCHESSGUIMANAGER_H_
 #define SPCHESSGUIMANAGER_H_
 #include <SDL.h>
@@ -19,7 +24,6 @@ typedef enum{
 	SP_MANAGER_WHITE_WON,
 	SP_MANAGER_BLACK_WON,
 	SP_MANAGER_TIE,
-	SP_MANAGER_CHECK,
 	SP_MANAGER_NONE,
 }SP_MANAGER_EVENT;
 

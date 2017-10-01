@@ -1,5 +1,5 @@
 //
-// Created by ׳�׳•׳¨׳™ ׳—׳‘׳™׳‘ on 31/05/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 #include "chessParser.h"
@@ -17,6 +17,7 @@ bool spParserIsInt(const char* str){
     return true;
 }
 
+
 SPCommand setGameModeCmd (char* mode) {
     SPCommand command;
     command.cmd = GAME_MODE;
@@ -32,7 +33,6 @@ SPCommand setGameModeCmd (char* mode) {
 }
 
 
-
 SPCommand setDifficultyCmd(char* diff) {
     SPCommand command;
     command.cmd = IGNORE;
@@ -43,14 +43,10 @@ SPCommand setDifficultyCmd(char* diff) {
     int level;
     if (spParserIsInt(diff)){
         level = atoi(diff);
-        if (level > 0 && level < 5){
+        if (level > 0 && level <= 5){
             command.cmd = DIFFICULTY;
             command.arg = level;
-        }
-        else if (level == 5){
-            printf("Expert level not supported, please choose a value between 1 to 4:\n");
-        }
-        else{
+        } else{
             printf("Wrong difficulty level. The value should be between 1 to 5\n");
         }
     }
@@ -74,6 +70,7 @@ SPCommand setColorCmd(char* color){
     return command;
 }
 
+
 SPCommand setCastleCmd(char* origin){
     SPCommand command;
     command.cmd = INVALID;
@@ -89,6 +86,7 @@ SPCommand setCastleCmd(char* origin){
     }
     return command;
 }
+
 
 SPCommand setMoveCmd(char* source, char* dest){
     SPCommand command;
@@ -112,6 +110,7 @@ SPCommand setMoveCmd(char* source, char* dest){
     return command;
 }
 
+
 SPCommand getMoveCmd(char* source){
     SPCommand command;
     command.cmd = INVALID;
@@ -126,6 +125,7 @@ SPCommand getMoveCmd(char* source){
     command.source.row = atoi(row) - 1;
     return command;
 }
+
 
 char getPiece(char* source){
     if (!source){ return '_'; }
@@ -157,6 +157,7 @@ char getPiece(char* source){
     return '_';
 }
 
+
 bool isValidFormat(char* token){
 	if(token == NULL || token[0] != '<' || '0' > token[1] || '9' < token[1]){
 		return false;
@@ -182,9 +183,7 @@ bool isValidFormat(char* token){
 SPCommand spParserParseLine(const char* str) {
     SPCommand command;
     command.cmd = INVALID;
-    if (!str){
-        return command;
-    }
+    if (!str){ return command; }
     char *strCopy = (char *) malloc(SP_MAX_LINE_LENGTH);
     if (strCopy != NULL) {
         strcpy(strCopy, str);

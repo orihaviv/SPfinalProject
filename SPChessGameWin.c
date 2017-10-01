@@ -1,3 +1,7 @@
+//
+// Created by Omer Koren & Ori Haviv 2017
+//
+
 
 #include <stdio.h>
 #include "SPChessGameWin.h"
@@ -5,7 +9,7 @@
 
 
 int getClickColumn(int x) {
-    /* Returns the click's relevant column on the board */
+    // Returns the click's relevant column on the board */
 
     if (x < ZERO_X || x > RIGHT_X){
         return -1;
@@ -31,7 +35,7 @@ int getClickColumn(int x) {
 }
 
 int getClickRow(int y) {
-    /* Returns the click's relevant row on the board */
+    // Returns the click's relevant row on the board */
 
     if (y > ZERO_Y || y < BOTTOM_Y){
         return -1;
@@ -57,7 +61,7 @@ int getClickRow(int y) {
 }
 
 int isClickOnBoard(SDL_Event* event) {
-    /* Indicates whether a click was on the the game board */
+    // Indicates whether a click was on the the game board */
 
     int x = event->button.x , y = event->button.y;
     if ((x >= BOARD_X && x <= BOARD_X + BOARD_W) && (y >= BOARD_Y && y <= BOARD_Y + BOARD_H)) {
@@ -68,7 +72,7 @@ int isClickOnBoard(SDL_Event* event) {
 
 
 int isClickOnRestart(int x, int y) {
-    /* Indicates whether a click was on the "Restart Game" button */
+    // Indicates whether a click was on the "Restart Game" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= RESTART_BUTTON_Y && y <= RESTART_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -79,7 +83,7 @@ int isClickOnRestart(int x, int y) {
 
 
 int isClickOnSave(int x, int y) {
-    /* Indicates whether a click was on the "Save Game" button */
+    // Indicates whether a click was on the "Save Game" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= SAVE_BUTTON_Y && y <= SAVE_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -89,7 +93,7 @@ int isClickOnSave(int x, int y) {
 
 
 int isClickOnLoad(int x, int y) {
-    /* Indicates whether a click was on the "Load Game" button */
+    // Indicates whether a click was on the "Load Game" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= LOAD_BUTTON_Y && y <= LOAD_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -98,7 +102,7 @@ int isClickOnLoad(int x, int y) {
 }
 
 int isClickOnUndo(int x, int y) {
-    /* Indicates whether a click was on the "Undo Move" button */
+    // Indicates whether a click was on the "Undo Move" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= UNDO_BUTTON_Y && y <= UNDO_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -107,7 +111,7 @@ int isClickOnUndo(int x, int y) {
 }
 
 int isClickOnMainMenu(int x, int y) {
-    /* Indicates whether a click was on the "Main Menu" button */
+    // Indicates whether a click was on the "Main Menu" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= MAIN_MENU_BUTTON_Y && y <= MAIN_MENU_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -117,7 +121,7 @@ int isClickOnMainMenu(int x, int y) {
 
 
 int isClickOnQuit(int x, int y) {
-    /* Indicates whether a click was on the "Quit Game" button */
+    // Indicates whether a click was on the "Quit Game" button */
 
     if ((x >= GAME_BUTTONS_X && x <= GAME_BUTTONS_X + GAME_BUTTON_W) && (y >= QUIT_BUTTON_Y && y <= QUIT_BUTTON_Y + GAME_BUTTON_H)) {
         return 1;
@@ -127,7 +131,7 @@ int isClickOnQuit(int x, int y) {
 
 
 bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
-    /* Loading a surface into the given texture from the given path */
+    // Loading a surface into the given texture from the given path */
 
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
@@ -150,7 +154,7 @@ bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
 }
 
 int createBoardTextures(SPGameWin* res){
-    /* Creates textures for the board */
+    // Creates textures for the board */
 
     bool check;
 
@@ -227,7 +231,7 @@ int createBoardTextures(SPGameWin* res){
 
 
 int createButtonsTextures(SPGameWin* res){
-    /* Creates textures for the buttons */
+    // Creates textures for the buttons */
 
     bool check;
 
@@ -285,12 +289,6 @@ SPGameWin* spGameWindowCreate() {
 
     SDL_Surface* loadingSurface = NULL; //Used as temp surface
 
-//	res->game = chessGameCreate();
-//	if (res->game == NULL ) {
-//		printf("Couldn't create game\n");
-//		spGameWindowDestroy(res);
-//		return NULL ;
-//	}
 	// Create an application window with the following settings:
 	res->gameWindow = SDL_CreateWindow("Chess Game", // window title
 			SDL_WINDOWPOS_CENTERED,           // initial x position
@@ -327,7 +325,7 @@ SPGameWin* spGameWindowCreate() {
 
 
 void spGameWindowDestroyBoard(SPGameWin* src){
-    /* Destroys board */
+    // Destroys board */
 
     if (src->board != NULL ) {
         SDL_DestroyTexture(src->board);
@@ -372,7 +370,7 @@ void spGameWindowDestroyBoard(SPGameWin* src){
 }
 
 void spGameWindowDestroyButtons(SPGameWin* src){
-    /* Destroys buttons */
+    // Destroys buttons */
 
     if (src->restartGame != NULL ) {
         SDL_DestroyTexture(src->restartGame);
@@ -415,7 +413,7 @@ void spGameWindowDestroy(SPGameWin* src) {
 
 
 void putTextureInRec(SPGameWin* src, SPChessGame* game, int i, int j, SDL_Rect* rec) {
-    /* Draws a specific piece in a spacific rectangle on the board */
+    // Draws a specific piece in a spacific rectangle on the board */
 
     switch (game->gameBoard[i][j]){
         case BLANK:
@@ -463,7 +461,7 @@ void putTextureInRec(SPGameWin* src, SPChessGame* game, int i, int j, SDL_Rect* 
 }
 
 void updateGameBoard(SPGameWin* src, SPChessGame* game) {
-    /* Draws the relevant pieces over the board */
+    // Draws the relevant pieces over the board */
 
     SDL_Rect rec;
     int i = 0, j = 0;
@@ -484,7 +482,7 @@ void updateGameBoard(SPGameWin* src, SPChessGame* game) {
 
 
 void updateSpecialTiles(SPGameWin* src){
-    /* Draws special tiles for get-moves */
+    // Draws special tiles for get-moves */
 
     SDL_Rect rec;
     int i , j;
@@ -506,7 +504,7 @@ void updateSpecialTiles(SPGameWin* src){
 
 
 void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
-    /* Draws the board's side */
+    // Draws the board's side */
 
 	if(src == NULL || game == NULL){
 		return;
@@ -521,7 +519,7 @@ void spGameWindowDrawBoard(SPGameWin* src, SPChessGame* game) {
 
 
 void spGameWindowDrawButtons(SPGameWin* src, SPChessGame* game){
-    /* Draws the buttons' side */
+    // Draws the buttons' side */
 
     if(src == NULL || game == NULL){
         return;
@@ -561,7 +559,7 @@ void spGameWindowDraw(SPGameWin* src, SPChessGame* game){
 
 
 int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* event){
-    /* Handles "get_moves" events */
+    // Handles "get_moves" events */
 
     int eventCol = getClickColumn(event->button.x) , eventRow = getClickRow(event->button.y) , i , row , col;
     if (eventCol < 0 || eventRow < 0){ return 0; }

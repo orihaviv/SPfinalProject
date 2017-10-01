@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 31/05/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 

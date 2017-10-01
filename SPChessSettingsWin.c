@@ -1,5 +1,5 @@
 //
-// Created by אורי חביב on 24/09/2017.
+// Created by Omer Koren & Ori Haviv 2017
 //
 
 
@@ -79,6 +79,17 @@ int isClickOnHard(int x, int y) {
     }
     return 0;
 }
+
+
+int isClickOnExpert(int x, int y) {
+    /* Indicates whether a click was on the "Expert" button */
+
+    if ((x >= EXPERTX && x <= EXPERTX + EXPERTW) && (y >= EXPERTY && y <= EXPERTY + EXPERTH)) {
+        return 1;
+    }
+    return 0;
+}
+
 
 int isClickOnWhite(int x, int y) {
     /* Indicates whether a click was on the "White" button */
@@ -192,6 +203,10 @@ SPSettingsWin *spSettingsWindowCreate() {
     check = settingsLoadingSurfaceFunc(res, &(res->hardThinTexture), "../GUI/images/settingsWindow/hard.bmp");
     if (!check){ return  NULL; }
 
+    // Expert button
+    check = settingsLoadingSurfaceFunc(res, &(res->expertThinTexture), "../GUI/images/settingsWindow/expert.bmp");
+    if (!check){ return  NULL; }
+
     // White button
     check = settingsLoadingSurfaceFunc(res, &(res->whiteUserThinTexture), "../GUI/images/settingsWindow/white.bmp");
     if (!check){ return  NULL; }
@@ -223,6 +238,10 @@ SPSettingsWin *spSettingsWindowCreate() {
 
     // Bold Hard button
     check = settingsLoadingSurfaceFunc(res, &(res->hardBoldTexture), "../GUI/images/settingsWindow/hardBold.bmp");
+    if (!check){ return  NULL; }
+
+    // Bold Expert button
+    check = settingsLoadingSurfaceFunc(res, &(res->expertBoldTexture), "../GUI/images/settingsWindow/expertBold.bmp");
     if (!check){ return  NULL; }
 
     // Bold White button
@@ -263,6 +282,7 @@ SPSettingsWin *spSettingsWindowCreate() {
     res->easyTexture = &(res->easyBoldTexture);
     res->moderateTexture = &(res->moderateThinTexture);
     res->hardTexture = &(res->hardThinTexture);
+    res->expertTexture = &(res->expertThinTexture);
 
     return res;
 }
@@ -324,6 +344,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     SDL_Rect easyR = (SDL_Rect){.x = EASYX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
     SDL_Rect moderateR = (SDL_Rect){.x = MODERATEX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = MODERATE_W};
     SDL_Rect hardR = (SDL_Rect){ .x = HARDX, .y = NOOB_EASY_MODERATE_HARD_Y, .h = BUTTONS_H, .w = NOOB_EASY_HARD_W};
+    SDL_Rect expertR = (SDL_Rect){ .x = EXPERTX, .y = EXPERTY, .h = EXPERTH, .w = EXPERTW};
 
     SDL_Rect startR = (SDL_Rect){.x = STARTX, .y = START_BACK_Y, .h = BUTTONS_H, .w = START_W};
     SDL_Rect backR = (SDL_Rect){.x = BACKX, .y = START_BACK_Y, .h = BUTTONS_H, .w = BACK_W};
@@ -346,6 +367,7 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     SDL_RenderCopy(src->settingsRenderer, *(src->easyTexture), NULL, &easyR);
     SDL_RenderCopy(src->settingsRenderer, *(src->moderateTexture), NULL, &moderateR);
     SDL_RenderCopy(src->settingsRenderer, *(src->hardTexture), NULL, &hardR);
+    SDL_RenderCopy(src->settingsRenderer, *(src->expertTexture), NULL, &expertR);
     SDL_RenderPresent(src->settingsRenderer);
 }
 
@@ -362,25 +384,37 @@ SP_SETTINGS_EVENT settingsWinMouseButtonUpEventHandler(SPSettingsWin *src, SDL_E
         src->noobTexture = &(src->noobBoldTexture);
         src->moderateTexture = &(src->moderateThinTexture);
         src->hardTexture = &(src->hardThinTexture);
+        src->expertTexture = &(src->expertThinTexture);
+
         return SP_SETTINGS_NOOB;
     } else if (isClickOnEasy(event->button.x, event->button.y) && src->numOfPlayers == 1) {
         src->easyTexture = &(src->easyBoldTexture);
         src->noobTexture = &(src->noobThinTexture);
         src->moderateTexture = &(src->moderateThinTexture);
         src->hardTexture = &(src->hardThinTexture);
+        src->expertTexture = &(src->expertThinTexture);
         return SP_SETTINGS_EASY;
     } else if (isClickOnModerate(event->button.x, event->button.y) && src->numOfPlayers == 1) {
         src->easyTexture = &(src->easyThinTexture);
         src->noobTexture = &(src->noobThinTexture);
         src->moderateTexture = &(src->moderateBoldTexture);
         src->hardTexture = &(src->hardThinTexture);
+        src->expertTexture = &(src->expertThinTexture);
         return SP_SETTINGS_MODERATE;
     } else if (isClickOnHard(event->button.x, event->button.y) && src->numOfPlayers == 1) {
         src->easyTexture = &(src->easyThinTexture);
         src->noobTexture = &(src->noobThinTexture);
         src->moderateTexture = &(src->moderateThinTexture);
         src->hardTexture = &(src->hardBoldTexture);
+        src->expertTexture = &(src->expertThinTexture);
         return SP_SETTINGS_HARD;
+    } else if (isClickOnExpert(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->easyTexture = &(src->easyThinTexture);
+        src->noobTexture = &(src->noobThinTexture);
+        src->moderateTexture = &(src->moderateThinTexture);
+        src->hardTexture = &(src->hardThinTexture);
+        src->expertTexture = &(src->expertBoldTexture);
+        return SP_SETTINGS_EXPERT;
     } else if (isClickOnOnePlayer(event->button.x, event->button.y)  && src->numOfPlayers != 1) {
         src->numOfPlayers = 1;
         src->twoPlayersTexture = &(src->twoPlayersThinTexture);
@@ -396,6 +430,7 @@ SP_SETTINGS_EVENT settingsWinMouseButtonUpEventHandler(SPSettingsWin *src, SDL_E
         src->noobTexture = &(src->noobThinTexture);
         src->moderateTexture = &(src->moderateThinTexture);
         src->hardTexture = &(src->hardThinTexture);
+        src->expertTexture = &(src->expertThinTexture);
         src->whiteUserTexture = &(src->whiteUserThinTexture);
         src->blackUserTexture = &(src->blackUserThinTexture);
         return SP_SETTINGS_TWO_PLAYERS;
