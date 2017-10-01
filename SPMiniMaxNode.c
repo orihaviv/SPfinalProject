@@ -2,7 +2,7 @@
 // Created by ׳³ן¿½׳³ג€¢׳³ֲ¨׳³ג„¢ ׳³ג€”׳³ג€˜׳³ג„¢׳³ג€˜ on 10/06/2017.
 //
 #include "SPMiniMaxNode.h"
-#include "chessGame.h"
+
 
 int soldierScore(char soldier) {
     switch (soldier) {
@@ -71,7 +71,7 @@ int scoreOfLeafNodeExpert(SPChessGame *currentGame) {
 }
 
 
-int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
+int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta, int isGui) {
     if ((src == NULL) || (depth < 0) || (depth > 4) || (player < 0) || (player > 1)) {  //TODO change >4 to >5 if needed
         return -999;                    // TODO WHY 4? WHY NOT 3?
     }
@@ -99,8 +99,8 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
-                        bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
+                        bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui));
                         chessGameUndoPrevMove(gameCopy);
                         alpha = maxi(bestScore, alpha);
                         if (beta <= alpha) { break; }
@@ -120,8 +120,8 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
-                        bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
+                        bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui));
                         chessGameUndoPrevMove(gameCopy);
                         beta = mini(bestScore, beta);
                         if (beta <= alpha) { break; }

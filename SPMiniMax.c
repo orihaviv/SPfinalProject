@@ -4,7 +4,7 @@
 #include "SPMiniMax.h"
 
 
-action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
+action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
     if (currentGame == NULL || depth <= 0 || depth > 4){ //TODO change >4 to >5 if needed
         return NULL;
     }
@@ -27,8 +27,8 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX);
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
+                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui);
                         if (bestScore < score) {
                             bestAction = move;
                             bestScore = score;
@@ -50,8 +50,8 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth){
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
                         if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX);
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current, isGui); }
+                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui);
                         if (bestScore > score) {
                             bestAction = move;
                             bestScore = score;

@@ -13,11 +13,12 @@
  *
  * @param currentGame - The current game state
  * @param depth - The maximum depth of the miniMax algorithm
+ * @param isGui - indicates if is in GUI mode
  * @return
  * NULL if either currentGame is NULL or maxDepth <= 0.
  * On success the function returns an optimized action.
  * which is the best move for the current player.
  */
-action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth);
+action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui);
 
 #endif

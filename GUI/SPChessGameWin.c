@@ -559,33 +559,6 @@ void spGameWindowDraw(SPGameWin* src, SPChessGame* game){
     SDL_RenderPresent(src->gameRenderer);
 }
 
-//void resetGetMoves(SPGameWin* src, SPChessGame* game){
-//    /* Restoring the game board - no highlights */
-//
-//    SDL_Rect rec = { .x = 59, .y = 60, .w = BOARD_W, .h = BOARD_W };
-//    int i = 0, j = 0;
-//    for (i = 0; i < GAMESIZE; i++) {
-//        for (j = 0; j < GAMESIZE; j++) {
-//            rec.x = 59 + j * PIECE_SIZE;
-//            rec.y = 60 + (GAMESIZE - 1 - i) * PIECE_SIZE;
-//            rec.w = PIECE_SIZE;
-//            rec.h = PIECE_SIZE;
-//            SDL_RenderCopy(src->gameRenderer, NULL, NULL, &rec);
-//        }
-//    }
-//    updateGameBoard(src, game);
-//}
-
-
-//void spGameWindowDeactivateGetMoves(SPGameWin* src, SPChessGame* game){
-//    /* Deactivate get_moves highlights */
-//
-//    if (src->getMovesOn == 1){
-//        src->getMovesOn = 0;
-//        resetGetMoves(src, game);
-//    }
-//}
-
 
 int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* event){
     /* Handles "get_moves" events */
@@ -603,10 +576,6 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
         move = *(spArrayListGetAt(possibleMoves, i));
         row = move.current.row;
         col = move.current.column;
-//        rec.x = 59 + (col) * PIECE_SIZE;
-//        rec.y = 60 + (GAMESIZE - 1 - row) * PIECE_SIZE;
-//        rec.w = PIECE_SIZE;
-//        rec.h = PIECE_SIZE;
         if (move.castling == SP_CHESS_NO_CASTLING){
             (src->boardTiles[row* sizeof(SDL_Texture*) + col]) = src->yellow;
             if (game->difficulty <= 2) {
@@ -623,25 +592,6 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
     return 1;
 }
 
-
-//SP_GAME_EVENT spGameWindowHandleBoardEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){
-//    /* Handles events on the board's side */
-//
-//    int originCol = getClickColumn(src->mouseDownEvent->button.x) , originRow = getClickRow(src->mouseDownEvent->button.y);
-//    src->mouseDownEvent = NULL;
-//    int destCol = getClickColumn(event->button.x) , destRow = getClickRow(event->button.y);
-//
-//    if (originCol < 0 || originRow < 0 || destCol < 0 || originRow < 0) { return SP_GAME_EVENT_NONE; }
-//    if (game->userColor == 0 && !isBlack(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
-//    if (game->userColor == 1 && !isWhite(game->gameBoard[originRow][originCol])) { return SP_GAME_EVENT_NONE; }
-//
-//    src->moveOrigin.row = originRow;
-//    src->moveOrigin.column = originCol;
-//    src->moveDestination.row = destRow;
-//    src->moveDestination.column = destCol;
-//
-//    return SP_GAME_EVENT_MOVE;
-//}
 
 
 SP_GAME_EVENT spGameWindowHandleButtonsEvent(SPGameWin* src, SPChessGame* game, SDL_Event* event){

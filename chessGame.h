@@ -545,13 +545,15 @@ void executeBlackRightCastling(SPChessGame *src);
  *
  * @param src - The target game
  * @param command - The command to execute
+ * @param isMini - indicates if the execution is in minimax
+ * @param isGui - indicates if is in GUI mode
  *
  * @return
  * 1 - if castling succeeded
  * 0 - if castling didn't succeed
  */
 
-int executeCastling(SPChessGame *src, SPCommand command);
+int executeCastling(SPChessGame *src, SPCommand command, int isMini, int isGui);
 
 
 /**
@@ -559,13 +561,14 @@ int executeCastling(SPChessGame *src, SPCommand command);
  *
  * @param src - The target game
  * @param origin - The origin position of the move to execute
- * @param origin - The destination position of the move to execute
+ * @param dst - The destination position of the move to execute
+ * @param isGui - indicates if is in GUI mode
  *
  * @return
  * 1 - if castling succeeded
  * 0 - if castling didn't succeed
  */
-int executeCastlingMiniMax(SPChessGame *src, position origin, position dst);
+int executeCastlingMiniMax(SPChessGame *src, position origin, position dst, int isGui);
 
 
 /**

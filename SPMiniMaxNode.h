@@ -55,6 +55,7 @@ int scoreOfLeafNode(SPChessGame* currentGame);
  *          0 - black, 1 - white
  * @param alpha - The "alpha" parameter for the minimax
  * @param beta - The "beta" parameter for the minimax
+ * @param isGui - indicates if is in GUI mode
  * @return
  * -999 if either currentGame is NULL or depth < 0 or invalid number represents the player.
  * On success the function returns a number represents the board's score if there's no winner.
@@ -62,7 +63,7 @@ int scoreOfLeafNode(SPChessGame* currentGame);
  * INT_MIN if the cSPFiarGameomputer is the winner in this game state.
  * 0 if the game is a tie.
  */
-int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta);
+int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta, int isGui);
 
 
 #endif

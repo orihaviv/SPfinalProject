@@ -121,7 +121,7 @@ char* translateToSoldiersName(char soldier) {
 
 
 void executeComputerMove(SPChessGame *src) {
-    action nextMove = *(spMinimaxSuggestMove(src, src->difficulty));
+    action nextMove = *(spMinimaxSuggestMove(src, src->difficulty, 0));
     char soldier = nextMove.piece;
     while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
@@ -270,7 +270,7 @@ SPCommand gameState(SPChessGame *game) {
                 chessGameDestroy(&game);
                 break;
             case CASTLE:
-                if (executeCastling(game, command) == 0){
+                if (executeCastling(game, command, 0, 0) == 0){
                     command.cmd = INVALID;
                 }
                 break;

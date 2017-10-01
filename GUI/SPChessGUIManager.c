@@ -128,7 +128,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
                 return SP_MANAGER_QUTT;
             }
             if (src->game->userColor == 0){
-                action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
+                action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
                 while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
                        SP_CHESS_GAME_SUCCESS) { continue; }
             }
@@ -471,10 +471,10 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
 
     if (src->game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER) {
         if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
-        action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
+        action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
         while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
                SP_CHESS_GAME_SUCCESS) {
-            nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty));
+            nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
         }
         soldier = src->game->gameBoard[nextMove.current.row][nextMove.current.column];
         if ((soldier == PAWNBLACK && nextMove.current.row == 0) ||
