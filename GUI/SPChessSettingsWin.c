@@ -9,6 +9,8 @@
 //Inner functions
 
 int isClickOnStart(int x, int y) {
+    /* Indicates whether a click was on the "Start" button */
+
     if ((x >= STARTX && x <= START_W + STARTX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
         return 1;
     }
@@ -16,6 +18,8 @@ int isClickOnStart(int x, int y) {
 }
 
 int isClickOnBack(int x, int y) {
+    /* Indicates whether a click was on the "Back" button */
+
     if ((x >= BACKX && x <= START_W + BACKX) && (y >= START_BACK_Y && y <= START_BACK_Y + BUTTONS_H)) {
         return 1;
     }
@@ -23,6 +27,8 @@ int isClickOnBack(int x, int y) {
 }
 
 int isClickOnOnePlayer(int x, int y) {
+    /* Indicates whether a click was on the "One Player" button */
+
     if ((x >= ONEPLAYERX && x <= ONEPLAYERX + ONE_PLAYER_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
         return 1;
     }
@@ -30,6 +36,8 @@ int isClickOnOnePlayer(int x, int y) {
 }
 
 int isClickOnTwoPlayers(int x, int y) {
+    /* Indicates whether a click was on the "Two Players" button */
+
     if ((x >= TWOPLAYERSX && x <= TWOPLAYERSX + TWO_PLAYERS_W) && (y >= GAMEMODEY && y <= GAMEMODEY + BUTTONS_H)) {
         return 1;
     }
@@ -37,6 +45,8 @@ int isClickOnTwoPlayers(int x, int y) {
 }
 
 int isClickOnNoob(int x, int y) {
+    /* Indicates whether a click was on the "Noob" button */
+
     if ((x >= NOOBX && x <= NOOBX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
         return 1;
     }
@@ -44,6 +54,8 @@ int isClickOnNoob(int x, int y) {
 }
 
 int isClickOnEasy(int x, int y) {
+    /* Indicates whether a click was on the "Easy" button */
+
     if ((x >= EASYX && x <= EASYX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
         return 1;
     }
@@ -51,6 +63,8 @@ int isClickOnEasy(int x, int y) {
 }
 
 int isClickOnModerate(int x, int y) {
+    /* Indicates whether a click was on the "Moderate" button */
+
     if ((x >= MODERATEX && x <= MODERATEX + MODERATE_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
         return 1;
     }
@@ -58,6 +72,8 @@ int isClickOnModerate(int x, int y) {
 }
 
 int isClickOnHard(int x, int y) {
+    /* Indicates whether a click was on the "Hard" button */
+
     if ((x >= HARDX && x <= HARDX + NOOB_EASY_HARD_W) && (y >= NOOB_EASY_MODERATE_HARD_Y && y <= NOOB_EASY_MODERATE_HARD_Y + BUTTONS_H)) {
         return 1;
     }
@@ -65,6 +81,8 @@ int isClickOnHard(int x, int y) {
 }
 
 int isClickOnWhite(int x, int y) {
+    /* Indicates whether a click was on the "White" button */
+
     if ((x >= WHITEX && x <= WHITEX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
         return 1;
     }
@@ -72,6 +90,8 @@ int isClickOnWhite(int x, int y) {
 }
 
 int isClickOnBlack(int x, int y) {
+    /* Indicates whether a click was on the "Black" button */
+
     if ((x >= BLACKX && x <= BLACKX + WHITE_BLACK_W) && (y >= USERCOLORY && y <= USERCOLORY + BUTTONS_H)) {
         return 1;
     }
@@ -79,6 +99,8 @@ int isClickOnBlack(int x, int y) {
 }
 
 bool settingsLoadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char* path) {
+    /* Loading a surface into the given texture from the given path */
+
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -98,9 +120,6 @@ bool settingsLoadingSurfaceFunc(SPSettingsWin *src, SDL_Texture** texture, char*
     SDL_FreeSurface(loadingSurface);
     return true;
 }
-
-
-
 
 
 SPSettingsWin *spSettingsWindowCreate() {
@@ -330,68 +349,75 @@ void spSettingsWindowDraw(SPSettingsWin *src) {
     SDL_RenderPresent(src->settingsRenderer);
 }
 
+
+SP_SETTINGS_EVENT settingsWinMouseButtonUpEventHandler(SPSettingsWin *src, SDL_Event *event){
+    /* Handles a mouse button up event */
+
+    if (isClickOnStart(event->button.x, event->button.y)) {
+        return SP_SETTINGS_START;
+    } else if (isClickOnBack(event->button.x, event->button.y)) {
+        return SP_SETTINGS_BACK;
+    } else if (isClickOnNoob(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->easyTexture = &(src->easyThinTexture);
+        src->noobTexture = &(src->noobBoldTexture);
+        src->moderateTexture = &(src->moderateThinTexture);
+        src->hardTexture = &(src->hardThinTexture);
+        return SP_SETTINGS_NOOB;
+    } else if (isClickOnEasy(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->easyTexture = &(src->easyBoldTexture);
+        src->noobTexture = &(src->noobThinTexture);
+        src->moderateTexture = &(src->moderateThinTexture);
+        src->hardTexture = &(src->hardThinTexture);
+        return SP_SETTINGS_EASY;
+    } else if (isClickOnModerate(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->easyTexture = &(src->easyThinTexture);
+        src->noobTexture = &(src->noobThinTexture);
+        src->moderateTexture = &(src->moderateBoldTexture);
+        src->hardTexture = &(src->hardThinTexture);
+        return SP_SETTINGS_MODERATE;
+    } else if (isClickOnHard(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->easyTexture = &(src->easyThinTexture);
+        src->noobTexture = &(src->noobThinTexture);
+        src->moderateTexture = &(src->moderateThinTexture);
+        src->hardTexture = &(src->hardBoldTexture);
+        return SP_SETTINGS_HARD;
+    } else if (isClickOnOnePlayer(event->button.x, event->button.y)  && src->numOfPlayers != 1) {
+        src->numOfPlayers = 1;
+        src->twoPlayersTexture = &(src->twoPlayersThinTexture);
+        src->onePlayerTexture = &(src->onePlayerBoldTexture);
+        src->easyTexture = &(src->easyBoldTexture);
+        src->whiteUserTexture = &(src->whiteUserBoldTexture);
+        return SP_SETTINGS_ONE_PLAYER;
+    } else if (isClickOnTwoPlayers(event->button.x, event->button.y) && src->numOfPlayers != 2) {
+        src->numOfPlayers = 2;
+        src->onePlayerTexture = &(src->onePlayerThinTexture);
+        src->twoPlayersTexture = &(src->twoPlayersBoldTexture);
+        src->easyTexture = &(src->easyThinTexture);
+        src->noobTexture = &(src->noobThinTexture);
+        src->moderateTexture = &(src->moderateThinTexture);
+        src->hardTexture = &(src->hardThinTexture);
+        src->whiteUserTexture = &(src->whiteUserThinTexture);
+        src->blackUserTexture = &(src->blackUserThinTexture);
+        return SP_SETTINGS_TWO_PLAYERS;
+    } else if (isClickOnWhite(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->whiteUserTexture = &(src->whiteUserBoldTexture);
+        src->blackUserTexture = &(src->blackUserThinTexture);
+        return SP_SETTINGS_WHITE_USER;
+    } else if (isClickOnBlack(event->button.x, event->button.y) && src->numOfPlayers == 1) {
+        src->whiteUserTexture = &(src->whiteUserThinTexture);
+        src->blackUserTexture = &(src->blackUserBoldTexture);
+        return SP_SETTINGS_BLACK_USER;
+    }
+}
+
+
 SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin *src, SDL_Event *event) {
     if (!event) {
         return SP_SETTINGS_INVALID_ARGUMENT;
     }
     switch (event->type) {
         case SDL_MOUSEBUTTONUP:
-            if (isClickOnStart(event->button.x, event->button.y)) {
-
-                return SP_SETTINGS_START;
-            } else if (isClickOnBack(event->button.x, event->button.y)) {
-                return SP_SETTINGS_BACK;
-            } else if (isClickOnNoob(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->easyTexture = &(src->easyThinTexture);
-                src->noobTexture = &(src->noobBoldTexture);
-                src->moderateTexture = &(src->moderateThinTexture);
-                src->hardTexture = &(src->hardThinTexture);
-                return SP_SETTINGS_NOOB;
-            } else if (isClickOnEasy(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->easyTexture = &(src->easyBoldTexture);
-                src->noobTexture = &(src->noobThinTexture);
-                src->moderateTexture = &(src->moderateThinTexture);
-                src->hardTexture = &(src->hardThinTexture);
-                return SP_SETTINGS_EASY;
-            } else if (isClickOnModerate(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->easyTexture = &(src->easyThinTexture);
-                src->noobTexture = &(src->noobThinTexture);
-                src->moderateTexture = &(src->moderateBoldTexture);
-                src->hardTexture = &(src->hardThinTexture);
-                return SP_SETTINGS_MODERATE;
-            } else if (isClickOnHard(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->easyTexture = &(src->easyThinTexture);
-                src->noobTexture = &(src->noobThinTexture);
-                src->moderateTexture = &(src->moderateThinTexture);
-                src->hardTexture = &(src->hardBoldTexture);
-                return SP_SETTINGS_HARD;
-            } else if (isClickOnOnePlayer(event->button.x, event->button.y)  && src->numOfPlayers != 1) {
-                src->numOfPlayers = 1;
-                src->twoPlayersTexture = &(src->twoPlayersThinTexture);
-                src->onePlayerTexture = &(src->onePlayerBoldTexture);
-                src->easyTexture = &(src->easyBoldTexture);
-                src->whiteUserTexture = &(src->whiteUserBoldTexture);
-                return SP_SETTINGS_ONE_PLAYER;
-            } else if (isClickOnTwoPlayers(event->button.x, event->button.y) && src->numOfPlayers != 2) {
-                src->numOfPlayers = 2;
-                src->onePlayerTexture = &(src->onePlayerThinTexture);
-                src->twoPlayersTexture = &(src->twoPlayersBoldTexture);
-                src->easyTexture = &(src->easyThinTexture);
-                src->noobTexture = &(src->noobThinTexture);
-                src->moderateTexture = &(src->moderateThinTexture);
-                src->hardTexture = &(src->hardThinTexture);
-                src->whiteUserTexture = &(src->whiteUserThinTexture);
-                src->blackUserTexture = &(src->blackUserThinTexture);
-                return SP_SETTINGS_TWO_PLAYERS;
-            } else if (isClickOnWhite(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->whiteUserTexture = &(src->whiteUserBoldTexture);
-                src->blackUserTexture = &(src->blackUserThinTexture);
-                return SP_SETTINGS_WHITE_USER;
-            } else if (isClickOnBlack(event->button.x, event->button.y) && src->numOfPlayers == 1) {
-                src->whiteUserTexture = &(src->whiteUserThinTexture);
-                src->blackUserTexture = &(src->blackUserBoldTexture);
-                return SP_SETTINGS_BLACK_USER;
-            }
+            return mouseButtonUpEventHandler(src , event);
             break;
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {

@@ -17,6 +17,10 @@ typedef struct positions_on_board {
     char captured;
 	char piece;
 	SP_CHESS_CASTLING_STATE castling;
+	int isLWCastlingDeactivated;
+	int isRWCastlingDeactivated;
+	int isLBCastlingDeactivated;
+	int isRBCastlingDeactivated;
 } action;
 
 /**
@@ -83,11 +87,17 @@ typedef enum sp_array_list_message_t {
  *  @param c - the destination captured soldier != NULL.
  *  @param d - the moving soldier != NULL.
  *  @param e - the relevant castling state
+ *  @param LWCDeactivated - indicates whether the action deactivates the left white castling
+ *  @param RWCDeactivated - indicates whether the action deactivates the right white castling
+ *  @param LBCDeactivated - indicates whether the action deactivates the left black castling
+ *  @param RBCDeactivated - indicates whether the action deactivates the right black castling
+ *
  *  @return
  *  ACTION FROM A TO B
  */
 
-action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e);
+action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e,
+				int LWCDeactivated, int RWCDeactivated, int LBCDeactivated, int RBCDeactivated);
 
 /**
  *  Creates an empty array list with the specified maximum capacity.

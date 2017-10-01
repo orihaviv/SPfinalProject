@@ -6,7 +6,8 @@
 #include "SPArrayList.h"
 
 
-action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e){
+action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e,
+                      int LWCDeactivated, int RWCDeactivated, int LBCDeactivated, int RBCDeactivated){
     action res;
     res.prev.row = a.row;
     res.prev.column = a.column;
@@ -15,6 +16,10 @@ action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_
     res.captured = c;
     res.piece = d;
     res.castling = e;
+    res.isLWCastlingDeactivated = LWCDeactivated;
+    res.isRWCastlingDeactivated = RWCDeactivated;
+    res.isLBCastlingDeactivated = LBCDeactivated;
+    res.isRBCastlingDeactivated = RBCDeactivated;
     return res;
 }
 

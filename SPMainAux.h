@@ -84,51 +84,6 @@ void executeComputerMove(SPChessGame* src);
 int executePlayerMove (SPChessGame* src, SPCommand command);
 
 
-/**
- * Executing white left castling move.
- *
- * @param src - The target game
- */
-void executeWhiteLeftCastling(SPChessGame *src);
-
-
-/**
- * Executing white right castling move.
- *
- * @param src - The target game
- */
-void executeWhiteRightCastling(SPChessGame *src);
-
-
-/**
- * Executing black left castling move.
- *
- * @param src - The target game
- */
-void executeBlackLeftCastling(SPChessGame *src);
-
-
-/**
- * Executing black right castling move.
- *
- * @param src - The target game
- */
-void executeBlackRightCastling(SPChessGame *src);
-
-
-/**
- * Executing castling move.
- *
- * @param src - The target game
- * @param command - The command to execute
- *
- * @return
- * 1 - if castling succeeded
- * 0 - if castling didn't succeed
- */
-
-int executeCastling(SPChessGame *src, SPCommand command);
-
 
 /**
  * Printing suggested valid moves for the user.

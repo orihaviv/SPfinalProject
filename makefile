@@ -24,14 +24,6 @@ SDL_LIB = -L/usr/local/lib/sdl_2.0.5/lib -Wl,-rpath,/usr/local/lib/sdl_2.0.5/lib
 
 
 
-
-
-
-
-
-
-
-
 FLAGS = -c -std=c99 -pedantic-errors -Wall -Werror -g $(CFLAGS) $(SDL_FLAGS) -lm -D_REENTRANT
 SDL_FLAGS = -I/usr/local/lib/sdl_2.0.5/include/SDL2
 

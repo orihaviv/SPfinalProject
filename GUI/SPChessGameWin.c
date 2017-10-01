@@ -127,7 +127,8 @@ int isClickOnQuit(int x, int y) {
 
 
 bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
-    // Loading a surface into the given texture from the given path
+    /* Loading a surface into the given texture from the given path */
+
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {
@@ -149,6 +150,8 @@ bool GameLoadingSurfaceFunc(SPGameWin *src, SDL_Texture** texture, char* path) {
 }
 
 int createBoardTextures(SPGameWin* res){
+    /* Creates textures for the board */
+
     bool check;
 
     // board
@@ -224,6 +227,8 @@ int createBoardTextures(SPGameWin* res){
 
 
 int createButtonsTextures(SPGameWin* res){
+    /* Creates textures for the buttons */
+
     bool check;
 
     // restart game
@@ -604,7 +609,6 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
 //        rec.h = PIECE_SIZE;
         if (move.castling == SP_CHESS_NO_CASTLING){
             (src->boardTiles[row* sizeof(SDL_Texture*) + col]) = src->yellow;
-//            SDL_RenderCopy(src->gameRenderer, src->yellow, NULL, &rec);
             if (game->difficulty <= 2) {
                 if (move.captured != BLANK) { src->boardTiles[row* sizeof(SDL_Texture*) + col] = src->green; }
                 if (isTheSoldierThreatened(game, game->currentPlayer, move.current)) {

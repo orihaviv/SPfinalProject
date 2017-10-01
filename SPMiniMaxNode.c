@@ -53,10 +53,27 @@ int scoreOfLeafNode(SPChessGame *currentGame) {
     return score;
 }
 
+int scoreOfLeafNodeExpert(SPChessGame *currentGame) {
+    int score = scoreOfLeafNode(currentGame);
+    if (score == INT_MIN || score == INT_MAX){ return score; }
+    score *= 5;
+    position pos;
+    for (int i = 0; i < GAMESIZE; i++) {
+        for (int j = 0; j < GAMESIZE; j++) {
+            pos.row = i;
+            pos.column = j;
+            if (currentGame->currentPlayer == 1 - getColor(currentGame->gameBoard[i][j]))
+                if (isTheSoldierThreatened(currentGame, 1 - currentGame->currentPlayer, pos))
+                    score -= soldierScore(currentGame->gameBoard[i][j]);
+        }
+    }
+    return score;
+}
+
 
 int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
     if ((src == NULL) || (depth < 0) || (depth > 4) || (player < 0) || (player > 1)) {  //TODO change >4 to >5 if needed
-        return -999;
+        return -999;                    // TODO WHY 4? WHY NOT 3?
     }
     SPChessGame* gameCopy = (chessGameCopy(src));
     if (gameCopy == NULL){ return NULL; }
@@ -81,7 +98,8 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
                         bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(gameCopy);
                         alpha = maxi(bestScore, alpha);
@@ -101,7 +119,8 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta) {
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
+                        else { executeCastlingMiniMax(gameCopy, move.prev, move.current); }
                         bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta));
                         chessGameUndoPrevMove(gameCopy);
                         beta = mini(bestScore, beta);

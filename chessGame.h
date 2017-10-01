@@ -149,8 +149,8 @@ void chessGameDestroy(SPChessGame **src);
  * @return the char of the soldier on the board
  * \0 if illegal position
  */
-
 char whosThere(SPChessGame *src, int row, int col);
+
 
 /**
  * returns the relevant king's position
@@ -159,8 +159,18 @@ char whosThere(SPChessGame *src, int row, int col);
  *
  * @return king's position
  */
-
 position getKingPosition(SPChessGame *src, int color);
+
+
+/**
+ * returns the color of a specific piece
+ *
+ * @param soldier - the specific piece
+ *
+ * @return the relevant color
+ */
+int getColor(char soldier);
+
 
 /**
  * Checks if the soldier is under threat(Check) by a rival's pawn
@@ -495,6 +505,67 @@ int isBlackLeftCastlingValid(SPChessGame *src);
  * 0 - otherwise
  */
 int isBlackRightCastlingValid(SPChessGame *src);
+
+
+
+/**
+ * Executing white left castling move.
+ *
+ * @param src - The target game
+ */
+void executeWhiteLeftCastling(SPChessGame *src);
+
+
+/**
+ * Executing white right castling move.
+ *
+ * @param src - The target game
+ */
+void executeWhiteRightCastling(SPChessGame *src);
+
+
+/**
+ * Executing black left castling move.
+ *
+ * @param src - The target game
+ */
+void executeBlackLeftCastling(SPChessGame *src);
+
+
+/**
+ * Executing black right castling move.
+ *
+ * @param src - The target game
+ */
+void executeBlackRightCastling(SPChessGame *src);
+
+
+/**
+ * Executing castling move.
+ *
+ * @param src - The target game
+ * @param command - The command to execute
+ *
+ * @return
+ * 1 - if castling succeeded
+ * 0 - if castling didn't succeed
+ */
+
+int executeCastling(SPChessGame *src, SPCommand command);
+
+
+/**
+ * Executing castling move for the computer
+ *
+ * @param src - The target game
+ * @param origin - The origin position of the move to execute
+ * @param origin - The destination position of the move to execute
+ *
+ * @return
+ * 1 - if castling succeeded
+ * 0 - if castling didn't succeed
+ */
+int executeCastlingMiniMax(SPChessGame *src, position origin, position dst);
 
 
 /**

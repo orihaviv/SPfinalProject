@@ -66,6 +66,8 @@ void spManagerDraw(SPGuiManager *src) {
 
 
 SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager *src, SP_MAIN_EVENT event) {
+    /* Handles events in the Main Window */
+
     if (src == NULL) {
         return SP_MANAGER_NONE;
     }
@@ -103,6 +105,8 @@ SP_MANAGER_EVENT handleManagerDueToMainEvent(SPGuiManager *src, SP_MAIN_EVENT ev
 
 
 SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_EVENT event) {
+    /* Handles events in the Settings Window*/
+
     if (src == NULL) {
         return SP_MANAGER_NONE;
     }
@@ -164,6 +168,8 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
 
 
 SP_PROMOTION_EVENT showPromotionMessageBox(SPGuiManager *src) {
+    /* Shows pawn promotion message box */
+
     const SDL_MessageBoxButtonData buttons[] = {
             {0, 0, "Pawn"},
             {1, 1, "Rook"},
@@ -222,6 +228,8 @@ SP_PROMOTION_EVENT showPromotionMessageBox(SPGuiManager *src) {
 }
 
 int showEndingMessageBox(int winner, SPGuiManager *src) {
+    /* Shows a message box for the end of the game  */
+
     char *msg = "A problem occurred";
     if (winner == 0) { msg = "Checkmate! black player wins the game"; }
     if (winner == 1) { msg = "Checkmate! white player wins the game"; }
@@ -263,6 +271,8 @@ int showEndingMessageBox(int winner, SPGuiManager *src) {
 }
 
 void handleSaveGame(SPGuiManager *src) {
+    /* Handles a save game command */
+
     if (src->gameWin->isTheGameSaved == 0) {
         if (guiSaveGame(src->game) == 0) {
             SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to save the game", NULL);
@@ -274,6 +284,8 @@ void handleSaveGame(SPGuiManager *src) {
 }
 
 void handleLoadGame(SPGuiManager *src, int slot) {
+    /* Handles a load game command */
+
     bool loaded = guiLoadChessGame(&(src->game), slot);
     if (loaded || src->game == NULL) {
         src->gameWin = spGameWindowCreate();
@@ -284,6 +296,8 @@ void handleLoadGame(SPGuiManager *src, int slot) {
 }
 
 int askWhetherToSave(SPGuiManager *src) {
+    /* Shows a message box asking whether the user wants to save he current game before quiting  */
+
     const SDL_MessageBoxButtonData buttons[] = {
             {SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT, 0, "Yes"},
             {0,                                       1, "No"},
@@ -333,6 +347,8 @@ int askWhetherToSave(SPGuiManager *src) {
 
 
 void handleMainMenu(SPGuiManager *src) {
+    /* Asking the user whether to save the current game, and goes back to main menu */
+
     int whetherToQuit = 1;
     if (src->gameWin->isTheGameSaved == 0) {
         whetherToQuit = askWhetherToSave(src);
@@ -346,6 +362,8 @@ void handleMainMenu(SPGuiManager *src) {
 
 
 SP_MANAGER_EVENT handleQuitGame(SPGuiManager *src) {
+    /* Asking the user whether to save the current game, and quits the game */
+
     int whetherToQuit = 1;
     if (src->gameWin->isTheGameSaved == 0) {
         whetherToQuit = askWhetherToSave(src);
@@ -358,6 +376,8 @@ SP_MANAGER_EVENT handleQuitGame(SPGuiManager *src) {
 
 
 void guiPawnPromotionHandler(SPGuiManager *src, position dest, int isMini) {
+    /* Handles the pawn promotion on GUI mode */
+
     if (!src) { return; }
     char piece = BLANK;
     SP_PROMOTION_EVENT msg;
@@ -396,7 +416,8 @@ void guiPawnPromotionHandler(SPGuiManager *src, position dest, int isMini) {
 
 
 void showCheckMessage(int player) {
-    // Showing message box for check
+    /* Shows message box for check */
+
     if (player == 0) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Check!", "Black King is threatened!", NULL);
     } else if (player == 1) {
@@ -406,6 +427,8 @@ void showCheckMessage(int player) {
 
 
 SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
+    /* Handles the pieces' moves done in the game */
+
     char soldier;
     position origin = src->gameWin->moveOrigin;
     position dest = src->gameWin->moveDestination;
@@ -470,7 +493,6 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
         case SP_CHESS_GAME_NO_WINNER:
             if (isTheKingThreatened(src->game, src->game->currentPlayer)) {
                 src->checked = 1;
-                return SP_MANAGER_CHECK;
             }
         default:
             break;
@@ -480,6 +502,8 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
 }
 
 SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT event) {
+    /* Handles events in the Game Window*/
+
     if (event == SP_GAME_EVENT_NONE || src == NULL) {
         return SP_MANAGER_NONE;
     }
@@ -519,6 +543,8 @@ SP_MANAGER_EVENT handleManagerDueToGameEvent(SPGuiManager *src, SP_GAME_EVENT ev
 
 
 SP_MANAGER_EVENT handleManagerDueToLoadEvent(SPGuiManager *src, SP_LOAD_EVENT event) {
+    /* Handles events in the Load Window*/
+
     if (src == NULL) {
         return SP_MANAGER_NONE;
     }

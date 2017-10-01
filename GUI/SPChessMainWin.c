@@ -1,8 +1,10 @@
 #include "SPChessMainWin.h"
 
 
-//Inner functions
+
 int isClickOnNew(int x, int y) {
+    /* Indicates whether a click was on the "New Game" button */
+
     if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= NEW_Y && y <= NEW_Y + BUTTONS_H)) {
         return 1;
     }
@@ -10,6 +12,8 @@ int isClickOnNew(int x, int y) {
 }
 
 int isClickOnLoadInMain(int x, int y) {
+    /* Indicates whether a click was on the "Load Game" button */
+
     if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= LOAD_Y && y <= LOAD_Y + BUTTONS_H)) {
         return 1;
     }
@@ -17,6 +21,8 @@ int isClickOnLoadInMain(int x, int y) {
 }
 
 int isClickOnQuitInMain(int x, int y) {
+    /* Indicates whether a click was on the "Quit Game" button */
+
     if ((x >= OBJECTS_X && x <= BUTTONS_W + OBJECTS_X) && (y >= QUIT_Y && y <= QUIT_Y + BUTTONS_H)) {
         return 1;
     }
@@ -26,6 +32,8 @@ int isClickOnQuitInMain(int x, int y) {
 
 
 bool mainLoadingSurfaceFunc(SPMainWin *src, SDL_Texture** texture, char* path) {
+    /* Loading a surface into the given texture from the given path */
+
     SDL_Surface *loadingSurface = NULL;
     loadingSurface = SDL_LoadBMP(path);
     if (loadingSurface == NULL) {

@@ -38,8 +38,7 @@ int executeGuiGame() {
                 showEndingMessageBox(0, manager);
                 break;
             }
-
-            if (manager->game != NULL && isTheKingThreatened(manager->game, manager->game->currentPlayer) && manager->checked == 1) {
+            if (manager->game != NULL && manager->checked == 1) {
                 showCheckMessage(manager->game->currentPlayer);
                 manager->checked = 0;
             }
