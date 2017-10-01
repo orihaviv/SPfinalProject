@@ -146,6 +146,8 @@ int loadWinTexturesLoading(SPLoadWin* res){
     // 5 Bold  button
     check = loadLoadingSurfaceFunc(res, &(res->fiveBold), "../GUI/images/loadWindow/fiveBold.bmp");
     if (!check){ return  0; }
+
+    return 1;
 }
 
 
@@ -256,7 +258,7 @@ void spLoadWindowDraw(SPLoadWin *src) {
 }
 
 
-SP_Load_EVENT loadWinMouseButtonUpEventHandler(SPLoadWin *src, SDL_Event *event) {
+SP_LOAD_EVENT loadWinMouseButtonUpEventHandler(SPLoadWin *src, SDL_Event *event) {
     /* Handles a mouse button up event */
 
     if (isClickOnOne(event->button.x, event->button.y) && src->numOfSlots > 0) {
@@ -320,6 +322,7 @@ SP_Load_EVENT loadWinMouseButtonUpEventHandler(SPLoadWin *src, SDL_Event *event)
         }
         return SP_LOAD_BACK_MAIN;
     }
+    return SP_LOAD_NONE;
 }
 
 

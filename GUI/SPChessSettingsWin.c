@@ -408,6 +408,9 @@ SP_SETTINGS_EVENT settingsWinMouseButtonUpEventHandler(SPSettingsWin *src, SDL_E
         src->blackUserTexture = &(src->blackUserBoldTexture);
         return SP_SETTINGS_BLACK_USER;
     }
+
+
+    return SP_SETTINGS_NONE;
 }
 
 
@@ -417,8 +420,7 @@ SP_SETTINGS_EVENT spSettingsWindowHandleEvent(SPSettingsWin *src, SDL_Event *eve
     }
     switch (event->type) {
         case SDL_MOUSEBUTTONUP:
-            return mouseButtonUpEventHandler(src , event);
-            break;
+            return settingsWinMouseButtonUpEventHandler(src , event);
         case SDL_WINDOWEVENT:
             if (event->window.event == SDL_WINDOWEVENT_CLOSE) {
                 return SP_SETTINGS_BACK;
