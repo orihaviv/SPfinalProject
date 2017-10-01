@@ -27,6 +27,10 @@ action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_
 action* actionCopy (action* move) {
 
     action *res = (action *) malloc(sizeof(action));
+    if (!res){
+        printf("ERROR: malloc failed\n");
+        return NULL;
+    }
     res->prev.row = (*move).prev.row;
     res->prev.column = (*move).prev.column;
     res->current.row = (*move).current.row;

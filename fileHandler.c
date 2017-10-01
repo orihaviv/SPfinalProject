@@ -294,6 +294,10 @@ int extractNumOfSavedGames(){
 char* extractPathOfSlot(int slotNum){
     if (extractNumOfSavedGames() < slotNum || slotNum < 1 ){ return NULL; }
     char* path = (char *) malloc(SP_MAX_LINE_LENGTH);
+    if (!path){
+        printf("ERROR: malloc failed\n");
+        return NULL;
+    }
     char line[SP_MAX_LINE_LENGTH];
     char* requiredSlot;
 

@@ -5,10 +5,17 @@
 #include "consoleGame.h"
 #include "GuiGame.h"
 
-int main(int argc, char* argv[]) {
-    if (argc == 0 || !strcmp(argv[0], "-c") == 0){
-    return executeConsoleGame();
-    } else if (!strcmp(argv[0], "-g")) {
-        return executeGuiGame();
+int main(int argc, char** argv) {
+    if (argc > 2) {
+        printf("Too many arguments\n");
+        return 0;
     }
+    if (argc == 1 || strcmp(argv[1], "-c") == 0){
+        return executeConsoleGame();
+    } else if (strcmp(argv[1], "-g") == 0) {
+        return executeGuiGame();
+    } else {
+        printf("The expected arguments are '-c' or '-g'\n");
+    }
+    return 0;
 }

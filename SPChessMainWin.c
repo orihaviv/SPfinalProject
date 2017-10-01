@@ -66,6 +66,7 @@ SPMainWin *spMainWindowCreate() {
     SDL_Surface *loadingSurface = NULL;
     res = (SPMainWin *) malloc(sizeof(SPMainWin));
     if (res == NULL) {
+        printf("ERROR: malloc failed - main window creation\n");
         return NULL;
     }
 

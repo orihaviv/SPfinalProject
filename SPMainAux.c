@@ -224,7 +224,7 @@ void executeUndo(SPChessGame *game) {
         printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),
                toColChar(lastMove.current.column), toRowNum(lastMove.prev.row), toColChar(lastMove.prev.column));
         lastMove = *(spArrayListGetFirst(game->lastMoves));
-        msg = chessGameUndoPrevMove(game);
+        SP_CHESS_GAME_MESSAGE msg = chessGameUndoPrevMove(game);
         if (msg == SP_CHESS_GAME_SUCCESS) {
             player = game->currentPlayer == 1 ? "white" : "black";
             printf("Undo move for player %s : <%d,%c> ->  <%d,%c>\n", player, toRowNum(lastMove.current.row),

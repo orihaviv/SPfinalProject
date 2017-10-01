@@ -137,6 +137,7 @@ SPSettingsWin *spSettingsWindowCreate() {
     SPSettingsWin *res = NULL;
     res = (SPSettingsWin *) malloc(sizeof(SPSettingsWin));
     if (res == NULL) {
+        printf("ERROR: malloc failed - settings window creation\n");
         return NULL;
     }
 

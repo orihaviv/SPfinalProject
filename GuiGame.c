@@ -3,6 +3,7 @@
 //
 
 #include "GuiGame.h"
+#include "SPChessGUIManager.h"
 
 
 int executeGuiGame() {

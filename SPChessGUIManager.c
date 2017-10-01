@@ -8,10 +8,10 @@
 #include "SPChessGUIManager.h"
 
 
-
 SPGuiManager *spManagerCreate() {
     SPGuiManager *res = (SPGuiManager *) malloc(sizeof(SPGuiManager));
     if (res == NULL) {
+        printf("ERROR: malloc failed - manager creation\n");
         return NULL;
     }
     res->mainWin = spMainWindowCreate();
@@ -135,7 +135,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
                 printf("Couldn't create settings window\n");
                 return SP_MANAGER_QUTT;
             }
-            if (src->game->userColor == 0){
+            if (src->game->userColor == 0) {
                 nextMove = spMinimaxSuggestMove(src->game, src->game->difficulty, 1);
                 while (chessGameSetMove(src->game, nextMove->prev, nextMove->current, 0, 1) !=
                        SP_CHESS_GAME_SUCCESS) { continue; }
@@ -174,7 +174,7 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
         default:
             break;
     }
-    if (nextMove){
+    if (nextMove) {
         free(nextMove);
     }
     return SP_MANAGER_NONE;
@@ -303,7 +303,9 @@ void handleLoadGame(SPGuiManager *src, int slot) {
     bool loaded = guiLoadChessGame(&(src->game), slot);
     if (loaded || src->game == NULL) {
         src->gameWin = spGameWindowCreate();
-        if (src->gameWin == NULL) { SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to load the game", NULL); }
+        if (src->gameWin == NULL) {
+            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to load the game", NULL);
+        }
         src->game->state = 1;
         src->gameWin->isTheGameSaved = 1;
     } else { SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error!", "Not able to load the game", NULL); }
@@ -428,7 +430,6 @@ void guiPawnPromotionHandler(SPGuiManager *src, position dest, int isMini) {
 }
 
 
-
 void showCheckMessage(int player) {
     /* Shows message box for check */
 
@@ -443,7 +444,7 @@ void showCheckMessage(int player) {
 SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     /* Handles the pieces' moves done in the game */
 
-    action* nextMove = NULL;
+    action *nextMove = NULL;
     char soldier;
     position origin = src->gameWin->moveOrigin;
     position dest = src->gameWin->moveDestination;
@@ -501,7 +502,7 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
         winner = chessCheckWinner(src->game, 0, 1);
     }
 
-    if (nextMove){ free (nextMove); }
+    if (nextMove) { free(nextMove); }
 
     switch (winner) {
         case SP_CHESS_GAME_TIE:

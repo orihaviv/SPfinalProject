@@ -318,6 +318,10 @@ SPGameWin* spGameWindowCreate() {
     if (check == 0) { return NULL;}
 
     res->boardTiles = (SDL_Texture**) calloc(GAMESIZE*GAMESIZE, sizeof(SDL_Texture*));
+    if (!res->boardTiles){
+        printf("ERROR: calloc failed - board tiles\n");
+        return NULL;
+    }
 
     SDL_FreeSurface(loadingSurface);
     return res;

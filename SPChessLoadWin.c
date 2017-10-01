@@ -156,6 +156,7 @@ SPLoadWin *spLoadWindowCreate(SP_LOAD_CALLER father) {
     SPLoadWin *res = NULL;
     res = (SPLoadWin *) malloc(sizeof(SPLoadWin));
     if (res == NULL) {
+        printf("ERROR: malloc failed - load window creation\n");
         return NULL;
     }
 
