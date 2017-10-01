@@ -99,6 +99,22 @@ typedef enum sp_array_list_message_t {
 action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_STATE e,
 				int LWCDeactivated, int RWCDeactivated, int LBCDeactivated, int RBCDeactivated);
 
+
+/**
+ *  Creates a copy of an action.
+ *  @param move - a pointer to the action to be copied.
+
+ *  @return
+ *  A pointer to the action's copy
+ *  must be freed!
+ */
+
+
+action* actionCopy (action* move);
+
+
+
+
 /**
  *  Creates an empty array list with the specified maximum capacity.
  *  @param maxSize - the maximum capacity of the target array list.

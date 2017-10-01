@@ -110,6 +110,9 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
     if (src == NULL) {
         return SP_MANAGER_NONE;
     }
+
+    action *nextMove = NULL;
+
     switch (event) {
         case SP_SETTINGS_BACK:
             chessGameDestroy(&(src->game));
@@ -128,8 +131,8 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
                 return SP_MANAGER_QUTT;
             }
             if (src->game->userColor == 0){
-                action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
-                while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
+                nextMove = spMinimaxSuggestMove(src->game, src->game->difficulty, 1);
+                while (chessGameSetMove(src->game, nextMove->prev, nextMove->current, 0, 1) !=
                        SP_CHESS_GAME_SUCCESS) { continue; }
             }
             src->activeWin = SP_GAME_WINDOW_ACTIVE;
@@ -162,6 +165,9 @@ SP_MANAGER_EVENT handleManagerDueToSettingsEvent(SPGuiManager *src, SP_SETTINGS_
             break;
         default:
             break;
+    }
+    if (nextMove){
+        free(nextMove);
     }
     return SP_MANAGER_NONE;
 }
@@ -429,6 +435,7 @@ void showCheckMessage(int player) {
 SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     /* Handles the pieces' moves done in the game */
 
+    action* nextMove = NULL;
     char soldier;
     position origin = src->gameWin->moveOrigin;
     position dest = src->gameWin->moveDestination;
@@ -466,23 +473,28 @@ SP_MANAGER_EVENT handleMove(SPGuiManager *src) {
     goto anyway;
 
     moveDone:
+
+
     src->gameWin->isTheGameSaved = 0;
     winner = chessCheckWinner(src->game, 0, 1);
 
     if (src->game->gameMode == 1 && winner == SP_CHESS_GAME_NO_WINNER) {
         if (isTheKingThreatened(src->game, src->game->currentPlayer)) { showCheckMessage(src->game->currentPlayer); }
-        action nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
-        while (chessGameSetMove(src->game, nextMove.prev, nextMove.current, 0, 1) !=
+        nextMove = spMinimaxSuggestMove(src->game, src->game->difficulty, 1);
+        while (chessGameSetMove(src->game, nextMove->prev, nextMove->current, 0, 1) !=
                SP_CHESS_GAME_SUCCESS) {
-            nextMove = *(spMinimaxSuggestMove(src->game, src->game->difficulty, 1));
+            nextMove = spMinimaxSuggestMove(src->game, src->game->difficulty, 1);
         }
-        soldier = src->game->gameBoard[nextMove.current.row][nextMove.current.column];
-        if ((soldier == PAWNBLACK && nextMove.current.row == 0) ||
-            (soldier == PAWNWHITE && nextMove.current.row == 7)) {
+        soldier = src->game->gameBoard[nextMove->current.row][nextMove->current.column];
+        if ((soldier == PAWNBLACK && nextMove->current.row == 0) ||
+            (soldier == PAWNWHITE && nextMove->current.row == 7)) {
             guiPawnPromotionHandler(src, dest, 0);
         }
         winner = chessCheckWinner(src->game, 0, 1);
     }
+
+    if (nextMove){ free (nextMove); }
+
     switch (winner) {
         case SP_CHESS_GAME_TIE:
             return SP_MANAGER_TIE;

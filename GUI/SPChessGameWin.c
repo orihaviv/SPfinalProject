@@ -589,6 +589,8 @@ int spGameWindowActivateGetMoves(SPGameWin* src, SPChessGame* game, SDL_Event* e
             src->boardTiles[row* sizeof(SDL_Texture*) + col] = (src->purple);
         }
     }
+
+    spArrayListDestroy(&possibleMoves);
     return 1;
 }
 

@@ -121,28 +121,30 @@ char* translateToSoldiersName(char soldier) {
 
 
 void executeComputerMove(SPChessGame *src) {
-    action nextMove = *(spMinimaxSuggestMove(src, src->difficulty, 0));
-    char soldier = nextMove.piece;
-    while (chessGameSetMove(src, nextMove.prev, nextMove.current, 0, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
+    action* nextMove = spMinimaxSuggestMove(src, src->difficulty, 0);
+    char soldier = nextMove->piece;
+    while (chessGameSetMove(src, nextMove->prev, nextMove->current, 0, 0) != SP_CHESS_GAME_SUCCESS) { continue; }
     char *name = translateToSoldiersName(soldier);
     if (name == NULL){
         printf("problem in translateToSoldierName");
-        return;
+        goto end;
     }
-    if (nextMove.castling == SP_CHESS_NO_CASTLING) {
-        printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove.prev.row),
-               toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+    if (nextMove->castling == SP_CHESS_NO_CASTLING) {
+        printf("Computer: move %s at <%d,%c> to <%d,%c>\n", name, toRowNum(nextMove->prev.row),
+               toColChar(nextMove->prev.column), toRowNum(nextMove->current.row), toColChar(nextMove->current.column));
     }
     else {
-        if (nextMove.piece == ROOKWHITE || nextMove.piece == ROOKBLACK){
-            printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(nextMove.current.row),
-                   toColChar(nextMove.current.column), toRowNum(nextMove.prev.row), toColChar(nextMove.prev.column));
+        if (nextMove->piece == ROOKWHITE || nextMove->piece == ROOKBLACK){
+            printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(nextMove->current.row),
+                   toColChar(nextMove->current.column), toRowNum(nextMove->prev.row), toColChar(nextMove->prev.column));
         }
         else{
-            printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(nextMove.prev.row),
-                   toColChar(nextMove.prev.column), toRowNum(nextMove.current.row), toColChar(nextMove.current.column));
+            printf("Computer: castle King at <%d,%c> and Rook at <%d,%c>\n" , toRowNum(nextMove->prev.row),
+                   toColChar(nextMove->prev.column), toRowNum(nextMove->current.row), toColChar(nextMove->current.column));
         }
     }
+    end:
+    free(nextMove);
 }
 
 

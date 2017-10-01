@@ -24,6 +24,24 @@ action generateAction(position a, position b, char c, char d, SP_CHESS_CASTLING_
 }
 
 
+action* actionCopy (action* move) {
+
+    action *res = (action *) malloc(sizeof(action));
+    res->prev.row = (*move).prev.row;
+    res->prev.column = (*move).prev.column;
+    res->current.row = (*move).current.row;
+    res->current.column = (*move).current.column;
+    res->captured = (*move).captured;
+    res->piece = (*move).piece;
+    res->castling = (*move).castling;
+    res->isLWCastlingDeactivated = (*move).isLWCastlingDeactivated;
+    res->isRWCastlingDeactivated = (*move).isRWCastlingDeactivated;
+    res->isLBCastlingDeactivated = (*move).isLBCastlingDeactivated;
+    res->isRBCastlingDeactivated = (*move).isRBCastlingDeactivated;
+    return res;
+}
+
+
 void gameSpArrayListAdd(SPArrayList* src, action elem){
     SP_ARRAY_LIST_MESSAGE message1 = spArrayListAddFirst(src, elem);
     if (message1 == SP_ARRAY_LIST_FULL){

@@ -555,7 +555,7 @@ void castlingUndo(SPChessGame* src , action lastMove){
             src->whiteKing.row = 0;
             src->whiteKing.column = 4;
             src->gameBoard[0][4] = KINGWHITE;
-            if (lastMove.prev.row == 0){                // left castling was done
+            if (lastMove.prev.column == 0){                // left castling was done
                 src->gameBoard[0][0] = ROOKWHITE;
                 src->gameBoard[0][2] = src->gameBoard[0][3] = BLANK;
             }
@@ -585,7 +585,7 @@ void castlingUndo(SPChessGame* src , action lastMove){
             src->whiteKing.row = 7;
             src->whiteKing.column = 4;
             src->gameBoard[7][4] = KINGBLACK;
-            if (lastMove.prev.row == 0){                    // left castling was done
+            if (lastMove.prev.column == 0){                    // left castling was done
                 src->gameBoard[7][0] = ROOKBLACK;
                 src->gameBoard[7][2] = src->gameBoard[7][3] = BLANK;
             }
@@ -686,8 +686,8 @@ void executeWhiteLeftCastling(SPChessGame *src){
     move.captured = BLANK;
     move.piece = ROOKWHITE;
     move.isLWCastlingDeactivated = move.isRWCastlingDeactivated = 1;
-    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
-    else { move.castling = SP_CHESS_WHITE_LEFT_CASTLING; }
+//    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
+    move.castling = SP_CHESS_WHITE_LEFT_CASTLING;
     spArrayListAddFirst(src->lastMoves, move);
     src->whiteLeftCastling = src->whiteRightCastling = 0;
     src->currentPlayer = 1 - src->currentPlayer;
@@ -709,8 +709,8 @@ void executeWhiteRightCastling(SPChessGame *src){
     move.captured = BLANK;
     move.piece = ROOKWHITE;
     move.isLWCastlingDeactivated = move.isRWCastlingDeactivated = 1;
-    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
-    else { move.castling = SP_CHESS_WHITE_RIGHT_CASTLING; }
+//    if (src->whiteLeftCastling == 1){ move.castling = SP_CHESS_WHITE_BOTH_CASTLINGS; }
+    move.castling = SP_CHESS_WHITE_RIGHT_CASTLING;
     spArrayListAddFirst(src->lastMoves, move);
     src->whiteLeftCastling = src->whiteRightCastling = 0;
     src->currentPlayer = 1 - src->currentPlayer;
@@ -732,8 +732,8 @@ void executeBlackLeftCastling(SPChessGame *src){
     move.captured = BLANK;
     move.piece = ROOKBLACK;
     move.isLBCastlingDeactivated = move.isRBCastlingDeactivated = 1;
-    if (src->blackRightCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
-    else { move.castling = SP_CHESS_BLACK_LEFT_CASTLING; }
+//    if (src->blackRightCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
+    move.castling = SP_CHESS_BLACK_LEFT_CASTLING;
     spArrayListAddFirst(src->lastMoves, move);
     src->blackLeftCastling = src->blackRightCastling = 0;
     src->currentPlayer = 1 - src->currentPlayer;
@@ -755,8 +755,8 @@ void executeBlackRightCastling(SPChessGame *src){
     move.captured = BLANK;
     move.piece = ROOKBLACK;
     move.isLBCastlingDeactivated = move.isRBCastlingDeactivated = 1;
-    if (src->blackLeftCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
-    else { move.castling = SP_CHESS_BLACK_RIGHT_CASTLING; }
+//    if (src->blackLeftCastling == 1){ move.castling = SP_CHESS_BLACK_BOTH_CASTLINGS; }
+    move.castling = SP_CHESS_BLACK_RIGHT_CASTLING;
     spArrayListAddFirst(src->lastMoves, move);
     src->blackLeftCastling = src->blackRightCastling = 0;
     src->currentPlayer = 1 - src->currentPlayer;

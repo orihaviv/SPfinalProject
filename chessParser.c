@@ -133,6 +133,7 @@ char getPiece(char* source){
 	strcpy(strCopy, source);
     char *firstToken = strtok(strCopy, " \t\r\n");
     char *nextToken = strtok(NULL, " \t\r\n");
+    free(strCopy);
     if (nextToken != NULL){
     	printf("Invalid Type\n");
     	return '_';

@@ -76,7 +76,6 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta, int 
         return -999;                    // TODO WHY 4? WHY NOT 3?
     }
     SPChessGame* gameCopy = (chessGameCopy(src));
-    if (gameCopy == NULL){ return NULL; }
     int bestScore;
     SPArrayList* possibleActions;
     char currentSoldier;

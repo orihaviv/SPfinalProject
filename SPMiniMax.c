@@ -10,13 +10,12 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
     }
     SPChessGame* gameCopy = (chessGameCopy(currentGame));
     if (gameCopy == NULL){ return NULL; }
-    action bestAction;
     int bestScore, score;
     SPArrayList* possibleActions;
     char currentSoldier;
 
-
     action move;
+    action bestAction;
     if (gameCopy->currentPlayer == 1) {         // white's turn
         bestScore = INT_MIN;
         for (int i = 0; i < GAMESIZE; i++) {
@@ -64,8 +63,5 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
         }
     }
     chessGameDestroy(&gameCopy);
-    action* bestActionPointer;
-    bestActionPointer = &bestAction;
-    return bestActionPointer;
-
+    return actionCopy(&bestAction);
 }
