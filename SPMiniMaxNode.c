@@ -110,11 +110,13 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta, int 
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui, isExpert));
-                        chessGameUndoPrevMove(gameCopy);
-                        alpha = maxi(bestScore, alpha);
-                        if (beta <= alpha) { break; }
+                        if (move.castling == SP_CHESS_NO_CASTLING) {
+                            chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                            bestScore = maxi(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui, isExpert));
+                            chessGameUndoPrevMove(gameCopy);
+                            alpha = maxi(bestScore, alpha);
+                            if (beta <= alpha) { break; }
+                        }
                     }
                     spArrayListDestroy(&possibleActions);
                 }
@@ -130,11 +132,13 @@ int nodeScore(SPChessGame *src, int depth, int player, int alpha, int beta, int 
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui, isExpert));
-                        chessGameUndoPrevMove(gameCopy);
-                        beta = mini(bestScore, beta);
-                        if (beta <= alpha) { break; }
+                        if (move.castling == SP_CHESS_NO_CASTLING) {
+                            chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                            bestScore = mini(bestScore, nodeScore(gameCopy, depth - 1, 1 - player, alpha, beta, isGui, isExpert));
+                            chessGameUndoPrevMove(gameCopy);
+                            beta = mini(bestScore, beta);
+                            if (beta <= alpha) { break; }
+                        }
                     }
                     spArrayListDestroy(&possibleActions);
                 }

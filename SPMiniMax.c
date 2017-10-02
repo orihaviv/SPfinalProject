@@ -29,13 +29,15 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
-                        if (bestScore < score) {
-                            bestAction = move;
-                            bestScore = score;
+                        if (move.castling == SP_CHESS_NO_CASTLING) {
+                            chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                            score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
+                            if (bestScore < score) {
+                                bestAction = move;
+                                bestScore = score;
+                            }
+                            chessGameUndoPrevMove(gameCopy);
                         }
-                        chessGameUndoPrevMove(gameCopy);
                     }
                     spArrayListDestroy(&possibleActions);
                 }
@@ -51,13 +53,15 @@ action* spMinimaxSuggestMove(SPChessGame* currentGame, int depth, int isGui){
                     possibleActions = getMovesForSoldier(gameCopy, i, j);
                     for (int index = 0; index < possibleActions->actualSize; index++) {
                         move = *(spArrayListGetAt(possibleActions, index));
-                        if (move.castling == SP_CHESS_NO_CASTLING){ chessGameSetMove(gameCopy, move.prev, move.current, 1, 0); }
-                        score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
-                        if (bestScore > score) {
-                            bestAction = move;
-                            bestScore = score;
+                        if (move.castling == SP_CHESS_NO_CASTLING) {
+                            chessGameSetMove(gameCopy, move.prev, move.current, 1, 0);
+                            score = nodeScore(gameCopy, depth - 1, gameCopy->currentPlayer, INT_MIN, INT_MAX, isGui, isExpert);
+                            if (bestScore > score) {
+                                bestAction = move;
+                                bestScore = score;
+                            }
+                            chessGameUndoPrevMove(gameCopy);
                         }
-                        chessGameUndoPrevMove(gameCopy);
                     }
                     spArrayListDestroy(&possibleActions);
                 }
